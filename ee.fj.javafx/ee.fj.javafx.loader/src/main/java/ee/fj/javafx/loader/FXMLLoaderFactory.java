@@ -16,15 +16,25 @@ public class FXMLLoaderFactory<T> {
 	protected FXMLLoaderFactory(T controller, Consumer<T> onInitialized) {
 		boolean _controller = true;
 		boolean _root = true;
+		String fileName = null;
 		if (controller.getClass().isAnnotationPresent(FXMLLoader.class)) {
 			FXMLLoader annotation = (FXMLLoader)controller.getClass().getAnnotation(FXMLLoader.class);
 			_controller = annotation.controller();
 			_root = annotation.root();
-			
+			fileName = annotation.fileName();
 		}
+
+		if (fileName == null)
+			fileName = getFileName(controller);
+
+		URL template = controller.getClass().getResource(fileName);
+		if (template == null) {
+			throw new IllegalArgumentException(fileName + " not found!");
+		}
+		
 		javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader();
 
-		loader.setLocation(getViewURL(controller));
+		loader.setLocation(template);
 		if (_controller)
 			loader.setController(controller);
 		if (_root)
@@ -52,27 +62,22 @@ public class FXMLLoaderFactory<T> {
 	}
 
 	/**
-	 * Get resource name based on the class name. If the class name is
+	 * Get File name based on the controller name
 	 * MyPrettyClass then the resource is fxml/my-pretty-class.fxml
 	 * 
 	 * @param container
 	 * @return URL to the resource
 	 * @throws IOException
 	 */
-	private URL getViewURL(Object container) {
+	private String getFileName(Object controller) {
 		StringBuilder name = new StringBuilder();
-		for (char c : container.getClass().getSimpleName().toCharArray()) {
+		for (char c : controller.getClass().getSimpleName().toCharArray()) {
 			if (Character.isUpperCase(c) && name.length() > 0) {
 				name.append('-');
 			}
 			name.append(Character.toLowerCase(c));
 		}
-		String path = String.format(RESOURCE_PATH, name);
-		URL rv = container.getClass().getResource(path);
-		if (rv == null) {
-			throw new IllegalArgumentException(path + " not found!");
-		}
-		return rv;
+		return String.format(RESOURCE_PATH, name);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })

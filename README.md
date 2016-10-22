@@ -6,26 +6,25 @@ There are three major roots:
 
 Input - output utiles
 
-	- Configuration file helper
-	- Password encrypted files
-	- Csv / Excel files wrapper
+- [Configuration file helper](ee.fj.io/ee.fj.io.config)
+- [Password encrypted files](ee.fj.io/ee.fj.io.passwordfile)
+- [Predict file encoding](ee.fj.io/ee.fj.io.smartreader)
+- [Csv / Excel files wrapper](ee.fj.io/ee.fj.io.tablereader)
 
 #ee.fj.javafx
 
 Javafx helpers
 
-	- JavaFx FXML and controller loader
+- [JavaFx FXML and controller loader](ee.fj.javafx/ee.fj.javafx.loader)
 
 #ee.fj.l
 
-localization and internationalization 
-
-	- Light weight application localization helper
+- [Lightweight localization helper](ee.fj.l/ee.fj.l.l10n)
 
 #ee.fj.utils
 
-	- List of arrays columns type predictor
-	- File mime types detetor
-	- Java Mail wrapper
+- [JavaFx FXML and controller loader](ee.fj.utils/ee.fj.utils.columnpredictor)
+- [File mime type detector if Files.probeContentType is not enough](ee.fj.utils/ee.fj.utils.filetypes)
+- [Mava mail wrapper to ease up mail sending](ee.fj.utils/ee.fj.utils.mailer)
 
 Each root contains projects themselves which are light and I tried to keep them independant as possible

@@ -10,4 +10,10 @@ or
 
 	CharsetAwareInputStream in = CharsetAwareInputStream.predict(InputStream in)
 
+To get the charset:
+
+		Charset charset_used = in.getCharset():
+	
 Recognizes UTF_8, UTF8 Little Endian and Big Endian, fails back to system default or preferred charset.
+
+TODO: add more charsets to regognize

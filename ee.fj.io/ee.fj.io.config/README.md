@@ -5,7 +5,7 @@ The streams crafted to read and write primitives. In case your structure changes
 ## Simple use case
 
 
-Define your version
+Define your version (mandatory, default is 0)
 
 	int version = 25;
 
@@ -17,7 +17,6 @@ Define a path
 Write the file lines
 
 
-	ByteArrayOutputStream out = new ByteArrayOutputStream();
 	try (ConfigFileWriter writer = new ConfigFileWriter(version, Files.newOutputStream(configuration))) {
 		writer.write("Lorem", "Ipsum", 1, true);
 		writer.write("My other line");
@@ -42,3 +41,4 @@ Read the file
 		}
 	}
 
+The version is mandatory. Default version is set as 0
