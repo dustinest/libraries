@@ -2,7 +2,7 @@
 
 Code snippet:
 
-			TableReaderFactory.getReader(SupportedFile.CSV).as(CsvReader.class).read(
+			TableReaderFactory.getReader(SupportedFiles.CSV).as(CsvReader.class).read(
 				getInputStream("simple.csv", Charset.forName("Windows-1257")),
 				',', '"',
 				new TableReaderCallback() {

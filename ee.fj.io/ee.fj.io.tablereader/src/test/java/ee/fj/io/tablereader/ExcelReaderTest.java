@@ -143,8 +143,8 @@ public class ExcelReaderTest {
 
 	@Test
 	public void testTypes() {
-		Assert.assertNotNull(TableReaderFactory.getReader(SupportedFile.EXCEL_2007).as(ExcelReader.class));
-		Assert.assertNotNull(TableReaderFactory.getReader(SupportedFile.EXCEL_97).as(ExcelReader.class));
+		Assert.assertNotNull(TableReaderFactory.getReader(SupportedFiles.EXCEL_2007).as(ExcelReader.class));
+		Assert.assertNotNull(TableReaderFactory.getReader(SupportedFiles.EXCEL_97).as(ExcelReader.class));
 		for (String extension : new String[] {"xls", "xlsx"}) {
 			Assert.assertNotNull(TableReaderFactory.getReaderByExtendsion(extension).as(ExcelReader.class));
 			Assert.assertNotNull(TableReaderFactory.getReader("." + extension).as(ExcelReader.class));

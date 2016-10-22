@@ -7,7 +7,7 @@ public class TableReaderFactory {
 			new ExcelReader(),
 			new CsvReader()
 	};
-	public static TableReader getReader(SupportedFile type) {
+	public static TableReader getReader(SupportedFiles type) {
 		for (TableReader s : readers) {
 			if (s.supports(type))
 				return s;

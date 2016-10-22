@@ -56,13 +56,13 @@ public class ExcelReader implements TableReader {
 	}
 
 	@Override
-	public boolean supports(SupportedFile type) {
-		return SupportedFile.EXCEL_2007 == type || SupportedFile.EXCEL_97 == type;
+	public boolean supports(SupportedFiles type) {
+		return SupportedFiles.EXCEL_2007 == type || SupportedFiles.EXCEL_97 == type;
 	}
 
 	@Override
 	public boolean supportsExtension(String extension) {
-		return SupportedFile.EXCEL_2007.extension.equals(extension) || SupportedFile.EXCEL_97.extension.equals(extension);
+		return SupportedFiles.EXCEL_2007.extension.equals(extension) || SupportedFiles.EXCEL_97.extension.equals(extension);
 	}
 
 	@Override

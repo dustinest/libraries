@@ -22,7 +22,7 @@ public class CsvReaderTest {
 		final Double[] numbers = new Double[] {null};
 		final boolean[][] empty = new boolean[3][5];
 		final String[][] strings = new String[3][5];
-		TableReaderFactory.getReader(SupportedFile.CSV).as(CsvReader.class).read(
+		TableReaderFactory.getReader(SupportedFiles.CSV).as(CsvReader.class).read(
 				getInputStream("simple.csv", Charset.forName("Windows-1257")),
 				',', '"',
 				new TableReaderCallback() {
@@ -87,8 +87,8 @@ public class CsvReaderTest {
 
 	@Test
 	public void testTypes() {
-		Assert.assertNotNull(TableReaderFactory.getReader(SupportedFile.CSV).as(CsvReader.class));
-		Assert.assertNotNull(TableReaderFactory.getReader(SupportedFile.TXT).as(CsvReader.class));
+		Assert.assertNotNull(TableReaderFactory.getReader(SupportedFiles.CSV).as(CsvReader.class));
+		Assert.assertNotNull(TableReaderFactory.getReader(SupportedFiles.TXT).as(CsvReader.class));
 		for (String extension : new String[] {"csv", "txt"}) {
 			Assert.assertNotNull(TableReaderFactory.getReaderByExtendsion(extension).as(CsvReader.class));
 			Assert.assertNotNull(TableReaderFactory.getReader("." + extension).as(CsvReader.class));

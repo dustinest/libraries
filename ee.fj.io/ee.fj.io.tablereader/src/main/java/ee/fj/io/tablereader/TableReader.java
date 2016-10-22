@@ -1,7 +1,7 @@
 package ee.fj.io.tablereader;
 
 public interface TableReader {
-	public boolean supports(SupportedFile type);
+	public boolean supports(SupportedFiles type);
 	// provide extension without comma
 	public boolean supportsExtension(String extension);
 

@@ -40,13 +40,13 @@ public class CsvReader implements TableReader {
 	}
 
 	@Override
-	public boolean supports(SupportedFile type) {
-		return (type == SupportedFile.CSV || type == SupportedFile.TXT);
+	public boolean supports(SupportedFiles type) {
+		return (type == SupportedFiles.CSV || type == SupportedFiles.TXT);
 	}
 
 	@Override
 	public boolean supportsExtension(String extension) {
-		return SupportedFile.CSV.extension.equals(extension) || SupportedFile.TXT.extension.equals(extension);
+		return SupportedFiles.CSV.extension.equals(extension) || SupportedFiles.TXT.extension.equals(extension);
 	}
 
 	@Override
