@@ -1,0 +1,1 @@
+Helper library when Files.probeContentType is not enough.

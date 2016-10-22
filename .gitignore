@@ -3,12 +3,15 @@
 /*/.project
 /*/*/.project
 
+/.classpath
 /*/.classpath
 /*/*/.classpath
 
 
+/.settings
 /*/.settings
 /*/*/.settings
 
+/target
 /*/target
 /*/*/target
