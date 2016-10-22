@@ -2,7 +2,7 @@ package ee.fj.io.tablereader;
 
 import java.util.Date;
 
-public class TableReaderAdapter implements TableReaderListener {
+public class SimpleTableReaderCallback implements TableReaderCallback {
 	@Override public void read(int row, int col, String value) { }
 
 	@Override

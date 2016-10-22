@@ -23,7 +23,7 @@ public class ExcelReaderTest {
 		final boolean[] fileWorked = new boolean[] {false, false};
 		final Date[] dates = new Date[] {null, null};
 		
-		TableReaderFactory.getReader("simple.xlsx").as(ExcelReader.class).read(0, getInputStream("simple.xlsx"), new TableReaderListener() {
+		TableReaderFactory.getReader("simple.xlsx").as(ExcelReader.class).read(0, getInputStream("simple.xlsx"), new TableReaderCallback() {
 			
 			@Override
 			public void read(int row, int col) {
@@ -86,7 +86,7 @@ public class ExcelReaderTest {
 		final String[] strings = new String[] {null, null, null};
 		final boolean[] fileWorked = new boolean[] {false, false};
 		final Date[] dates = new Date[] {null, null};
-		TableReaderFactory.getReaderByExtendsion(".xls").as(ExcelReader.class).read(0, getInputStream("simple.xls"), new TableReaderListener() {
+		TableReaderFactory.getReaderByExtendsion(".xls").as(ExcelReader.class).read(0, getInputStream("simple.xls"), new TableReaderCallback() {
 			
 			@Override
 			public void read(int row, int col) {

@@ -25,7 +25,7 @@ public class CsvReaderTest {
 		TableReaderFactory.getReader(SupportedFile.CSV).as(CsvReader.class).read(
 				getInputStream("simple.csv", Charset.forName("Windows-1257")),
 				',', '"',
-				new TableReaderListener() {
+				new TableReaderCallback() {
 			
 			@Override
 			public void read(int row, int col) {

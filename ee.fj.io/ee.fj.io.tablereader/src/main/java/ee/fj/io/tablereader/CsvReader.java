@@ -6,19 +6,19 @@ import java.io.Reader;
 import au.com.bytecode.opencsv.CSVReader;
 
 public class CsvReader implements TableReader {
-	public void read(Reader reader, TableReaderListener listener) throws IOException {
+	public void read(Reader reader, TableReaderCallback listener) throws IOException {
 		read(new CSVReader(reader), listener);
 	}
 
-	public void read(Reader reader, char separator, char quatationChar, TableReaderListener listener) throws IOException {
+	public void read(Reader reader, char separator, char quatationChar, TableReaderCallback listener) throws IOException {
 		read(new CSVReader(reader, separator, quatationChar, false), listener);
 	}
 
-	public void read(Reader reader, char separator, TableReaderListener listener) throws IOException {
+	public void read(Reader reader, char separator, TableReaderCallback listener) throws IOException {
 		read(new CSVReader(reader, separator), listener);
 	}
 
-	public void read(CSVReader reader, TableReaderListener listener) throws IOException {
+	public void read(CSVReader reader, TableReaderCallback listener) throws IOException {
 		listener.fileStarted(0, null);
 		try {
 			int row = 0;

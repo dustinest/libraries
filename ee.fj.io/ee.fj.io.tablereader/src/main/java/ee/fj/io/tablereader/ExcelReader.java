@@ -16,7 +16,7 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 public class ExcelReader implements TableReader {
 
-	public void read(int sheet, InputStream in, TableReaderListener reader) throws IOException {
+	public void read(int sheet, InputStream in, TableReaderCallback reader) throws IOException {
 		String sheetName = null;
 		try (Workbook wb = WorkbookFactory.create(in)) {
 			Sheet _sheet = wb.getSheetAt(sheet);
