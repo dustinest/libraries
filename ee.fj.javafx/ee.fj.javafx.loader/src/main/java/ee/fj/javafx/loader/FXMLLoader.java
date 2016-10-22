@@ -10,5 +10,5 @@ import java.lang.annotation.Target;
 public @interface FXMLLoader {
 	public boolean controller() default true;
 	public boolean root() default true;
-	public String fileName();
+	public String fileName() default "";
 }

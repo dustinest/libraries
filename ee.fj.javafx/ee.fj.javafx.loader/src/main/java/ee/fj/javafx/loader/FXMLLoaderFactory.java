@@ -14,17 +14,17 @@ public class FXMLLoaderFactory<T> {
 	private static final Logger LOGGER = Logger.getLogger(FXMLLoaderFactory.class.getName());
 
 	protected FXMLLoaderFactory(T controller, Consumer<T> onInitialized) {
-		boolean _controller = true;
-		boolean _root = true;
+		boolean setController = true;
+		boolean setRoot = true;
 		String fileName = null;
 		if (controller.getClass().isAnnotationPresent(FXMLLoader.class)) {
 			FXMLLoader annotation = (FXMLLoader)controller.getClass().getAnnotation(FXMLLoader.class);
-			_controller = annotation.controller();
-			_root = annotation.root();
+			setController = annotation.controller();
+			setRoot = annotation.root();
 			fileName = annotation.fileName();
 		}
 
-		if (fileName == null)
+		if (fileName == null || fileName == "")
 			fileName = getFileName(controller);
 
 		URL template = controller.getClass().getResource(fileName);
@@ -35,9 +35,9 @@ public class FXMLLoaderFactory<T> {
 		javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader();
 
 		loader.setLocation(template);
-		if (_controller)
+		if (setController)
 			loader.setController(controller);
-		if (_root)
+		if (setRoot)
 			loader.setRoot(controller);
 
 		Platform.runLater(() -> {
