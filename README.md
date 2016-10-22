@@ -1,3 +1,7 @@
+I am really lazy person, so instead of having separate repository for each project I put together selection of my most used libraries into one single maven tree.
+
+There are three major roots:
+
 # ee.fj.io
 
 Input - output utiles
@@ -23,4 +27,5 @@ localization and internationalization
 	- List of arrays columns type predictor
 	- File mime types detetor
 	- Java Mail wrapper
-	
+
+Each root contains projects themselves which are light and I tried to keep them independant as possible
