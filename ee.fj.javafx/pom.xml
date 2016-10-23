@@ -55,5 +55,6 @@
 
 	<modules>
 		<module>ee.fj.javafx.loader</module>
+		<module>ee.fj.javafx.concurrent</module>
   </modules>
 </project>

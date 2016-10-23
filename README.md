@@ -16,6 +16,7 @@ Input - output utiles
 Javafx helpers
 
 - [JavaFx FXML and controller loader](ee.fj.javafx/ee.fj.javafx.loader)
+- [JavaFx Single threaded scheduler](ee.fj.javafx/ee.fj.javafx.concurrent)
 
 #ee.fj.l
 
