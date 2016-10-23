@@ -7,6 +7,13 @@ public class TableReaderFactory {
 			new ExcelReader(),
 			new CsvReader()
 	};
+
+	/**
+	 * Get reader by Supported files enum
+	 * @param type
+	 * @return
+	 * @throws IllegalArgumentException if enum value is not supported
+	 */
 	public static TableReader getReader(SupportedFiles type) {
 		for (TableReader s : readers) {
 			if (s.supports(type))
@@ -15,10 +22,22 @@ public class TableReaderFactory {
 		throw new IllegalArgumentException(type + " is not supported!");
 	}
 
+	/**
+	 * Get reader by file name
+	 * @param type
+	 * @return
+	 * @throws IllegalArgumentException if file is not supported
+	 */
 	public static TableReader getReader(File fileName) {
 		return getReader(fileName.getName());
 	}
 
+	/**
+	 * Get reader by file name
+	 * @param type
+	 * @return
+	 * @throws IllegalArgumentException if file is not supported
+	 */
 	public static TableReader getReader(String fileName) {
 		int i = fileName.lastIndexOf('.');
 		if (i < 0) {
@@ -31,6 +50,12 @@ public class TableReaderFactory {
 		}
 	}
 
+	/**
+	 * Get reader by suffix
+	 * @param type
+	 * @return
+	 * @throws IllegalArgumentException if file is not supported
+	 */
 	public static TableReader getReaderByExtendsion(String suffix) {
 		int i = suffix.lastIndexOf('.');
 		String _suffix = suffix;

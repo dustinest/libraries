@@ -6,36 +6,37 @@ import java.io.Reader;
 import au.com.bytecode.opencsv.CSVReader;
 
 public class CsvReader implements TableReader {
-	public void read(Reader reader, TableReaderCallback listener) throws IOException {
-		read(new CSVReader(reader), listener);
+
+	public void read(Reader reader, TableResult callback) throws IOException {
+		read(new CSVReader(reader), callback);
 	}
 
-	public void read(Reader reader, char separator, char quatationChar, TableReaderCallback listener) throws IOException {
-		read(new CSVReader(reader, separator, quatationChar, false), listener);
+	public void read(Reader reader, char separator, char quatationChar, TableResult callback) throws IOException {
+		read(new CSVReader(reader, separator, quatationChar, false), callback);
 	}
 
-	public void read(Reader reader, char separator, TableReaderCallback listener) throws IOException {
-		read(new CSVReader(reader, separator), listener);
+	public void read(Reader reader, char separator, TableResult callback) throws IOException {
+		read(new CSVReader(reader, separator), callback);
 	}
 
-	public void read(CSVReader reader, TableReaderCallback listener) throws IOException {
-		listener.fileStarted(0, null);
+	public void read(CSVReader reader, TableResult callback) throws IOException {
+		callback.read(TableResult.BEGIN, -1, -1, null);
 		try {
 			int row = 0;
 			for (String[] value = reader.readNext(); value != null; value = reader.readNext()) {
-				listener.rowStart(row);
+				callback.read(TableResult.ROW_START, row, -1, row);
 				for (int i = 0; i < value.length; i++) {
 					if (value[i] == null || value[i].length() == 0) {
-						listener.read(row, i);
+						callback.read(TableResult.NULL, row, i, null);
 					} else {
-						listener.read(row, i, value[i]);
+						callback.read(TableResult.STRING, row, i, value[i]);
 					}
 				}
-				listener.rowEnd(row);
+				callback.read(TableResult.ROW_END, row, -1, row);
 				row ++;
 			}
 		} finally {
-			listener.fileFinished(0, null);
+			callback.read(TableResult.END, -1, -1, null);
 		}
 	}
 
