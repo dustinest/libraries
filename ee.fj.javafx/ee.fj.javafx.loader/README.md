@@ -30,14 +30,14 @@ The annotation is not required. The only purpose for now is to limit the loader 
 
 If you want to show the loading status and have more control over your loading cycle, call:
 
-	CompoundLoader.load((total, status) -> {
+	FXMLLoaderFactory.load((total, status) -> {
 		if (total == status) {
 			// launch your application
 		}
 		System.out.println("initialized " + status + " out of " total);
 	}, controller1, controller2, etc...);
 
-Sometimes you want to use CompoundLoader for the classes or objects which do not need any initialization. Or you use the controller in FXML. For that you can use Loadable interface. For example:
+Sometimes you want to use FXMLLoaderFactory for the classes or objects which do not need any initialization. Or you use the controller in FXML. For that you can use Loadable interface. For example:
 
 	class MyOtherModule implements Loadable {
 			private final BooleanProperty isLoaded = new SimpleBooleanProperty(false);
@@ -65,9 +65,9 @@ Sometimes you want to use CompoundLoader for the classes or objects which do not
 			}
 	}
 
-Now you can use CompundLoader for your multiple classes and track loading
+Now you can use FXMLLoaderFactory for your multiple classes and track loading
 
-	CompoundLoader.load((total, status) -> {
+	FXMLLoaderFactory.load((total, status) -> {
 		if (total == status) {
 			// launch your application
 		}

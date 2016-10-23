@@ -27,5 +27,3 @@ Javafx helpers
 - [JavaFx FXML and controller loader](ee.fj.utils/ee.fj.utils.columnpredictor)
 - [File mime type detector if Files.probeContentType is not enough](ee.fj.utils/ee.fj.utils.filetypes)
 - [Mava mail wrapper to ease up mail sending](ee.fj.utils/ee.fj.utils.mailer)
-
-Each root contains projects themselves which are light and I tried to keep them independant as possible
