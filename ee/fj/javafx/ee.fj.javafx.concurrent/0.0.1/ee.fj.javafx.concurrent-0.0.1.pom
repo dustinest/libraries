@@ -7,8 +7,8 @@
 		<version>0.0.1</version>
 	</parent>
   
-	<artifactId>ee.fj.javafx.loader</artifactId>
-  	<name>Fox Junior JavaFx Loader</name>
+	<artifactId>ee.fj.javafx.concurrent</artifactId>
+  	<name>Fox Junior JavaFx Concurrency helper</name>
 	<packaging>jar</packaging>
 
 	<dependencies>
