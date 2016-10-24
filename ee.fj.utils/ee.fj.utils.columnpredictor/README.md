@@ -1,4 +1,4 @@
-# Predict the column type based on the matchers
+# Predict the column type in array based on the matchers
 
 Easy way to detect column types if they are e-mails or urls or something else...
 

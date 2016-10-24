@@ -24,7 +24,7 @@ Javafx helpers
 
 # ee.fj.utils
 
-- [JavaFx FXML and controller loader](ee.fj.utils/ee.fj.utils.columnpredictor)
+- [Predict the column type in array based on the matchers](ee.fj.utils/ee.fj.utils.columnpredictor)
 - [File mime type detector if Files.probeContentType is not enough](ee.fj.utils/ee.fj.utils.filetypes)
 - [Mava mail wrapper to ease up mail sending](ee.fj.utils/ee.fj.utils.mailer)
 
