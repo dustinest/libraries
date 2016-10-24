@@ -11,19 +11,23 @@ Input - output utiles
 - [Predict file encoding](ee.fj.io/ee.fj.io.smartreader)
 - [Csv / Excel files wrapper](ee.fj.io/ee.fj.io.tablereader)
 
-#ee.fj.javafx
+# ee.fj.javafx
 
 Javafx helpers
 
 - [JavaFx FXML and controller loader](ee.fj.javafx/ee.fj.javafx.loader)
 - [JavaFx Single threaded scheduler](ee.fj.javafx/ee.fj.javafx.concurrent)
 
-#ee.fj.l
+# ee.fj.l
 
 - [Lightweight localization helper](ee.fj.l/ee.fj.l.l10n)
 
-#ee.fj.utils
+# ee.fj.utils
 
 - [JavaFx FXML and controller loader](ee.fj.utils/ee.fj.utils.columnpredictor)
 - [File mime type detector if Files.probeContentType is not enough](ee.fj.utils/ee.fj.utils.filetypes)
 - [Mava mail wrapper to ease up mail sending](ee.fj.utils/ee.fj.utils.mailer)
+
+# Installation
+
+See subprojects for more information

@@ -1,8 +1,31 @@
 # Simple event based localization library to ease up application developement
 
-Default language file:
+## Installation
 
-translation.properties
+Add repository to your ``pom.xml``:
+
+	<repositories>
+		<repository>
+			<id>ee.fj-mvn-repo</id>
+			<url>https://raw.githubusercontent.com/dustinest/libraries/mvn-repo</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</repository>
+	</repositories>
+
+And dependency:
+
+	<dependency>
+		<groupId>ee.fj.l</groupId>
+		<artifactId>ee.fj.l.l10n</artifactId>
+		<version>0.0.1</version>
+	</dependency>
+
+##Usage
+
+Default language file is ``translation.properties``
 
 Locale based transaltion files:
 

@@ -1,7 +1,29 @@
 # Automatically detect text file encodings.
 
-Work still on progress.
+## Installation
 
+Add repository to your ``pom.xml``:
+
+	<repositories>
+		<repository>
+			<id>ee.fj-mvn-repo</id>
+			<url>https://raw.githubusercontent.com/dustinest/libraries/mvn-repo</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</repository>
+	</repositories>
+
+And dependency:
+
+	<dependency>
+		<groupId>ee.fj.io</groupId>
+		<artifactId>ee.fj.io.smartreader</artifactId>
+		<version>0.0.1</version>
+	</dependency>
+
+## Usage
 Use CharsetAwareInputStream for an entry point:
 
 	CharsetAwareInputStream in = CharsetAwareInputStream.predict(InputSream in , Charset failbackCharset;

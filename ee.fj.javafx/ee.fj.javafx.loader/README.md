@@ -2,7 +2,30 @@
 
 I found myself reading JavaFx .FXML files all over and over again. So, I created a simple wrapper to help me with that.
 
-Simple usage:
+# Installation
+
+Add repository to your ``pom.xml``:
+
+	<repositories>
+		<repository>
+			<id>ee.fj-mvn-repo</id>
+			<url>https://raw.githubusercontent.com/dustinest/libraries/mvn-repo</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</repository>
+	</repositories>
+
+And dependency:
+
+	<dependency>
+		<groupId>ee.fj.javafx</groupId>
+		<artifactId>ee.fj.javafx.loader</artifactId>
+		<version>0.0.1</version>
+	</dependency>
+
+# Usage:
 
 My controller class, which extends Vbox:
 	
@@ -24,7 +47,7 @@ If you, for instance have dialog which has no root then use annotation:
 		}
 	}
 
-In case you already set controller in your fxml you can add additional argument to your FXMLLoader annotation: ```@FXMLLoader(controller=false)```
+In case you already set controller in your fxml you can add additional argument to your FXMLLoader annotation: ``@FXMLLoader(controller=false)``
 
 The annotation is not required. The only purpose for now is to limit the loader functionality.
 

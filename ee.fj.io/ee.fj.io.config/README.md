@@ -2,7 +2,30 @@
 
 The streams crafted to read and write primitives. In case your structure changes the stream reads and writes the version.
 
-## Simple use case
+## Installation:
+
+Add repository to your ``pom.xml``:
+
+	<repositories>
+		<repository>
+			<id>ee.fj-mvn-repo</id>
+			<url>https://raw.githubusercontent.com/dustinest/libraries/mvn-repo</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</repository>
+	</repositories>
+
+And dependency:
+
+	<dependency>
+		<groupId>ee.fj.io</groupId>
+		<version>0.0.1</version>
+		<artifactId>ee.fj.io.config</artifactId>
+	</dependency>
+
+## Usage
 
 
 Define your version (mandatory, default is 0)

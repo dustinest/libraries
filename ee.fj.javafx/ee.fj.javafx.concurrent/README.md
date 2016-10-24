@@ -1,11 +1,34 @@
 # Single threaded scheduler to improve JAVAFX timed functions
 
-Anlthrough most of processes can be done with the Timeline I wanted to have more control over my flow and make animations or timeouts where necessary. Also, in most cases I have no need of more than
+Althrough most of processes can be done with the Timeline I wanted to have more control over my flow and make animations or timeouts where necessary. Also, in most cases I have no need of more than
 One thread.
 
 For that I created simple single threaded manager for easy access to execute processes in and out of platform.
 
-Simple usage:
+## Installation
+
+Add repository to your ``pom.xml``:
+
+	<repositories>
+		<repository>
+			<id>ee.fj-mvn-repo</id>
+			<url>https://raw.githubusercontent.com/dustinest/libraries/mvn-repo</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</repository>
+	</repositories>
+
+And dependency:
+
+	<dependency>
+		<groupId>ee.fj.javafx</groupId>
+		<artifactId>ee.fj.javafx.concurrent</artifactId>
+		<version>0.0.1</version>
+	</dependency>
+
+## Usage:
 
 	SingleThreadManager.SECONDS.PLATFORM.schedule(() -> updateSomething(), 1);
 
