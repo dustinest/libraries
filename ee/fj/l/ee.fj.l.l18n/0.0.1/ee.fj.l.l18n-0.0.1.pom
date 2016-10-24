@@ -7,8 +7,8 @@
 		<version>0.0.1</version>
 	</parent>
   
-	<artifactId>ee.fj.l.l10n</artifactId>
-  	<name>Fox Junior Localization</name>
+	<artifactId>ee.fj.l.l18n</artifactId>
+  	<name>Fox Junior Internationalization</name>
 	<packaging>jar</packaging>
 
 	<dependencies>
@@ -17,5 +17,6 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 	</dependencies>
 </project>
