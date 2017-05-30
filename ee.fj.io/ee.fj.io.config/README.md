@@ -2,31 +2,9 @@
 
 The streams crafted to read and write primitives. In case your structure changes the stream reads and writes the version.
 
-## Installation:
-
-Add repository to your ``pom.xml``:
-
-	<repositories>
-		<repository>
-			<id>ee.fj-mvn-repo</id>
-			<url>https://raw.githubusercontent.com/dustinest/libraries/mvn-repo</url>
-			<snapshots>
-				<enabled>true</enabled>
-				<updatePolicy>always</updatePolicy>
-			</snapshots>
-		</repository>
-	</repositories>
-
-And dependency:
-
-	<dependency>
-		<groupId>ee.fj.io</groupId>
-		<version>0.0.1</version>
-		<artifactId>ee.fj.io.config</artifactId>
-	</dependency>
-
 ## Usage
 
+See [Junit tests](src/test/java/ee/fj/io/config/ConfigFileTest.java) for basic use cases
 
 Define your version (mandatory, default is 0)
 
@@ -65,3 +43,26 @@ Read the file
 	}
 
 The version is mandatory. Default version is set as 0
+
+## Installation:
+
+Add repository to your ``pom.xml``:
+
+	<repositories>
+		<repository>
+			<id>ee.fj-mvn-repo</id>
+			<url>https://raw.githubusercontent.com/dustinest/libraries/mvn-repo</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</repository>
+	</repositories>
+
+And dependency:
+
+	<dependency>
+		<groupId>ee.fj.io</groupId>
+		<version>0.0.1</version>
+		<artifactId>ee.fj.io.config</artifactId>
+	</dependency>

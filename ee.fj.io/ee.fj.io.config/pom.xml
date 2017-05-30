@@ -7,6 +7,7 @@
 		<version>0.0.1</version>
 	</parent>
 
+	<version>0.0.2</version>
 	<artifactId>ee.fj.io.config</artifactId>
   	<name>Read and write really specific data into the file to preserve the space and clean up reading</name>
 	<packaging>jar</packaging>

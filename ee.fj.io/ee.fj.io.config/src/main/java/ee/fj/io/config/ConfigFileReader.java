@@ -2,15 +2,17 @@ package ee.fj.io.config;
 
 import java.io.BufferedInputStream;
 import java.io.Closeable;
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Iterator;
-import java.util.logging.Level;
+import java.util.function.BiFunction;
 import java.util.logging.Logger;
 
-public class ConfigFileReader implements Iterable<Object[]>, Closeable, AutoCloseable {
+public class ConfigFileReader implements Iterable<Object>, Closeable, AutoCloseable {
 	private final static Logger LOGGER = Logger.getLogger(ConfigFileReader.class.getName());
 	private final InputStream inputStream;
 	private final int version;
@@ -19,7 +21,7 @@ public class ConfigFileReader implements Iterable<Object[]>, Closeable, AutoClos
 		this.inputStream = inputStream instanceof BufferedInputStream ? inputStream : new BufferedInputStream(inputStream);
 		byte[] intBytes = new byte[Integer.BYTES];
 		inputStream.read(intBytes);
-		version = ByteCaster.INTEGER.getValue(intBytes);
+		version = ConfigTypes.INTEGER.getValue(intBytes);
 	}
 
 	public ConfigFileReader(Path path) throws IOException {
@@ -35,78 +37,73 @@ public class ConfigFileReader implements Iterable<Object[]>, Closeable, AutoClos
 		return version;
 	}
 
-	public Object[] read() throws IOException {
-		byte[] resultSizeBytes = new byte[Integer.BYTES];
-		int resultSizeBytesRead = inputStream.read(resultSizeBytes);
-		if (resultSizeBytesRead == -1) {
-			// file is over
-			return null;
+	public Object readValue() throws IOException {
+		Object[] rv = new Object[]{null};
+		int lines = read((type, val) -> {
+			rv[0] = type.getValue(val);
+			return false;
+		});
+		if (lines == 0) {
+			throw new EOFException("File ended!");
 		}
-		int resultSize = ByteCaster.INTEGER.getValue(resultSizeBytes);
-		Object[] rv = new Object[resultSize];
-		for (int i = 0; i < rv.length; i++) {
-			byte[] typeBytes = new byte[1];
-			int typeBytesRead = inputStream.read(typeBytes);
-			if (typeBytesRead != typeBytes.length) {
-				throw new IOException("Illegal length of type " + typeBytesRead + " != " + typeBytes.length);
+		return rv[0];
+	}
+	
+	public int read(BiFunction<ConfigType<?>, byte[], Boolean> callback) throws IOException {
+		int dataRead = 0;
+		while(true) {
+			int typeByte = inputStream.read();
+			if (typeByte < 0) {
+				return dataRead;
 			}
-			byte type = typeBytes[0];
-			if (type == ByteCaster.NULL.type) {
+			dataRead++;
+			ConfigType<?> type = ConfigTypes.getType((byte)typeByte);
+			if (type == ConfigTypes.NULL) {
+				if (!callback.apply(ConfigTypes.NULL, new byte[0])) {
+					return dataRead;
+				}
 				continue;
 			}
+
 			byte[] valueLengthBytes = new byte[Integer.BYTES];
 			int valueLengthBytesRead = inputStream.read(valueLengthBytes);
 			if (valueLengthBytesRead != valueLengthBytes.length) {
 				throw new IOException("Illegal length of value length " + valueLengthBytesRead + " != " + valueLengthBytes.length);
 			}
-			int valueLength = ByteCaster.INTEGER.getValue(valueLengthBytes);
+			int valueLength = ConfigTypes.INTEGER.getValue(valueLengthBytes);
 
 			byte[] valueBytes = new byte[valueLength];
 			int valueBytesRead = inputStream.read(valueBytes);
 			if (valueBytesRead != valueBytes.length) {
 				throw new IOException("Illegal length of value " + valueBytesRead + " != " + valueBytes.length);
 			}
-			if (type == ByteCaster.INTEGER.type) {
-				rv[i] =  ByteCaster.INTEGER.getValue(valueBytes);
-			} else if (type == ByteCaster.STRING.type) {
-				rv[i] =  ByteCaster.STRING.getValue(valueBytes);
-			} else if (type == ByteCaster.BOOLEAN.type) {
-				rv[i] =  ByteCaster.BOOLEAN.getValue(valueBytes);
-			} else if (type == ByteCaster.FLOAT.type) {
-				rv[i] =  ByteCaster.FLOAT.getValue(valueBytes);
-			} else if (type == ByteCaster.LONG.type) {
-				rv[i] =  ByteCaster.LONG.getValue(valueBytes);
-			} else if (type == ByteCaster.DOUBLE.type) {
-				rv[i] =  ByteCaster.DOUBLE.getValue(valueBytes);
-			} else if (type == ByteCaster.DATE.type) {
-				rv[i] =  ByteCaster.DATE.getValue(valueBytes);
-			} else {
-				throw new IllegalArgumentException("Type " + type + " not supported!");
+			if (!callback.apply(type, valueBytes)) {
+				return dataRead;
 			}
 		}
-		return rv;
 	}
-	
+
 	@Override
-	public Iterator<Object[]> iterator() {
-		return new Iterator<Object[]>() {
-			private Object[] rv;
+	public Iterator<Object> iterator() {
+		return new Iterator<Object>() {
+			private Object val = null;
 			@Override
 			public boolean hasNext() {
 				try {
-					rv = read();
+					val = readValue();
+					return true;
+				} catch (EOFException e) {
+					val = null;
 				} catch (IOException e) {
-					LOGGER.log(Level.WARNING, "Error while reading : " + e.getMessage(), e);
-					rv = null;
+					throw new UncheckedIOException(e);
 				}
-				return rv != null;
+				return false;
 			}
 
 			@Override
-			public Object[] next() {
-				return rv;
+			public Object next() {
+				return val;
 			}
 		};
 	}
-
 }
