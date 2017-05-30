@@ -74,6 +74,6 @@ And dependency:
 
 	<dependency>
 		<groupId>ee.fj.io</groupId>
-		<version>0.0.1</version>
+		<version>0.0.2</version>
 		<artifactId>ee.fj.io.config</artifactId>
 	</dependency>
