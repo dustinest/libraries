@@ -29,16 +29,27 @@ Read the file
 
 
 	try (ConfigFileReader reader = new ConfigFileReader(Files.newInputStream(configuration))) {
-		Object[] lines = reader.read();
 		if (reader.getVersion() == 25) {
-	
-			String lorem = (String)lines[0];
-			String ipsum = (String)lines[2];
-			int number = (Integer)lines[3];
-			boolean trueFalse = (Boolean)lines[4];
-			lines = reader.read();
-	
-			String myOtherLine = lines[0];
+			String lorem = (String)reader.read();
+			String ipsum = (String)reader.read();
+			int number = (Integer)reader.read();
+			boolean trueFalse = (Boolean)reader.read();
+			String myOtherLine = (String)reader.read();
+		}
+	}
+
+Or 
+
+	try (ConfigFileReader reader = new ConfigFileReader(Files.newInputStream(configuration))) {
+		if (reader.getVersion() == 25) {
+			read.read((type, value) -> {
+				String lorem = type.as(String).getValue(value);
+				return false;
+			});
+			String ipsum = reader.read(String.class);
+			int number = reader.read(Integer.class);
+			boolean trueFalse = reader.readValue(Boolean.class);
+			String myOtherLine = reader.readValue(String.class);
 		}
 	}
 

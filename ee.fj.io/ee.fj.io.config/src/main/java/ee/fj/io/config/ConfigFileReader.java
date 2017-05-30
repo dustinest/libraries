@@ -37,47 +37,63 @@ public class ConfigFileReader implements Iterable<Object>, Closeable, AutoClosea
 		return version;
 	}
 
-	public Object readValue() throws IOException {
-		Object[] rv = new Object[]{null};
-		int lines = read((type, val) -> {
-			rv[0] = type.getValue(val);
-			return false;
-		});
-		if (lines == 0) {
+	public Object read() throws IOException {
+		ConfigType<?> type = readType();
+		if (type == ConfigTypes.NULL) {
+			return null;
+		}
+		return type.getValue(readBytes());
+	}
+
+	public <T> T read(Class<T> clazz) throws IOException {
+		ConfigType<?> type = readType();
+		if (type == ConfigTypes.NULL) {
+			return null;
+		}
+		return type.as(clazz).getValue(readBytes());
+	}
+
+	private ConfigType<?> readType() throws IOException {
+		int typeByte = inputStream.read();
+		if (typeByte < 0) {
 			throw new EOFException("File ended!");
 		}
-		return rv[0];
+		return ConfigTypes.getType((byte)typeByte);
+	}
+
+	private byte[] readBytes() throws IOException {
+		byte[] valueLengthBytes = new byte[Integer.BYTES];
+		int valueLengthBytesRead = inputStream.read(valueLengthBytes);
+		if (valueLengthBytesRead != valueLengthBytes.length) {
+			throw new IOException("Illegal length of value length " + valueLengthBytesRead + " != " + valueLengthBytes.length);
+		}
+		int valueLength = ConfigTypes.INTEGER.getValue(valueLengthBytes);
+
+		byte[] valueBytes = new byte[valueLength];
+		int valueBytesRead = inputStream.read(valueBytes);
+		if (valueBytesRead != valueBytes.length) {
+			throw new IOException("Illegal length of value " + valueBytesRead + " != " + valueBytes.length);
+		}
+		return valueBytes;
 	}
 	
 	public int read(BiFunction<ConfigType<?>, byte[], Boolean> callback) throws IOException {
 		int dataRead = 0;
 		while(true) {
-			int typeByte = inputStream.read();
-			if (typeByte < 0) {
-				return dataRead;
-			}
-			dataRead++;
-			ConfigType<?> type = ConfigTypes.getType((byte)typeByte);
-			if (type == ConfigTypes.NULL) {
-				if (!callback.apply(ConfigTypes.NULL, new byte[0])) {
+			try {
+				ConfigType<?> type = readType();
+				dataRead++;
+				if (type == ConfigTypes.NULL) {
+					if (!callback.apply(ConfigTypes.NULL, new byte[0])) {
+						return dataRead;
+					}
+					continue;
+				}
+	
+				if (!callback.apply(type, readBytes())) {
 					return dataRead;
 				}
-				continue;
-			}
-
-			byte[] valueLengthBytes = new byte[Integer.BYTES];
-			int valueLengthBytesRead = inputStream.read(valueLengthBytes);
-			if (valueLengthBytesRead != valueLengthBytes.length) {
-				throw new IOException("Illegal length of value length " + valueLengthBytesRead + " != " + valueLengthBytes.length);
-			}
-			int valueLength = ConfigTypes.INTEGER.getValue(valueLengthBytes);
-
-			byte[] valueBytes = new byte[valueLength];
-			int valueBytesRead = inputStream.read(valueBytes);
-			if (valueBytesRead != valueBytes.length) {
-				throw new IOException("Illegal length of value " + valueBytesRead + " != " + valueBytes.length);
-			}
-			if (!callback.apply(type, valueBytes)) {
+			} catch (EOFException e) {
 				return dataRead;
 			}
 		}
@@ -90,7 +106,7 @@ public class ConfigFileReader implements Iterable<Object>, Closeable, AutoClosea
 			@Override
 			public boolean hasNext() {
 				try {
-					val = readValue();
+					val = read();
 					return true;
 				} catch (EOFException e) {
 					val = null;

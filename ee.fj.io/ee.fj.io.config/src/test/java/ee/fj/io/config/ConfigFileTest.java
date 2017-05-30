@@ -33,15 +33,15 @@ public class ConfigFileTest {
 		ByteArrayInputStream data = new ByteArrayInputStream(DATA);
 		try (ConfigFileReader reader = new ConfigFileReader(data)) {
 			Assert.assertEquals(1, reader.getVersion());
-			Assert.assertEquals("lorem", reader.readValue());
-			Assert.assertEquals("ipsum", reader.readValue());
-			Assert.assertEquals(1, reader.readValue());
-			Assert.assertEquals(2, reader.readValue());
-			Assert.assertEquals(15f, reader.readValue());
-			Assert.assertNull(reader.readValue());
+			Assert.assertEquals("lorem", reader.read(String.class));
+			Assert.assertEquals("ipsum", reader.read());
+			Assert.assertEquals(1, reader.read(Integer.class).intValue());
+			Assert.assertEquals(2, reader.read());
+			Assert.assertEquals(15f, reader.read(Float.class).floatValue(), 0);
+			Assert.assertNull(reader.read());
 
 			try {
-				Object val = reader.readValue();
+				Object val = reader.read();
 				throw new AssertionError("End of file expected but " + val + " found!");
 			} catch (IOException e) {
 				Assert.assertEquals(EOFException.class, e.getClass());
@@ -159,10 +159,10 @@ public class ConfigFileTest {
 			Assert.assertEquals(1, result);
 
 			for (Object o : LINE2) {
-				Assert.assertEquals(o, reader.readValue());
+				Assert.assertEquals(o, reader.read());
 			}
 			try {
-				Object val = reader.readValue();
+				Object val = reader.read();
 				throw new AssertionError("End of file expected but " + val + " found!");
 			} catch (IOException e) {
 				Assert.assertEquals(EOFException.class, e.getClass());
