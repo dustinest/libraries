@@ -10,10 +10,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Iterator;
 import java.util.function.BiFunction;
-import java.util.logging.Logger;
 
 public class ConfigFileReader implements Iterable<Object>, Closeable, AutoCloseable {
-	private final static Logger LOGGER = Logger.getLogger(ConfigFileReader.class.getName());
 	private final InputStream inputStream;
 	private final int version;
 
