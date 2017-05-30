@@ -95,9 +95,9 @@
 	</dependencyManagement>
 
 	<modules>
-		<module>ee.fj.utils.objectcaster</module>
 		<module>ee.fj.utils.columnpredictor</module>
 		<module>ee.fj.utils.filetypes</module>
 		<module>ee.fj.utils.mailer</module>
+		<module>ee.fj.utils.looseversion</module>
   </modules>
 </project>
