@@ -1,1 +1,0 @@
-Under construction and might be removed in the future. Just an idea of basic objects is / as casting
