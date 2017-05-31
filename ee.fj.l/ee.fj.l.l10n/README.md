@@ -59,5 +59,5 @@ And dependency:
 	<dependency>
 		<groupId>ee.fj.l</groupId>
 		<artifactId>ee.fj.l.l10n</artifactId>
-		<version>0.0.1</version>
+		<version>0.0.2</version>
 	</dependency>
