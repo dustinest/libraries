@@ -15,6 +15,11 @@ public class PasswordProtectedInputStream extends CipherInputStream {
 		super(inputStream, PasswordProtectedFactory.getCipher(password, algorithm, false));
 	}
 
+	public PasswordProtectedInputStream(InputStream inputStream, char[] password, SupportedAlgorithm algorithm) throws GeneralSecurityException, IOException {
+		this(inputStream, password, algorithm.name());
+	}
+	
+
 	public PasswordProtectedInputStream(InputStream inputStream, char[] password, byte[] salt, int iterations, boolean isEncrypt) throws GeneralSecurityException, IOException {
 		super(inputStream, PasswordProtectedFactory.getCipher(password, salt, iterations, false));
 	}

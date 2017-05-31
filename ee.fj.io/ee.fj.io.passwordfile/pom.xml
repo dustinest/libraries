@@ -10,6 +10,7 @@
 	<artifactId>ee.fj.io.passwordfile</artifactId>
   	<name>Read and Write password protected files</name>
 	<packaging>jar</packaging>
+	<version>0.0.2</version>
 
 	<dependencies>
 		<dependency>

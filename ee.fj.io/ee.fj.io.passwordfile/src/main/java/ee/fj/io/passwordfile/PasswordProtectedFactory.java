@@ -14,40 +14,6 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
 public final class PasswordProtectedFactory {
-	private static final String DEFAULT_ALGORITHM;
-	static {
-		String alg = null;
-		for (String a : new String[] {
-				"PBEWithHmacSHA512AndAES_256", // SHA512
-				"PBEWithHmacSHA512AndAES_128", // SHA512
-				"PBEWithHmacSHA384AndAES_256", // SHA384
-				"PBEWithHmacSHA384AndAES_128", // SHA384
-				"PBEWithHmacSHA256AndAES_256", // SHA256
-				"PBEWithHmacSHA256AndAES_128", // SHA256
-				"PBEWithHmacSHA224AndAES_256", // SHA224
-				"PBEWithHmacSHA224AndAES_128", // SHA224
-				// weaks:
-				"PBEWithHmacSHA1AndAES_128",
-				"PBEWithHmacSHA1AndAES_256", // SHA1 weak
-				"PBEWithSHA1AndRC2_40",
-				"PBEWithSHA1AndRC4_40",
-				"PBEWithSHA1AndRC2_128",
-				"PBEWithSHA1AndPC4_128"	,			
-				"PBEWithSHA1AndDESede", // SHA1 weak
-				"PBEWithMD5AndTripleDES", // insecure
-				"PBEWithMD5AndDES" // insecure
-		}) {
-			try {
-				SecretKeyFactory.getInstance(a);
-				alg = a;
-				break;
-			} catch (NoSuchAlgorithmException e) {
-				
-			}
-		}
-		DEFAULT_ALGORITHM = alg;
-	}
-
 	// default salt
 	private static final byte[] DEFAULT_SALT = {95, -70, -57, 48, -99 , 38, -126, 117 };
 
@@ -56,31 +22,52 @@ public final class PasswordProtectedFactory {
 
 
 	protected static Cipher getCipher(char[] password, boolean isEncrypt) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
-		return getCipher(password, DEFAULT_SALT, DEFAULT_ITERATIONS, DEFAULT_ALGORITHM, isEncrypt);
+		return getCipher(password, DEFAULT_SALT, DEFAULT_ITERATIONS, SupportedAlgorithm.BEST_ALGORITHM.name(), isEncrypt);
 	}
 
 	protected static Cipher getCipher(char[] password, String algorithm, boolean isEncrypt) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
 		return getCipher(password, DEFAULT_SALT, DEFAULT_ITERATIONS, algorithm, isEncrypt);
 	}
 
+	protected static Cipher getCipher(char[] password, SupportedAlgorithm algorithm, boolean isEncrypt) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
+		if (!algorithm.supported) {
+			throw new NoSuchAlgorithmException(algorithm.name() + " is not supported!");
+		}
+		return getCipher(password, algorithm.name(), isEncrypt);
+	}
+
 	protected static Cipher getCipher(char[] password, byte[] salt, boolean isEncrypt) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
-		return getCipher(password, salt, DEFAULT_ITERATIONS, DEFAULT_ALGORITHM, isEncrypt);
+		return getCipher(password, salt, DEFAULT_ITERATIONS, SupportedAlgorithm.BEST_ALGORITHM.name(), isEncrypt);
 	}
 
 	protected static Cipher getCipher(char[] password, byte[] salt, int iterations, boolean isEncrypt) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
-		return getCipher(password, salt, iterations, DEFAULT_ALGORITHM, isEncrypt);
+		return getCipher(password, salt, iterations, SupportedAlgorithm.BEST_ALGORITHM.name(), isEncrypt);
 	}
 
 	protected static Cipher getCipher(char[] password, int iterations, boolean isEncrypt) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
-		return getCipher(password, DEFAULT_SALT, iterations, DEFAULT_ALGORITHM, isEncrypt);
+		return getCipher(password, DEFAULT_SALT, iterations, SupportedAlgorithm.BEST_ALGORITHM.name(), isEncrypt);
 	}
 
 	protected static Cipher getCipher(char[] password, int iterations, String algorithm, boolean isEncrypt) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
 		return getCipher(password, DEFAULT_SALT, iterations, algorithm, isEncrypt);
 	}
 
+	protected static Cipher getCipher(char[] password, int iterations, SupportedAlgorithm algorithm, boolean isEncrypt) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
+		if (!algorithm.supported) {
+			throw new NoSuchAlgorithmException(algorithm.name() + " is not supported!");
+		}
+		return getCipher(password, iterations, algorithm.name(), isEncrypt);
+	}
+
 	protected static Cipher getCipher(char[] password, byte[] salt, String algorithm, boolean isEncrypt) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
 		return getCipher(password, salt, DEFAULT_ITERATIONS, algorithm, isEncrypt);
+	}
+
+	protected static Cipher getCipher(char[] password, byte[] salt, SupportedAlgorithm algorithm, boolean isEncrypt) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
+		if (!algorithm.supported) {
+			throw new NoSuchAlgorithmException(algorithm.name() + " is not supported!");
+		}
+		return getCipher(password, salt, algorithm.name(), isEncrypt);
 	}
 
 	
@@ -102,6 +89,13 @@ public final class PasswordProtectedFactory {
 	    return cipher;
 	}
 
+	protected static Cipher getCipher(char[] password, byte[] salt, int iterations, SupportedAlgorithm algorithm, boolean isEncrypt) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
+		if (!algorithm.supported) {
+			throw new NoSuchAlgorithmException(algorithm.name() + " is not supported!");
+		}
+		return getCipher(password, salt, iterations, algorithm.name(), isEncrypt);
+	}
+	
 	public static byte[] getSalt() throws NoSuchAlgorithmException {
 		byte[] salt = new byte[8];
 		fillWithSalt(salt);

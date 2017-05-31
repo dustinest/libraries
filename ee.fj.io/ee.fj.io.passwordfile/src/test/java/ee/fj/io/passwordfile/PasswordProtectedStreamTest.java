@@ -19,7 +19,11 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 public class PasswordProtectedStreamTest {
-
+	@Test
+	public void defaultAlgorithmExists() throws IOException, GeneralSecurityException {
+		Assert.assertNotNull(SupportedAlgorithm.BEST_ALGORITHM);
+	}
+	
 	@Test
 	public void testIO() throws IOException, GeneralSecurityException {
 		char[] password = "see on salasona".toCharArray();
