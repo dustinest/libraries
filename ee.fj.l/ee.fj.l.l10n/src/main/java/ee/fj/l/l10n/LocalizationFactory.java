@@ -54,9 +54,9 @@ public class LocalizationFactory {
 	}
 
 	private static void fillMap(InputStream in, Map<String, String> target) throws IOException {
-		Map<Object, Object> source = translationReader.read(in);
+		Map<String, String> source = translationReader.read(in);
 		target.clear();
-		source.entrySet().stream().forEach(e -> target.put(e.getKey().toString(), e.getValue().toString()));
+		target.putAll(source);
 	}
 
 	/**

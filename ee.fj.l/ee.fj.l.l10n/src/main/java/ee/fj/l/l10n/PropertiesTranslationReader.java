@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
@@ -19,7 +20,7 @@ public class PropertiesTranslationReader implements TranslationReader {
 	 * Reads properties file. Default encoding=utf8
 	 */
 	@Override
-	public Map<Object, Object> read(InputStream in) throws IOException {
+	public Map<String, String> read(InputStream in) throws IOException {
 		return read(new InputStreamReader(in, StandardCharsets.UTF_8));
 	}
 
@@ -29,9 +30,11 @@ public class PropertiesTranslationReader implements TranslationReader {
 	 * @return
 	 * @throws IOException
 	 */
-	protected Map<Object, Object> read(Reader reader) throws IOException {
-		Properties rv = new Properties();
-		rv.load(reader);
+	protected Map<String, String> read(Reader reader) throws IOException {
+		Properties props = new Properties();
+		props.load(reader);
+		Map<String, String> rv = new HashMap<>();
+		props.entrySet().stream().forEach(e -> rv.put(e.getKey().toString(), e.getValue().toString()));
 		return rv;
 	}
 }

@@ -11,5 +11,5 @@ public interface TranslationReader {
 	 * @return map of your translatables
 	 * @throws IOException
 	 */
-	public Map<Object, Object> read(InputStream in) throws IOException;
+	public Map<String, String> read(InputStream in) throws IOException;
 }
