@@ -1,16 +1,17 @@
 package ee.fj.l.l10n.impl;
 
-import ee.fj.l.l10n.Translatable;
-import ee.fj.l.l10n.TranslationCallback;
+import java.util.function.Consumer;
 
-public class FormattedTranslatableImpl implements Translatable, TranslationCallback {
-	private final TranslationCallback callback;
+import ee.fj.l.l10n.Translatable;
+
+public class FormattedTranslatableImpl implements Translatable, Consumer<String> {
+	private final Consumer<String> callback;
 	private final String[] keys;
 	private final Object[] values;
 	private String previousTranslation = null;
 	private TranslatableField[] fields;
 
-	public FormattedTranslatableImpl(TranslationCallback callback, String defaultValue, String... others) {
+	public FormattedTranslatableImpl(Consumer<String> callback, String defaultValue, String... others) {
 		this.callback = callback;
 		keys = new String[others.length];
 		values = new Object[keys.length];
@@ -22,7 +23,7 @@ public class FormattedTranslatableImpl implements Translatable, TranslationCallb
 
 	
 	@Override
-	public void translated(String value) {
+	public void accept(String value) {
 		synchronized (this.values) {
 			fields = TranslatableField.getTranslatables(value);
 			setPreviousTranslations();
@@ -35,7 +36,7 @@ public class FormattedTranslatableImpl implements Translatable, TranslationCallb
 			sv.append(t.getValue(keys, values));
 		}
 		this.previousTranslation = sv.toString();
-		callback.translated(previousTranslation);
+		callback.accept(previousTranslation);
 	}
 	
 	@Override

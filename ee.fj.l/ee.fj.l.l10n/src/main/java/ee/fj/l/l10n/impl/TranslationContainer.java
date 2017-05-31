@@ -18,11 +18,11 @@ public class TranslationContainer {
 	public void callback(Map<String, String> defaultValues, Map<String, String> translatedValues) {
 		for (int i = 0; i < key.length; i++) {
 			if (translatedValues.containsKey(key[i]))
-				callback.translated(key[i], i, translatedValues.get(key[i]));
+				callback.accept(key[i], i, translatedValues.get(key[i]));
 			else if (defaultValues.containsKey(key[i]))
-				callback.translated(key[i], i, defaultValues.get(key[i]));
+				callback.accept(key[i], i, defaultValues.get(key[i]));
 			else
-				callback.translated(key[i], i, defaultValue[i]);
+				callback.accept(key[i], i, defaultValue[i]);
 		}
 	}
 }

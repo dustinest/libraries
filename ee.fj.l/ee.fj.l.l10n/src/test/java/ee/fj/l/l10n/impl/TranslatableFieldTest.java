@@ -78,7 +78,6 @@ public class TranslatableFieldTest {
 		for (TranslatableField f : fields) {
 			b.append(f.getValue(keys, vals));
 		}
-		System.out.println(b);
 		Assert.assertEquals("Mina name olen \\${test} Peeter Paan ${", b.toString());
 	}
 

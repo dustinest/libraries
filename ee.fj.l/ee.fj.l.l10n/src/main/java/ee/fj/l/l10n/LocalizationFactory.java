@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -133,14 +134,9 @@ public class LocalizationFactory {
 	 * @param others
 	 * @return
 	 */
-	public static Translatable translate(String key, String defaultValue, TranslationCallback t, String... labels) {
+	public static Translatable translate(String key, String defaultValue, Consumer<String> t, String... labels) {
 		FormattedTranslatableImpl rv = new FormattedTranslatableImpl(t, defaultValue, labels);
-		translate(new String[]{key}, new String[]{defaultValue}, new TranslationListCallback() {
-			@Override
-			public void translated(String key, int index, String value) {
-				rv.translated(value);
-			}
-		});
+		translate(new String[]{key}, new String[]{defaultValue}, (_key, _index, _value) -> rv.accept(_value) );
 		return rv;
 	}
 	
@@ -152,7 +148,7 @@ public class LocalizationFactory {
 	 * @param others
 	 * @return
 	 */
-	public static Translatable translate(String key, TranslationCallback t, String... labels) {
+	public static Translatable translate(String key, Consumer<String> t, String... labels) {
 		return translate(key, key, t, labels);
 	}
 }
