@@ -59,5 +59,6 @@
 		<module>ee.fj.io</module>
 		<module>ee.fj.l</module>
 		<module>ee.fj.javafx</module>
+		<module>ee.fj.awt</module>
   </modules>
 </project>
