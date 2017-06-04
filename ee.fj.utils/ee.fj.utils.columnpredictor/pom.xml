@@ -7,6 +7,8 @@
 		<version>0.0.1</version>
 	</parent>
   
+  	<version>0.0.2</version>
+
 	<artifactId>ee.fj.utils.columnpredictor</artifactId>
   	<name>Predict column types in data table</name>
 	<packaging>jar</packaging>
