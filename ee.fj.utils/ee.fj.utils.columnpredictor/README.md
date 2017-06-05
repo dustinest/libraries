@@ -2,7 +2,7 @@
 
 Easy way to detect column types if they are e-mails or urls or something else...
 
-[See test cases for more info](src/test/java/ee/fj/utils/columnpredictor/ColumnPredictorTest.java)
+[See test cases for more info](src/test/java/ee/fj/utils/columnpredictor/ColumnPredictorTest.java) and [simple tests](src/test/java/ee/fj/utils/columnpredictor/SimpleColumnPredictorTest.java)
 
 ## Installation
 
@@ -24,6 +24,6 @@ And dependency:
 	<dependency>
 		<groupId>ee.fj.utils</groupId>
 		<artifactId>ee.fj.utils.columnpredictor</artifactId>
-		<version>0.0.1</version>
+		<version>0.0.2</version>
 	</dependency>
 
