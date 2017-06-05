@@ -22,12 +22,43 @@ public class SimpleColumnPredictorTest {
 		result = predictor.calculate();
 	}
 
+	@Test
+	public void EmptyTest() {
+		ColumnPredictor predictor = new ColumnPredictor(
+				EmailPatternMatcher.INSTANCE,
+				UrlPatternMatcher.INSTANCE,
+				NumberPatternMatcher.INSTANCE,
+				IntegerPatternMatcher.INSTANCE
+		);
+		predictor.addRow("abc", "cde");
+		MatchingResult result = predictor.calculate();
+
+		Assert.assertEquals(-1, result.getBestResultFor(EmailPatternMatcher.DEFAULT_NAME));
+		Assert.assertEquals(-1, result.getBestResultFor(UrlPatternMatcher.DEFAULT_NAME));
+		Assert.assertEquals(-1, result.getBestResultFor(NumberPatternMatcher.DEFAULT_NAME));
+		Assert.assertEquals(-1, result.getBestResultFor(IntegerPatternMatcher.DEFAULT_NAME));
+		Assert.assertEquals(-1, result.getBestResultFor("does not exist"));
+	}
+
 
 	@Test
 	public void testColumnsCount() {
 		Assert.assertEquals(2, result.getColumnsCount());
 	}
-	
+
+	@Test
+	public void testBestColumnLabels() {
+		Assert.assertEquals(0, result.getBestResultFor(EmailPatternMatcher.DEFAULT_NAME));
+		Assert.assertEquals(1, result.getBestResultFor(UrlPatternMatcher.DEFAULT_NAME));
+		Assert.assertEquals(-1, result.getBestResultFor("does not exist"));
+	}
+
+	@Test
+	public void testBestColumnClass() {
+		Assert.assertEquals(0, result.getBestResultFor(EmailPatternMatcher.class));
+		Assert.assertEquals(1, result.getBestResultFor(UrlPatternMatcher.class));
+	}
+
 	@Test
 	public void testColumnLabels() {
 		Assert.assertEquals(100f, result.getProbabilityAt(0, EmailPatternMatcher.DEFAULT_NAME), 0);

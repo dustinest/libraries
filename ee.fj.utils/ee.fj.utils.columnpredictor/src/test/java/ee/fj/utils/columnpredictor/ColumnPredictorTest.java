@@ -2,7 +2,6 @@ package ee.fj.utils.columnpredictor;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -26,12 +25,12 @@ public class ColumnPredictorTest {
 				EmailPatternMatcher.INSTANCE,
 				UrlPatternMatcher.INSTANCE
 		);
-		predictor.addRow(new String[]{"uhhuu@ahaa.ee", "name", "other"});
-		predictor.addRow(new String[]{"uhhuu@ahaa.ee", "teie", "name"});
-		predictor.addRow("uhhuu@ahaa.ee", "you man!", "name", "uhhuu@ahaa.ee");
-		predictor.addRow(new String[]{"ONLY US", "http://www.neti.ee", "name", "uhhuu@ahaa.ee"});
-		predictor.addRow(new String[]{"ONLY US", "teie", "nimi", "uhhuu@ahaa.ee"});
-		predictor.addRow("ONLY US", "you man!", "name", "uhhuu@ahaa.ee");
+		predictor.addRow(new String[]{	"uhhuu@ahaa.ee",	"name",					"other"});
+		predictor.addRow(new String[]{	"uhhuu@ahaa.ee",	"teie",					"name"});
+		predictor.addRow(				"uhhuu@ahaa.ee",	"you man!",				"name", "uhhuu@ahaa.ee");
+		predictor.addRow(new String[]{	"ONLY US",			"http://www.neti.ee",	"name", "uhhuu@ahaa.ee"});
+		predictor.addRow(new String[]{	"ONLY US",			"teie",					"nimi", "uhhuu@ahaa.ee"});
+		predictor.addRow(				"ONLY US",			"you man!",				"name", "uhhuu@ahaa.ee");
 		result = predictor.calculate();
 	}
 
@@ -39,7 +38,21 @@ public class ColumnPredictorTest {
 	public void testColumnsCount() {
 		Assert.assertEquals(4, result.getColumnsCount());
 	}
-	
+
+	@Test
+	public void testBestColumnLabels() {
+		Assert.assertEquals(3, result.getBestResultFor(EmailPatternMatcher.DEFAULT_NAME));
+		Assert.assertEquals(2, result.getBestResultFor("name_column"));
+		Assert.assertEquals(1, result.getBestResultFor(UrlPatternMatcher.DEFAULT_NAME));
+		Assert.assertEquals(-1, result.getBestResultFor("does not exist"));
+	}
+
+	@Test
+	public void testBestColumnClass() {
+		Assert.assertEquals(3, result.getBestResultFor(EmailPatternMatcher.class));
+		Assert.assertEquals(1, result.getBestResultFor(UrlPatternMatcher.class));
+	}
+
 	@Test
 	public void testColumnLabels() {
 		Assert.assertEquals(100f, result.getProbabilityAt(0, EmailPatternMatcher.DEFAULT_NAME), 0);

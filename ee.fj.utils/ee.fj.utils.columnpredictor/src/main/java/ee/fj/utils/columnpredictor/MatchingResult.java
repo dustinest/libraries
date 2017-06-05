@@ -37,4 +37,18 @@ public interface MatchingResult {
 	 * @return amount of columns
 	 */
 	public int getColumnsCount();
+
+	/**
+	 * Return the best column matching {@link ColumnMatcher#getLabel()}
+	 * @param columnLabel
+	 * @return the best matching column index, -1 if not found
+	 */
+	public int getBestResultFor(String columnLabel);
+
+	/**
+	 * Return best matching column for class
+	 * @param columnClass
+	 * @return the best matching column index, -1 if not found
+	 */
+	public <T extends ColumnMatcher> int getBestResultFor(Class<T> columnClass);
 }

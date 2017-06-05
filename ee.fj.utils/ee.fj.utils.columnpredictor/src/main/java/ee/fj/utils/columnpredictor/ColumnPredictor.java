@@ -6,23 +6,23 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class ColumnPredictor {
 	private final ColumnMatcher[] matchers;
 	private final List<List<ColumnStatistics>> columnStatistics = new ArrayList<>();
-	private long rows = 0;
 	
 	private static class ColumnStatistics {
 		private long amount = 1;
+		private final int column;
 		private final ColumnMatcher matcher;
-		ColumnStatistics(ColumnMatcher matcher) {
+		ColumnStatistics(ColumnMatcher matcher, int column) {
 			this.matcher = matcher;
+			this.column = column;
 		}
-
-		void increase() {
-			this.amount ++;
+		@Override
+		public String toString() {
+			return this.amount + "@" + this.column + ": " + this.matcher;
 		}
 	}
 
@@ -31,7 +31,17 @@ public class ColumnPredictor {
 			return Float.compare(o2.getProbability(), o1.getProbability());
 		}
 	};
-	
+
+	private static final Comparator<ColumnStatistics> COLUMN_STATISTICS_COMPARATOR = new Comparator<ColumnStatistics>() {
+		@Override public int compare(ColumnStatistics o1, ColumnStatistics o2) {
+			int rv = Long.compare(o2.amount, o1.amount);
+			if (rv == 0) {
+				return Integer.compare(o1.column, o2.column);
+			}
+			return rv;
+		}
+	};
+
 	public <T extends ColumnMatcher> ColumnPredictor(T... matchers) {
 		this.matchers = matchers;
 	}
@@ -53,7 +63,6 @@ public class ColumnPredictor {
 		for (Object o : others) {
 			setColumn(index++, o);
 		}
-		rows++;
 	}
 
 	private void setColumn(int columnIndex, Object value) {
@@ -74,9 +83,10 @@ public class ColumnPredictor {
 						}
 					}
 					if (index < 0) {
-						columnStatistics.get(columnIndex).add(new ColumnStatistics(m));
+						index = columnStatistics.get(columnIndex).size();
+						columnStatistics.get(columnIndex).add(new ColumnStatistics(m, columnIndex));
 					} else {
-						columnStatistics.get(columnIndex).get(index).increase();
+						columnStatistics.get(columnIndex).get(index).amount = columnStatistics.get(columnIndex).get(index).amount + 1;
 					}
 				}
 				
@@ -105,22 +115,48 @@ public class ColumnPredictor {
 	}
 	
 	private MatchingResult calculateInnter() {
-		MatchingProbability[][] columnProbabilities = new MatchingProbability[columnStatistics.size()][];
-		for (int column = 0; column < columnStatistics.size(); column ++) {
-			MatchingProbability[] probability = new MatchingProbability[columnStatistics.get(column).size()];
-			long total = 0;
-			for (ColumnStatistics p : columnStatistics.get(column)) {
-				total += p.amount;
+		List<ColumnStatistics> data = new ArrayList<>();
+		int[] maxSize = new int[columnStatistics.size()];
+		long[] totals = new long[columnStatistics.size()];
+
+		for (List<ColumnStatistics> colStatsList : columnStatistics) {
+			for (ColumnStatistics col : colStatsList) {
+				data.add(col);
+				maxSize[col.column] = maxSize[col.column] + 1;
+				totals[col.column] += col.amount;
 			}
-			for (int probIndex = 0; probIndex < columnStatistics.get(column).size(); probIndex++) {
-				probability[probIndex] = getMatchingProbabolity(total, columnStatistics.get(column).get(probIndex));
-			}
-			if (probability.length > 0) {
-				Arrays.sort(probability, COMPARATOR);
-			}
-			columnProbabilities[column] = probability;
 		}
-		this.result = getNewInstance(columnProbabilities);
+		data.sort(COLUMN_STATISTICS_COMPARATOR);
+		MatchingProbability[][] columnProbabilities = new MatchingProbability[columnStatistics.size()][];
+		MatchingProbability[] bestProbabilities = new MatchingProbability[columnStatistics.size()];
+		int[] pointer = new int[columnStatistics.size()];
+
+		for (ColumnStatistics c : data) {
+			if (columnProbabilities[c.column] == null) {
+				columnProbabilities[c.column] = new MatchingProbability[maxSize[c.column]];
+			}
+			MatchingProbability toAdd = getMatchingProbabolity(totals[c.column], c);
+			columnProbabilities[c.column][pointer[c.column]] = toAdd;
+			if (bestProbabilities[c.column] == null) {
+				boolean toSet = true;
+				// check if smaller value exists
+				for (int col = 0; col < columnStatistics.size(); col ++) {
+					if (bestProbabilities[col] != null && bestProbabilities[col].getColumn() == toAdd.getColumn()) {
+						if (bestProbabilities[col].getProbability() >= toAdd.getProbability()) {
+							toSet = false;
+						} else {
+							bestProbabilities[col] = null;
+						}
+					}
+				}
+				if (toSet) {
+					bestProbabilities[c.column] = toAdd;
+				}
+			}
+			 
+			pointer[c.column]++;
+		}
+		this.result = getNewInstance(columnProbabilities, bestProbabilities);
 		return this.result;
 	}
 
@@ -128,7 +164,6 @@ public class ColumnPredictor {
 		synchronized (columnStatistics) {
 			columnStatistics.clear();
 			result = null;
-			rows = 0;
 		}
 	}
 	
@@ -142,8 +177,7 @@ public class ColumnPredictor {
 	BiFunction<MatchingProbability, Class<? extends ColumnMatcher>, Boolean> CLASS_FILTER = (t, u) -> t.getColumn().getClass() == u;
 	BiFunction<MatchingProbability, String, Boolean> LABEL_FILTER = (t, u) -> t.getColumn().getLabel() == u;
 
-	private MatchingResult getNewInstance(MatchingProbability[][] probabilities) {
-
+	private MatchingResult getNewInstance(MatchingProbability[][] probabilities, MatchingProbability[] bestColumns) {
 		return new MatchingResult() {
 
 			private <T, S> T testValue(int columnIndex, S something,
@@ -198,6 +232,31 @@ public class ColumnPredictor {
 			@Override
 			public int getColumnsCount() {
 				return probabilities != null ? probabilities.length : 0;
+			}
+
+			private <T> int getBestColumn(T value, BiFunction<MatchingProbability, T, Boolean> filter) {
+				for (int column = 0; column < bestColumns.length; column++) {
+					if (bestColumns[column] != null && filter.apply(bestColumns[column], value)) {
+						return column;
+					}
+				}
+				return -1;
+			}
+			
+			@Override
+			public int getBestResultFor(String columnLabel) {
+				if (columnLabel == null) {
+					return -1;
+				}
+				return getBestColumn(columnLabel, LABEL_FILTER);
+			}
+
+			@Override
+			public <T extends ColumnMatcher> int getBestResultFor(Class<T> columnClass) {
+				if (columnClass == null) {
+					return -1;
+				}
+				return getBestColumn(columnClass, CLASS_FILTER);
 			}
 			
 		};

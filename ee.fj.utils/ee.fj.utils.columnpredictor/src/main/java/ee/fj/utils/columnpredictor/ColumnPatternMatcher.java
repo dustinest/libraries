@@ -22,6 +22,11 @@ public abstract class ColumnPatternMatcher implements ColumnMatcher {
 	public String getLabel() {
 		return id;
 	}
+
+	@Override
+	public String toString() {
+		return this.id + ": " + super.toString();
+	}
 	
 	@Override
 	public boolean matches(Object column) {
