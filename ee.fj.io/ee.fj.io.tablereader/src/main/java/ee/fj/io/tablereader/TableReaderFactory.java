@@ -10,8 +10,6 @@ public class TableReaderFactory {
 
 	/**
 	 * Get reader by Supported files enum
-	 * @param type
-	 * @return
 	 * @throws IllegalArgumentException if enum value is not supported
 	 */
 	public static TableReader getReader(SupportedFiles type) {
@@ -24,8 +22,6 @@ public class TableReaderFactory {
 
 	/**
 	 * Get reader by file name
-	 * @param type
-	 * @return
 	 * @throws IllegalArgumentException if file is not supported
 	 */
 	public static TableReader getReader(File fileName) {
@@ -34,8 +30,6 @@ public class TableReaderFactory {
 
 	/**
 	 * Get reader by file name
-	 * @param type
-	 * @return
 	 * @throws IllegalArgumentException if file is not supported
 	 */
 	public static TableReader getReader(String fileName) {
@@ -52,8 +46,6 @@ public class TableReaderFactory {
 
 	/**
 	 * Get reader by suffix
-	 * @param type
-	 * @return
 	 * @throws IllegalArgumentException if file is not supported
 	 */
 	public static TableReader getReaderByExtendsion(String suffix) {

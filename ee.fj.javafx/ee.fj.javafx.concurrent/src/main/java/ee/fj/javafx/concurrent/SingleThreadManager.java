@@ -33,12 +33,12 @@ public class SingleThreadManager {
 	/**
 	 * Tries to shut down the executor and waits for the termination
      * @param timeout the maximum time to wait
-     * @param unit the time unit of the timeout argument
+     * @param timeunit the time unit of the timeout argument
      * @return {@code true} if this executor terminated and
      *         {@code false} if the timeout elapsed before termination
      * @throws InterruptedException if interrupted while waiting
-     * @see {@link ExecutorService#shutdown()}
-     * @see {@link ExecutorService#awaitTermination(long, TimeUnit)}
+     * @see ExecutorService#shutdown()
+     * @see ExecutorService#awaitTermination(long, TimeUnit)
 	 */
 	public static boolean shutdownAndWait(long timeout, TimeUnit timeunit) throws InterruptedException {
 		_EXECUTOR.shutdown();
@@ -47,7 +47,7 @@ public class SingleThreadManager {
 
 	/**
 	 * Wait for seconds
-	 * @See {@link #shutdownAndWait(long, TimeUnit)} 
+	 * calls {@link #shutdownAndWait(long, TimeUnit)} with TimeUnit.SECONDS as second argument
 	 */
 	public static boolean shutdownAndWait(long timeout) throws InterruptedException {
 		return shutdownAndWait(timeout, TimeUnit.SECONDS);

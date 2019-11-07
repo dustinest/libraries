@@ -24,7 +24,6 @@ public class PreReadInputStream extends InputStream {
 
     /**
      * Extend buiffer which were pre read.
-     * @param extension
      */
     public void extend(byte[] extension) {
         byte[] sv = new byte[extension.length + buffer.length - pointer];

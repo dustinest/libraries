@@ -18,10 +18,9 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 public class ExcelReader implements TableReader {
 	public void read(int sheet, InputStream in, TableResult reader) throws IOException {
-		String sheetName = null;
 		try (Workbook wb = WorkbookFactory.create(in)) {
 			Sheet _sheet = wb.getSheetAt(sheet);
-			sheetName = _sheet.getSheetName();
+			String sheetName = _sheet.getSheetName();
 			reader.read(TableResult.BEGIN, -1, -1, null);
 			for (Row row : _sheet) {
 				reader.read(TableResult.ROW_START, row.getRowNum(), -1, row.getRowNum());
@@ -74,6 +73,7 @@ public class ExcelReader implements TableReader {
 	@Override
 	public <T extends TableReader> T as(Class<T> reader) {
 		if (is(reader)) {
+			//noinspection unchecked
 			return (T) this;
 		}
 		return null;

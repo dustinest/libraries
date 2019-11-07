@@ -1,0 +1,17 @@
+ext.foreachProjectIn = {
+    def SKIP_DIRS = ~/^(build|…*|src|out|\..*|gradle)/
+    def dirCheck = { dir, closure = null ->
+        if (SKIP_DIRS.matcher(dir.name).matches()) return groovy.io.FileVisitResult.SKIP_SUBTREE
+        if (!java.nio.file.Files.exists(dir.toPath().resolve('build.gradle'))) return groovy.io.FileVisitResult.CONTINUE
+        if (closure != null) closure(dir)
+    }
+    return {directory, callable ->
+        directory.traverse(type: groovy.io.FileType.DIRECTORIES, preDir: dirCheck) {
+            dirCheck(it, {
+                def projectName = rootDir.toPath().relativize(it.toPath()).iterator().join(':')
+                logger.info("using ${projectName} for ${directory}")
+                callable([project: [name: projectName, path: it], path: directory])
+            })
+        }
+    }
+}.call()

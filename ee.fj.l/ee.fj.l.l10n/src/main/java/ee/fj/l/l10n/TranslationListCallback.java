@@ -4,7 +4,7 @@ import java.util.Objects;
 
 @FunctionalInterface
 public interface TranslationListCallback {
-	public void accept(String key, int index, String value);
+	void accept(String key, int index, String value);
 
     default TranslationListCallback andThen(TranslationListCallback after) {
         Objects.requireNonNull(after);

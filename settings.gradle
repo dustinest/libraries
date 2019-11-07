@@ -1,0 +1,4 @@
+rootProject.name = 'ee.fj'
+
+apply from: 'gradle/freach_project.gradle'
+foreachProjectIn(rootDir, { include it.project.name })

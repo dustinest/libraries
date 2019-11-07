@@ -18,6 +18,7 @@ public class ConfigFileReader implements Iterable<Object>, Closeable, AutoClosea
 	public ConfigFileReader(InputStream inputStream) throws IOException {
 		this.inputStream = inputStream instanceof BufferedInputStream ? inputStream : new BufferedInputStream(inputStream);
 		byte[] intBytes = new byte[Integer.BYTES];
+		//noinspection ResultOfMethodCallIgnored
 		inputStream.read(intBytes);
 		version = ConfigTypes.INTEGER.getValue(intBytes);
 	}
@@ -35,23 +36,32 @@ public class ConfigFileReader implements Iterable<Object>, Closeable, AutoClosea
 		return version;
 	}
 
-	public Object read() throws IOException {
-		ConfigType<?> type = readType();
+	/**
+	 * Read next value
+	 */
+	public Object readNext() throws IOException {
+		ConfigType<?> type = nextType();
 		if (type == ConfigTypes.NULL) {
 			return null;
 		}
 		return type.getValue(readBytes());
 	}
 
-	public <T> T read(Class<T> clazz) throws IOException {
-		ConfigType<?> type = readType();
+	/**
+	 * Read next value and cast it to type. This might throw an exception if wrong type is provided
+	 */
+	public <T> T readNext(Class<T> clazz) throws IOException {
+		ConfigType<?> type = nextType();
 		if (type == ConfigTypes.NULL) {
 			return null;
 		}
 		return type.as(clazz).getValue(readBytes());
 	}
 
-	private ConfigType<?> readType() throws IOException {
+	/**
+	 * Get next data type
+	 */
+	private ConfigType<?> nextType() throws IOException {
 		int typeByte = inputStream.read();
 		if (typeByte < 0) {
 			throw new EOFException("File ended!");
@@ -74,12 +84,15 @@ public class ConfigFileReader implements Iterable<Object>, Closeable, AutoClosea
 		}
 		return valueBytes;
 	}
-	
-	public int read(BiFunction<ConfigType<?>, byte[], Boolean> callback) throws IOException {
-		int dataRead = 0;
+
+	/**
+	 * Iterate through the values. number returned are the amount of the values read
+	 */
+	public long read(BiFunction<ConfigType<?>, byte[], Boolean> callback) throws IOException {
+		long dataRead = 0;
 		while(true) {
 			try {
-				ConfigType<?> type = readType();
+				ConfigType<?> type = nextType();
 				dataRead++;
 				if (type == ConfigTypes.NULL) {
 					if (!callback.apply(ConfigTypes.NULL, new byte[0])) {
@@ -99,12 +112,13 @@ public class ConfigFileReader implements Iterable<Object>, Closeable, AutoClosea
 
 	@Override
 	public Iterator<Object> iterator() {
-		return new Iterator<Object>() {
+		return new Iterator<>() {
 			private Object val = null;
+
 			@Override
 			public boolean hasNext() {
 				try {
-					val = read();
+					val = ConfigFileReader.this.readNext();
 					return true;
 				} catch (EOFException e) {
 					val = null;

@@ -29,8 +29,6 @@ public class LooseVersion implements Comparable<CharSequence>, CharSequence {
 	}
 
 	/**
-	 * @param src
-	 * @param target
 	 * @return true if versions are equal
 	 */
 	public static boolean equals(CharSequence src, CharSequence target) {
@@ -39,8 +37,6 @@ public class LooseVersion implements Comparable<CharSequence>, CharSequence {
 
 	/**
 	 * Compare character. If integer then 9 is larger than 0 otherwise b is larger than a. Case is ignored
-	 * @param a
-	 * @param b
 	 * @return interval of compared character
 	 */
 	private static int compare(char a, char b) {
@@ -53,8 +49,6 @@ public class LooseVersion implements Comparable<CharSequence>, CharSequence {
 	}
 
 	/**
-	 * @param src
-	 * @param target
 	 * @return 0 if both versions are equal, if src is larger than target return 1 else return -1
 	 */
 	public static int compare(CharSequence src, CharSequence target) {
@@ -67,9 +61,9 @@ public class LooseVersion implements Comparable<CharSequence>, CharSequence {
 		LooseVersion _src = src instanceof LooseVersion ? (LooseVersion)src : new LooseVersion(src.toString());
 		LooseVersion _trg = target instanceof LooseVersion ? (LooseVersion)target : new LooseVersion(target.toString());
 
-		int max = _src.version.length < _trg.version.length ? _src.version.length : _trg.version.length;
+		int max = Math.min(_src.version.length, _trg.version.length);
 		for (int i = 0; i < max; i++) {
-			int maxI = _src.version[i].length < _trg.version[i].length ? _src.version[i].length : _trg.version[i].length;
+			int maxI = Math.min(_src.version[i].length, _trg.version[i].length);
 
 			for (int ii = 0; ii < maxI; ii++) {
 				int comp = compare(_src.version[i][ii], _trg.version[i][ii]);
@@ -101,7 +95,6 @@ public class LooseVersion implements Comparable<CharSequence>, CharSequence {
 	}
 
 	/**
-	 * @param version
 	 * @return true if this is after version provided
 	 */
 	public boolean isAfter(CharSequence version) {
@@ -109,7 +102,6 @@ public class LooseVersion implements Comparable<CharSequence>, CharSequence {
 	}
 
 	/**
-	 * @param version
 	 * @return true if this is before version provided
 	 */
 	public boolean isBefore(CharSequence version) {
@@ -133,6 +125,6 @@ public class LooseVersion implements Comparable<CharSequence>, CharSequence {
 
 	@Override
 	public CharSequence subSequence(int start, int end) {
-		return this.subSequence(start, end);
+		return this.versionString.subSequence(start, end);
 	}
 }

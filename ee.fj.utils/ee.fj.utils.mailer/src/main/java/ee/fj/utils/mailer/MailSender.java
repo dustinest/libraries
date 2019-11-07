@@ -28,11 +28,11 @@ import ee.fj.utils.mailer.attachment.TextMailBody;
 
 public abstract class MailSender {
 	private final MailConfig config;
-	private List<InternetAddress> recipients = new ArrayList<>();
-	private List<InternetAddress> recipientsCC = new ArrayList<>();
-	private List<InternetAddress> recipientsBCC = new ArrayList<>();
-	private List<MailBody> mailBody = new ArrayList<>();
-	private List<Attachment> attachments = new ArrayList<>();
+	private final List<InternetAddress> recipients = new ArrayList<>();
+	private final List<InternetAddress> recipientsCC = new ArrayList<>();
+	private final List<InternetAddress> recipientsBCC = new ArrayList<>();
+	private final List<MailBody> mailBody = new ArrayList<>();
+	private final List<Attachment> attachments = new ArrayList<>();
 	
 	private final String subject;
 
@@ -55,6 +55,7 @@ public abstract class MailSender {
 		}
 	}
 
+	@SuppressWarnings("UnusedReturnValue")
 	public MailSender addRecipient(String address) {
 		try {
 			recipients.add(new InternetAddress(address));
@@ -88,6 +89,7 @@ public abstract class MailSender {
 		recipientsCC.clear();
 	}
 
+	@SuppressWarnings("UnusedReturnValue")
 	public MailSender addHtmlMailBody(String body) {
 		return addMailBody(new HTMLMailBody(body));
 	}
@@ -111,12 +113,10 @@ public abstract class MailSender {
 	}
 
 	/**
-	 * @return
 	 * @throws IllegalStateException if body or recipients are missing
 	 * @throws MessagingException if message set fails
-	 * @throws IOException if attachments or compiling body fails
 	 */
-	private Message getMessageContainer() throws IllegalStateException, IOException, MessagingException {
+	private Message getMessageContainer() throws IllegalStateException, MessagingException {
 		if (mailBody.size() == 0) {
 			throw new IllegalStateException("Mail bodies are not set!");
 		}
@@ -124,7 +124,7 @@ public abstract class MailSender {
 			throw new IllegalStateException("Recipients are not set!");
 		}
 		Properties props = new Properties();
-		Session session = null;
+		Session session;
 		if (config.useTls) {
 			props.put("mail.smtp.starttls.enable", "true");
 		}

@@ -50,11 +50,13 @@ public class DecimalPatternMatcherTest {
 	public void testDoubleCast() {
 		ExpectException.testException(IllegalArgumentException.class, () -> DecimalPatternMatcher.getAsDouble("1"));
 		Assert.assertEquals(1.1d, DecimalPatternMatcher.getAsDouble("1.1"), 0);
+		Assert.assertEquals(1.1d, DecimalPatternMatcher.getAsDouble("1,1"), 0);
 	}
 
 	@Test
 	public void testFloatCast() {
 		ExpectException.testException(IllegalArgumentException.class, () -> DecimalPatternMatcher.getAsFloat("1"));
 		Assert.assertEquals(1.1f, DecimalPatternMatcher.getAsFloat("1.1"), 0);
+		Assert.assertEquals(1.1f, DecimalPatternMatcher.getAsFloat("1,1"), 0);
 	}
 }

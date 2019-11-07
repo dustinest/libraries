@@ -15,21 +15,16 @@ public class DecimalPatternMatcher extends ColumnPatternMatcher {
 	public static double getAsDouble(Object value) {
 		Objects.requireNonNull(value, "The argument must be not null!");
 		if (!INSTANCE.matches(value)) {
-			throw new IllegalArgumentException( value .toString() + " is not long!");
+			throw new IllegalArgumentException( value + " is not double!");
 		}
-		return Double.valueOf(value.toString().replaceAll("\\,", "."));
+		return Double.parseDouble(value.toString().replaceAll(",", "."));
 	}
 
 	public static float getAsFloat(Object value) {
-		Objects.requireNonNull(value, "The argument must be not null!");
-		if (!INSTANCE.matches(value)) {
-			throw new IllegalArgumentException( value .toString() + " is not float!");
-		}
-		Double rv = Double.valueOf(value.toString().replaceAll("\\,", "."));
+		Double rv = getAsDouble(value);
 		if (rv < Float.MIN_VALUE || rv > Float.MAX_VALUE) {
-			
+			throw new IllegalArgumentException(rv + " is out of float!");
 		}
-		
 		return rv.floatValue();
 	}
 }

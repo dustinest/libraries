@@ -9,7 +9,7 @@ public enum SupportedFiles {
 	public final String label;
 	public final String extension;
 	public final String filter;
-	private SupportedFiles(String label, String extension) {
+	SupportedFiles(String label, String extension) {
 		this.label = label;
 		this.extension = extension;
 		this.filter = "*." + extension;

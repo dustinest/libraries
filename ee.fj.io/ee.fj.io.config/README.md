@@ -30,11 +30,11 @@ Read the file
 
 	try (ConfigFileReader reader = new ConfigFileReader(Files.newInputStream(configuration))) {
 		if (reader.getVersion() == 25) {
-			String lorem = (String)reader.read();
-			String ipsum = (String)reader.read();
-			int number = (Integer)reader.read();
-			boolean trueFalse = (Boolean)reader.read();
-			String myOtherLine = (String)reader.read();
+			String lorem = (String)reader.readNext();
+			String ipsum = (String)reader.readNext();
+			int number = (Integer)reader.readNext();
+			boolean trueFalse = (Boolean)reader.readNext();
+			String myOtherLine = (String)reader.readNext();
 		}
 	}
 
@@ -46,10 +46,10 @@ Or
 				String lorem = type.as(String).getValue(value);
 				return false;
 			});
-			String ipsum = reader.read(String.class);
-			int number = reader.read(Integer.class);
-			boolean trueFalse = reader.readValue(Boolean.class);
-			String myOtherLine = reader.readValue(String.class);
+			String ipsum = reader.readNext(String.class);
+			int number = reader.readNext(Integer.class);
+			boolean trueFalse = reader.readNext(Boolean.class);
+			String myOtherLine = reader.readNext(String.class);
 		}
 	}
 

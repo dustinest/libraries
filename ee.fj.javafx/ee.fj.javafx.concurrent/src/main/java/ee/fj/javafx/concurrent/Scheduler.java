@@ -23,7 +23,7 @@ public class Scheduler {
 	}
 
 	/**
-	 * @see {@link ScheduledExecutorService#invokeAll(Collection, long, TimeUnit)}
+	 * @see ScheduledExecutorService#invokeAll(Collection, long, TimeUnit)
 	 */
 	public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks, long timeout)
 			throws InterruptedException {
@@ -31,7 +31,7 @@ public class Scheduler {
 	}
 
 	/**
-	 * @see {@link ScheduledExecutorService#invokeAny(Collection, long, TimeUnit)}
+	 * @see ScheduledExecutorService#invokeAny(Collection, long, TimeUnit)
 	 */
 	public <T> T invokeAny(Collection<? extends Callable<T>> tasks, long timeout)
 			throws InterruptedException, ExecutionException, TimeoutException {
@@ -39,42 +39,42 @@ public class Scheduler {
 	}
 
 	/**
-	 * @see {@link ScheduledExecutorService#schedule(Runnable, long, TimeUnit)}
+	 * @see ScheduledExecutorService#schedule(Runnable, long, TimeUnit)
 	 */
 	public ScheduledFuture<?> schedule(Runnable command, long delay) {
 		return executor.schedule(command, delay, timeunit);
 	}
 
 	/**
-	 * @see {@link ScheduledExecutorService#schedule(Callable, long, long, TimeUnit)}
+	 * @see ScheduledExecutorService#schedule(Callable, long, TimeUnit)
 	 */
 	public <V> ScheduledFuture<V> schedule(Callable<V> callable, long delay) {
 		return executor.schedule(callable, delay, timeunit);
 	}
 
 	/**
-	 * @see {@link ScheduledExecutorService#scheduleAtFixedRate(Runnable, long, long, TimeUnit)}
+	 * @see ScheduledExecutorService#scheduleAtFixedRate(Runnable, long, long, TimeUnit)
 	 */
 	public ScheduledFuture<?> scheduleAtFixedRate(Runnable command, long initialDelay, long period) {
 		return executor.scheduleAtFixedRate(command, initialDelay, period, timeunit);
 	}
 
 	/**
-	 * @see {@link ScheduledExecutorService#scheduleAtFixedRate(Runnable, long, long, TimeUnit)}
+	 * @see ScheduledExecutorService#scheduleAtFixedRate(Runnable, long, long, TimeUnit)
 	 */
 	public ScheduledFuture<?> scheduleAtFixedRate(Runnable command, long period) {
 		return executor.scheduleAtFixedRate(command, period, period, timeunit);
 	}
 
 	/**
-	 * @see {@link ScheduledExecutorService#scheduleWithFixedDelay(Runnable, long, long, TimeUnit)}
+	 * @see ScheduledExecutorService#scheduleWithFixedDelay(Runnable, long, long, TimeUnit)
 	 */
 	public ScheduledFuture<?> scheduleWithFixedDelay(Runnable command, long initialDelay, long delay) {
 		return executor.scheduleWithFixedDelay(command, initialDelay, delay, timeunit);
 	}
 
 	/**
-	 * @see {@link ScheduledExecutorService#scheduleWithFixedDelay(Runnable, long, long, TimeUnit)}
+	 * @see ScheduledExecutorService#scheduleWithFixedDelay(Runnable, long, long, TimeUnit)
 	 */
 	public ScheduledFuture<?> scheduleWithFixedDelay(Runnable command, long delay) {
 		return executor.scheduleWithFixedDelay(command, delay, delay, timeunit);

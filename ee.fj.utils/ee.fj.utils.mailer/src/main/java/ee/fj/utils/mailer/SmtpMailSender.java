@@ -1,5 +1,8 @@
 package ee.fj.utils.mailer;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
@@ -7,6 +10,7 @@ import ee.fj.utils.mailer.attachment.PasswordAuthenticator;
 
 public class SmtpMailSender extends MailConfig {
 
+	@SuppressWarnings("EmptyMethod")
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
 		return super.clone();
@@ -19,11 +23,19 @@ public class SmtpMailSender extends MailConfig {
 		this.port = port;
 	}
 
-	public void setSender(String sender) throws IllegalArgumentException {
+	public void setSender(String senderAdderss) throws IllegalArgumentException {
 		try {
-			this.senderAddress = new InternetAddress(sender);
+			this.senderAddress = new InternetAddress(senderAdderss);
 		} catch (AddressException e) {
-			throw new IllegalArgumentException("Address " + sender + " is invalid!" );
+			throw new IllegalArgumentException("Address " + senderAdderss + " is invalid!" );
+		}
+	}
+
+	public void setSender(String senderAdderss, String senderName) throws IllegalArgumentException {
+		try {
+			this.senderAddress = new InternetAddress(senderAdderss, senderName, StandardCharsets.UTF_8.name());
+		} catch (UnsupportedEncodingException e) {
+			throw new IllegalArgumentException("Name " + senderAdderss + " is invalid!" );
 		}
 	}
 
@@ -32,6 +44,14 @@ public class SmtpMailSender extends MailConfig {
 			this.replyAddress = new InternetAddress(replyAddress);
 		} catch (AddressException e) {
 			throw new IllegalArgumentException("Address " + replyAddress + " is invalid!" );
+		}
+	}
+
+	public void setReplyAddress(String replyAddress, String replyToName) throws IllegalArgumentException {
+		try {
+			this.replyAddress = new InternetAddress(replyAddress, replyToName, StandardCharsets.UTF_8.name());
+		} catch (UnsupportedEncodingException e) {
+			throw new IllegalArgumentException("Name " + replyToName + " is invalid!" );
 		}
 	}
 

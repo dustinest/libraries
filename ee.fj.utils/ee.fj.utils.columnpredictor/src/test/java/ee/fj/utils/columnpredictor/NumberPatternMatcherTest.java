@@ -50,17 +50,20 @@ public class NumberPatternMatcherTest {
 	public void testDoubleCast() {
 		Assert.assertEquals(1d, NumberPatternMatcher.getAsDouble("1"), 0);
 		Assert.assertEquals(1.1d, NumberPatternMatcher.getAsDouble("1.1"), 0);
+		Assert.assertEquals(1.1d, NumberPatternMatcher.getAsDouble("1,1"), 0);
 	}
 
 	@Test
 	public void testFloatCast() {
 		Assert.assertEquals(1f, NumberPatternMatcher.getAsFloat("1"), 0);
 		Assert.assertEquals(1.1f, NumberPatternMatcher.getAsFloat("1.1"), 0);
+		Assert.assertEquals(1.1f, NumberPatternMatcher.getAsFloat("1,1"), 0);
 	}
 
 	@Test
 	public void testIntegerCast() {
 		Assert.assertEquals(1, NumberPatternMatcher.getAsInteger("1"), 0);
 		Assert.assertEquals(1, NumberPatternMatcher.getAsInteger("1.1"), 0);
+		Assert.assertEquals(1, NumberPatternMatcher.getAsInteger("1,1"), 0);
 	}
 }

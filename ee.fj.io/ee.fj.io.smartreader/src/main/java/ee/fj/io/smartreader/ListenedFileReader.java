@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListenedFileReader {
-	interface FileStartListener { public void startReading(InputStream in, Charset charset) throws IOException; }
-	interface FileReaderListener { public void startReading(Charset charset); public void doneReading(Charset charset); public void fileRead(String line); }
-	interface FileReadListener { public void fileReadingDone(Charset charset, String[] lines);}
+	interface FileStartListener { void startReading(InputStream in, Charset charset) throws IOException; }
+	interface FileReaderListener { void startReading(Charset charset); void doneReading(Charset charset); void fileRead(String line); }
+	interface FileReadListener { void fileReadingDone(Charset charset, String[] lines);}
 
 	private final FileStartListener fileListener;
 	public ListenedFileReader(FileStartListener listener) {
@@ -20,14 +20,11 @@ public class ListenedFileReader {
 	}
 
 	public ListenedFileReader(FileReaderListener listener) {
-		this.fileListener = new FileStartListener() {
-			@Override
-			public void startReading(InputStream in, Charset charset) throws IOException {
-				listener.startReading(charset);;
-				try (BufferedReader reader = new BufferedReader(new InputStreamReader(in, charset))) {
-					for (String line = reader.readLine(); line != null; line = reader.readLine()) {
-						listener.fileRead(line);
-					}
+		this.fileListener = (in, charset) -> {
+			listener.startReading(charset);
+			try (BufferedReader reader = new BufferedReader(new InputStreamReader(in, charset))) {
+				for (String line = reader.readLine(); line != null; line = reader.readLine()) {
+					listener.fileRead(line);
 				}
 			}
 		};
@@ -35,7 +32,7 @@ public class ListenedFileReader {
 
 	public ListenedFileReader(FileReadListener listener) {
 		this(new FileReaderListener() {
-			List<String> lines = new ArrayList<>();
+			final List<String> lines = new ArrayList<>();
 			
 			@Override
 			public void fileRead(String line) {

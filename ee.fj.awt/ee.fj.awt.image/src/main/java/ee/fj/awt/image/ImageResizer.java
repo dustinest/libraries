@@ -123,7 +123,7 @@ public class ImageResizer {
 	 * The result image might not have desired height or width because of the scale. For instance, if image width is 100 and height is 100 but desired size is 50 x 25 then image will be scaled to 25x25
 	 * @param image Image to sicale
 	 * @param width desired width of the target image
-	 * @param getHeight desired height of the target image
+	 * @param height desired height of the target image
 	 * @return scaled image
 	 */
 	public static BufferedImage scale(Image image, Number width, Number height) {
@@ -136,7 +136,7 @@ public class ImageResizer {
 	 * @param targetImageType image type to use when creating buffered image
 	 * @param image Image to sicale
 	 * @param width desired width of the target image
-	 * @param getHeight desired height of the target image
+	 * @param height desired height of the target image
 	 * @return scaled image
 	 */
 	public static BufferedImage scale(int targetImageType, Image image, Number width, Number height) {

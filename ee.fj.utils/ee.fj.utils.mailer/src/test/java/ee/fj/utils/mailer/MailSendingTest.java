@@ -17,7 +17,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest({Transport.class})
 public class MailSendingTest {
 	@Rule
-    public ExpectedException thrown= ExpectedException.none();
+    public final ExpectedException thrown= ExpectedException.none();
 	
 	@Test(expected=IllegalStateException.class)
 	public void testEmptySenderThrowsException() throws Exception {
@@ -26,6 +26,20 @@ public class MailSendingTest {
 		smtpSender.setPort(123);
 		smtpSender.setReplyAddress("my.reply@mytest.com");
 		smtpSender.setSender("my.sender@mytest.com");
+		smtpSender.setUseTls(false);
+		MailSender sender = smtpSender.getMailSender("My Test subject");
+		PowerMockito.mockStatic(Transport.class);
+		PowerMockito.doNothing().when(Transport.class, "send", Mockito.any(Message.class));
+		sender.send();
+	}
+
+	@Test(expected=IllegalStateException.class)
+	public void testAddressWithName() throws Exception {
+		SmtpMailSender smtpSender = new SmtpMailSender();
+		smtpSender.setHost("test");
+		smtpSender.setPort(123);
+		smtpSender.setReplyAddress("my.reply@mytest.com", "õäöü");
+		smtpSender.setSender("my.sender@mytest.com", "õäöü");
 		smtpSender.setUseTls(false);
 		MailSender sender = smtpSender.getMailSender("My Test subject");
 		PowerMockito.mockStatic(Transport.class);

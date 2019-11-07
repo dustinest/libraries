@@ -17,32 +17,30 @@ public class NumberPatternMatcher extends ColumnPatternMatcher {
 		if (!INSTANCE.matches(value)) {
 			throw new IllegalArgumentException( value .toString() + " is not long!");
 		}
-		return Double.valueOf(value.toString().replaceAll("\\,", "."));
+		return Double.parseDouble(value.toString().replaceAll(",", "."));
 	}
 
 	public static float getAsFloat(Object value) {
-		Objects.requireNonNull(value, "The argument must be not null!");
-		if (!INSTANCE.matches(value)) {
-			throw new IllegalArgumentException( value .toString() + " is not float!");
-		}
-		Double rv = Double.valueOf(value.toString().replaceAll("\\,", "."));
+		Double rv = getAsDouble(value);
 		if (rv < Float.MIN_VALUE || rv > Float.MAX_VALUE) {
-			
+			throw new IllegalArgumentException(rv + " is out of float!");
 		}
-		
 		return rv.floatValue();
 	}
 
+	public static long getAsLong(Object value) {
+		Double rv = getAsDouble(value);
+		if (rv < Long.MIN_VALUE || rv > Long.MAX_VALUE) {
+			throw new IllegalArgumentException(rv + " is out of long!");
+		}
+		return rv.longValue();
+	}
+
 	public static int getAsInteger(Object value) {
-		Objects.requireNonNull(value, "The argument must be not null!");
-		if (!INSTANCE.matches(value)) {
-			throw new IllegalArgumentException( value .toString() + " is not integer!");
+		Double rv = getAsDouble(value);
+		if (rv < Integer.MIN_VALUE || rv > Integer.MAX_VALUE) {
+			throw new IllegalArgumentException(rv + " is out of integer!");
 		}
-		Double rv = Double.valueOf(value.toString().replaceAll("\\,", "."));
-		if (rv < Float.MIN_VALUE || rv > Float.MAX_VALUE) {
-			
-		}
-		
 		return rv.intValue();
 	}
 }

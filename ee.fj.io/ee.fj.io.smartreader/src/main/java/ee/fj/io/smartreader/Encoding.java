@@ -37,7 +37,6 @@ public enum Encoding {
      * Convert byte array from encoding specified
      * @param from - encoding to encode from
      * @param data - data to convert
-     * @return
      */
     public String convertToString(Charset from, byte[] data) {
         return from == null ? new String(data, DEFAULT.charset) : new String(data, from);
@@ -47,7 +46,6 @@ public enum Encoding {
      * Convert String from encoding specified
      * @param from - encoding to encode from
      * @param data - data to convert
-     * @return
      */
     public String convert(Charset from, CharSequence data) {
         return convertToString(from, data.toString().getBytes(from == null ? DEFAULT.charset : from)); 
@@ -56,7 +54,6 @@ public enum Encoding {
     /**
      * Convert byte array from default encoding
      * @param data - data to convert
-     * @return
      */
     public String convertToString(byte[] data) {
         return convertToString(null, data);
@@ -67,7 +64,6 @@ public enum Encoding {
      * Convert byte array from encoding specified
      * @param from - encoding to encode from
      * @param data - data to convert
-     * @return
      */
     public byte[] convert(Charset from, byte[] data) {
         return convertToString(from, data).getBytes(this.charset);
@@ -77,7 +73,6 @@ public enum Encoding {
     /**
      * Convert byte array from default encoding
      * @param data - data to convert
-     * @return
      */
     public byte[] convert(byte[] data) {
         return convert(null, data);
@@ -87,7 +82,6 @@ public enum Encoding {
      * Convert String from encoding specified
      * @param from - encoding to encode from
      * @param data - data to convert
-     * @return
      */
     public byte[] convertToBytes(Charset from, CharSequence data) {
         return convert(from, data.toString()).getBytes(this.charset); 
@@ -97,7 +91,6 @@ public enum Encoding {
     /**
      * Convert String from default encoding
      * @param data - data to convert
-     * @return
      */
     public byte[] convertToBytes(CharSequence data) {
         return convertToBytes(null, data);
@@ -105,8 +98,6 @@ public enum Encoding {
 
     /**
      * Investigates BOM and returns true if it matches. Returns false if BOM is not found
-     * @param bytes
-     * @return
      */
     private boolean isBOM(byte[] bytes) {
         if (this.BOM == null || this.BOM.length > bytes.length)
@@ -120,7 +111,6 @@ public enum Encoding {
 
     /**
      * removes BOM (if exists) from the beginning
-     * @param bytes
      * @return stripped bytes
      */
     public byte[] removeBOM(byte[] bytes) {
@@ -144,8 +134,6 @@ public enum Encoding {
     /**
      * Reads first 500 bytes from inputstream. and returns byte array.
      * If less bytes is read the array size is reduced.
-     * @param in
-     * @return
      * @throws IOException if inpustream read fails or is empty stream
      */
     private static byte[] read(InputStream in) throws IOException {
@@ -165,29 +153,30 @@ public enum Encoding {
 
     /**
      * Investigate incoming file. If file encoding is unknown exception is thrown.
-     * @param in
-     * @return
      */
     public static CharsetAwareInputStream investigate(InputStream in) throws IOException {
-        byte[] data = read(in);
-        Encoding e = getEncoding(data);
-        InputStream inp = new PreReadInputStream(in, e.removeBOM(data));
-
-        byte[] bom = e.BOM != null && e.BOM.length > 0 ? new byte[e.BOM.length] : null;
-        if (bom != null) {
-            for (int i = 0; i < e.BOM.length; i++)
-                bom[i] = e.BOM[i];
-        }
-
-        return new CharsetAwareInputStream(bom, inp, e.charset);
+		return investigateWithArray(in, read(in));
     }
+
+    private static CharsetAwareInputStream investigateWithArray(InputStream in, byte[] data) {
+		Encoding e = getEncoding(data);
+		InputStream inp = new PreReadInputStream(in, e.removeBOM(data));
+
+		byte[] bom = e.BOM != null && e.BOM.length > 0 ? new byte[e.BOM.length] : null;
+		if (bom != null) {
+			for (int i = 0; i < e.BOM.length; i++)
+				bom[i] = e.BOM[i];
+		}
+
+		return new CharsetAwareInputStream(bom, inp, e.charset);
+	}
 
     public static CharsetAwareInputStream predict(Path filePath) throws IOException {
     	return predict(filePath, Charset.defaultCharset());
     }
     
     public static CharsetAwareInputStream predict(Path filePath, Charset preferred) throws IOException {
-    	Charset rv = null;
+    	Charset rv;
 		int meaningfulDefaults = 0;
 		int meaningfulPreferrd = 0;
     	try (CharsetAwareInputStream in = predict(Files.newInputStream(filePath))) {
@@ -221,21 +210,11 @@ public enum Encoding {
     /**
      * Similar to Investigate tries to find out encoding but instead of throwing an Exception tries to figure out
      * encoding using statistics. If encoding is unknown UTF8 is used.
-     * @param in
-     * @return
-     * @throws IOException
      */
     public static CharsetAwareInputStream predict(InputStream in) throws IOException {
     	byte[] data = read(in);
         try {
-            Encoding e = getEncoding(data);
-            InputStream inp = new PreReadInputStream(in, e.removeBOM(data));
-            byte[] bom = e.BOM != null && e.BOM.length > 0 ? new byte[e.BOM.length] : null;
-            if (bom != null) {
-                for (int i = 0; i < e.BOM.length; i++)
-                    bom[i] = e.BOM[i];
-            }
-            return new CharsetAwareInputStream(bom, inp, e.charset);
+        	return investigateWithArray(in, data);
         } catch (IllegalArgumentException e) {
             // ignore - BOM not found!
         }
@@ -256,24 +235,10 @@ public enum Encoding {
             return new CharsetAwareInputStream(null, inp,  Encoding.UTF16le.charset);
         }
         if (!SYSTEM_CHARSET.equals(StandardCharsets.UTF_8)) {
-        	String utf9Val = new String(data, 0, data.length, StandardCharsets.UTF_8);
-        	int errorsUtf8 = 0;
-        	for (int i = 0; i < utf9Val.length(); i++) {
-        		int type =  Character.getType(utf9Val.charAt(i));
-        		if (type == Character.OTHER_PUNCTUATION || type == Character.OTHER_SYMBOL) {
-        			errorsUtf8++;
-        		}
-        	}
-        	if (errorsUtf8 > 0) {
-        		String systemVal = new String(data, 0, data.length, SYSTEM_CHARSET);
-        		int errorsSystem = 0;
-            	for (int i = 0; i < systemVal.length(); i++) {
-            		int type =  Character.getType(systemVal.charAt(i));
-            		if (type == Character.OTHER_PUNCTUATION || type == Character.OTHER_SYMBOL) {
-            			errorsSystem++;
-            		}
-            	}
-            	if (errorsSystem < errorsUtf8) {
+        	int errorsInUtf8Charset = countErrorsInCharset(data, StandardCharsets.UTF_8);
+        	if (errorsInUtf8Charset > 0) {
+        		int errorsInSystemCharset = countErrorsInCharset(data, SYSTEM_CHARSET);
+            	if (errorsInSystemCharset < errorsInUtf8Charset) {
             		return new CharsetAwareInputStream(null, new PreReadInputStream(in, data),  SYSTEM_CHARSET);
             	}
         	}
@@ -281,14 +246,24 @@ public enum Encoding {
         InputStream inp = new PreReadInputStream(in, Encoding.UTF8.removeBOM(data));
         return new CharsetAwareInputStream(null, inp,  Encoding.UTF8.charset);
     }
+
+    private static int countErrorsInCharset(byte[] data, Charset charset) {
+		String valueInCharset = new String(data, 0, data.length, charset);
+		int otherValueCount = 0;
+		for (int i = 0; i < valueInCharset.length(); i++) {
+			int type =  Character.getType(valueInCharset.charAt(i));
+			if (type == Character.OTHER_PUNCTUATION || type == Character.OTHER_SYMBOL) {
+				otherValueCount++;
+			}
+		}
+		return otherValueCount;
+	}
     
     /**
      * investigate bytes and predict what encoding it may have.
-     * @param b
-     * @return
      * @throws IllegalArgumentException if BOM is not found
      */
-    public final static Encoding getEncoding(byte[] data) {
+    public static Encoding getEncoding(byte[] data) {
         for (Encoding e : Encoding.values()) {
             if (e.isBOM(data))
                 return e;
@@ -298,10 +273,8 @@ public enum Encoding {
 
     /**
      * Get encoding by identifier byte
-     * @param b
-     * @return
      */
-    protected final static Encoding getEncoding(byte b) {
+    protected static Encoding getEncoding(byte b) {
         for (Encoding e : Encoding.values()) {
             if (e.type == b)
                 return e;
@@ -309,7 +282,7 @@ public enum Encoding {
         throw new IllegalArgumentException("Charset not supported");
     }
 
-    public final static Encoding getEncoding(Charset encoding) {
+    public static Encoding getEncoding(Charset encoding) {
         for (Encoding e : Encoding.values()) {
             if (e.charset.equals(encoding))
                 return e;
@@ -317,7 +290,7 @@ public enum Encoding {
         throw new IllegalArgumentException("Charset " + encoding + "not supported");
     }
 
-    public final static Encoding getEncoding(String encoding) {
+    public static Encoding getEncoding(String encoding) {
         return getEncoding(Charset.forName(encoding));
     }
 }

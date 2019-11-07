@@ -36,6 +36,7 @@ public class ScaleCalculator {
 	 * @param callback the foruma to calculate the result
 	 * @return dimensions based on first dimension
 	 */
+	@SuppressWarnings("UnusedReturnValue")
 	public static <T> T sourceScale(Number sourceWidth, Number sourceHeight, Number targetWidth, Number targetHeight, BiFunction<Number, Number, T> callback) {
 		double scale = getSmallestScale(targetWidth,  targetHeight, sourceWidth, sourceHeight);
 		return calculateScaleDimension(targetWidth, targetHeight, scale, callback);

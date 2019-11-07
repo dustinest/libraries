@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -26,22 +27,17 @@ public class ColumnPredictor {
 		}
 	}
 
-	private static final Comparator<MatchingProbability> COMPARATOR = new Comparator<MatchingProbability>() {
-		@Override public int compare(MatchingProbability o1, MatchingProbability o2) {
-			return Float.compare(o2.getProbability(), o1.getProbability());
+	private static final Comparator<MatchingProbability> COMPARATOR = (o1, o2) -> Float.compare(o2.getProbability(), o1.getProbability());
+
+	private static final Comparator<ColumnStatistics> COLUMN_STATISTICS_COMPARATOR = (o1, o2) -> {
+		int rv = Long.compare(o2.amount, o1.amount);
+		if (rv == 0) {
+			return Integer.compare(o1.column, o2.column);
 		}
+		return rv;
 	};
 
-	private static final Comparator<ColumnStatistics> COLUMN_STATISTICS_COMPARATOR = new Comparator<ColumnStatistics>() {
-		@Override public int compare(ColumnStatistics o1, ColumnStatistics o2) {
-			int rv = Long.compare(o2.amount, o1.amount);
-			if (rv == 0) {
-				return Integer.compare(o1.column, o2.column);
-			}
-			return rv;
-		}
-	};
-
+	@SafeVarargs
 	public <T extends ColumnMatcher> ColumnPredictor(T... matchers) {
 		this.matchers = matchers;
 	}
@@ -83,7 +79,7 @@ public class ColumnPredictor {
 						}
 					}
 					if (index < 0) {
-						index = columnStatistics.get(columnIndex).size();
+						columnStatistics.get(columnIndex).size();
 						columnStatistics.get(columnIndex).add(new ColumnStatistics(m, columnIndex));
 					} else {
 						columnStatistics.get(columnIndex).get(index).amount = columnStatistics.get(columnIndex).get(index).amount + 1;
@@ -174,8 +170,8 @@ public class ColumnPredictor {
 	final Function<Boolean, Boolean> MAP_TO_BOOLEAN = t -> t;
 	final Function<Boolean, Float> MAP_TO_FLOAT = t -> 0f;
 
-	BiFunction<MatchingProbability, Class<? extends ColumnMatcher>, Boolean> CLASS_FILTER = (t, u) -> t.getColumn().getClass() == u;
-	BiFunction<MatchingProbability, String, Boolean> LABEL_FILTER = (t, u) -> t.getColumn().getLabel() == u;
+	final BiFunction<MatchingProbability, Class<? extends ColumnMatcher>, Boolean> CLASS_FILTER = (t, u) -> t.getColumn().getClass() == u;
+	final BiFunction<MatchingProbability, String, Boolean> LABEL_FILTER = (t, u) -> t != null && u != null ? t.getColumn().getLabel().equals(u) : Objects.equals(t, u);
 
 	private MatchingResult getNewInstance(MatchingProbability[][] probabilities, MatchingProbability[] bestColumns) {
 		return new MatchingResult() {
@@ -202,31 +198,22 @@ public class ColumnPredictor {
 
 			@Override
 			public boolean isColumnAt(int columnIndex, String columnLabel) {
-				return testValue(columnIndex, columnLabel, MAP_TO_BOOLEAN, LABEL_FILTER, stream -> {
-						return stream.count() > 0;
-					}
-				);
+				return testValue(columnIndex, columnLabel, MAP_TO_BOOLEAN, LABEL_FILTER, stream -> stream.count() > 0);
 			}
 
 			@Override
 			public <T extends ColumnMatcher> boolean isColumnAt(int columnIndex, Class<T> columnClass) {
-				return testValue(columnIndex, columnClass, MAP_TO_BOOLEAN, CLASS_FILTER, stream -> {
-					return stream.count() > 0;
-				});
+				return testValue(columnIndex, columnClass, MAP_TO_BOOLEAN, CLASS_FILTER, stream -> stream.count() > 0);
 			}
 
 			@Override
 			public float getProbabilityAt(int columnIndex, String columnLabel) {
-				return testValue(columnIndex, columnLabel, MAP_TO_FLOAT, LABEL_FILTER, stream -> {
-					return stream.map(MatchingProbability::getProbability).findAny().orElse(0f);
-				});
+				return testValue(columnIndex, columnLabel, MAP_TO_FLOAT, LABEL_FILTER, stream -> stream.map(MatchingProbability::getProbability).findAny().orElse(0f));
 			}
 
 			@Override
 			public <T extends ColumnMatcher> float getProbabilityAt(int columnIndex, Class<T> columnClass) {
-				return testValue(columnIndex, columnClass, MAP_TO_FLOAT, CLASS_FILTER, stream -> {
-					return stream.map(MatchingProbability::getProbability).findAny().orElse(0f);
-				});
+				return testValue(columnIndex, columnClass, MAP_TO_FLOAT, CLASS_FILTER, stream -> stream.map(MatchingProbability::getProbability).findAny().orElse(0f));
 			}
 
 			@Override

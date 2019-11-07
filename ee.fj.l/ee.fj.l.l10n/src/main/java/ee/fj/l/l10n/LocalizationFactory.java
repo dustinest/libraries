@@ -16,7 +16,7 @@ import ee.fj.l.l10n.impl.FormattedTranslatableImpl;
 import ee.fj.l.l10n.impl.TranslationContainer;
 
 public class LocalizationFactory {
-	private static Logger LOGGER = Logger.getLogger(LocalizationFactory.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(LocalizationFactory.class.getName());
 
 	private static final Object mutex = new Object();
 	private static TranslationFileReader fileReader = new CommonTranslationFileReader();
@@ -61,8 +61,7 @@ public class LocalizationFactory {
 
 	/**
 	 * Set your own translation file reader
-	 * @see {@link CommonTranslationFileReader} how it is implemented
-	 * @param reader
+	 * @see CommonTranslationFileReader how it is implemented
 	 */
 	public static void set(TranslationFileReader reader) {
 		synchronized (mutex) {
@@ -73,8 +72,7 @@ public class LocalizationFactory {
 
 	/**
 	 * Set your own translation reader
-	 * @see {@link PropertiesTranslationReader} how the proeprties reader is implemented
-	 * @param reader
+	 * @see PropertiesTranslationReader how the proeprties reader is implemented
 	 */
 	public static void set(TranslationReader reader) {
 		synchronized (mutex) {
@@ -85,8 +83,6 @@ public class LocalizationFactory {
 
 	/**
 	 * Set your locale for translation
-	 * @param locale
-	 * @throws IOException
 	 */
 	public static void setLocale(Locale locale) throws IOException {
 		synchronized (mutex) {
@@ -103,9 +99,6 @@ public class LocalizationFactory {
 
 	/**
 	 * Translate whole array in once.
-	 * @param keyArray
-	 * @param defaultsArray
-	 * @param t
 	 */
 	public static void translate(String[] keyArray, String[] defaultsArray, TranslationListCallback t) {
 		TranslationContainer sv = new TranslationContainer(keyArray, defaultsArray, t);
@@ -118,9 +111,6 @@ public class LocalizationFactory {
 
 	/**
 	 * Translate whole array in once.
-	 * @param keyArray
-	 * @param defaultsArray
-	 * @param t
 	 */
 	public static void translate(Collection<String> keyArray, Collection<String> defaultsArray, TranslationListCallback t) {
 		translate(keyArray.toArray(new String[keyArray.size()]), defaultsArray.toArray(new String[defaultsArray.size()]), t);
@@ -128,11 +118,6 @@ public class LocalizationFactory {
 
 	/**
 	 * Formatted translation. The value must contain ${key} to get translated
-	 * @param key
-	 * @param defaultValue
-	 * @param t
-	 * @param others
-	 * @return
 	 */
 	public static Translatable translate(String key, String defaultValue, Consumer<String> t, String... labels) {
 		FormattedTranslatableImpl rv = new FormattedTranslatableImpl(t, defaultValue, labels);
@@ -142,11 +127,6 @@ public class LocalizationFactory {
 	
 	/**
 	 * Formatted translation. The value must contain ${key} to get translated
-	 * @param key
-	 * @param defaultValue
-	 * @param t
-	 * @param others
-	 * @return
 	 */
 	public static Translatable translate(String key, Consumer<String> t, String... labels) {
 		return translate(key, key, t, labels);

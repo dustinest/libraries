@@ -17,17 +17,13 @@ public class IntegerPatternMatcher extends ColumnPatternMatcher {
 		if (!INSTANCE.matches(value)) {
 			throw new IllegalArgumentException( value .toString() + " is not long!");
 		}
-		return Long.valueOf(value.toString());
+		return Long.parseLong(value.toString());
 	}
 
 	public static int getAsInteger(Object value) {
-		Objects.requireNonNull(value, "The argument must be not null!");
-		if (!INSTANCE.matches(value)) {
-			throw new IllegalArgumentException( value .toString() + " is not integer!");
-		}
-		Long rv = Long.valueOf(value.toString());
+		Long rv = getAsLong(value);
 		if (rv < Integer.MIN_VALUE || rv > Integer.MAX_VALUE) {
-			
+			throw new IllegalArgumentException(rv + " is out of integer!");
 		}
 		
 		return rv.intValue();

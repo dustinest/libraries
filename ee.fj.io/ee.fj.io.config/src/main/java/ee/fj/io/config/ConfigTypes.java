@@ -48,56 +48,133 @@ public abstract class ConfigTypes<T> implements ConfigType<T> {
 		return (ConfigType<S>)this;
 	}
 
-	public static final ConfigType<String> NULL = new ConfigTypes<String>((byte)0, null) {
-		@Override byte[] toBytesInner(String value) { throw new UnsupportedOperationException("Not implemented"); }
-		@Override String toValueInner(byte[] bytes) { throw new UnsupportedOperationException("Not implemented"); }
+	public static final ConfigType<String> NULL = new ConfigTypes<>((byte) 0, null) {
+		@Override
+		byte[] toBytesInner(String value) {
+			throw new UnsupportedOperationException("Not implemented");
+		}
+
+		@Override
+		String toValueInner(byte[] bytes) {
+			throw new UnsupportedOperationException("Not implemented");
+		}
 	};
 
-	public static final ConfigType<CharSequence> STRING = new ConfigTypes<CharSequence>((byte)1, CharSequence.class) {
-		@Override byte[] toBytesInner(CharSequence value) { return value.toString().getBytes(StandardCharsets.UTF_8); }
-		@Override CharSequence toValueInner(byte[] bytes) { return new String(bytes, StandardCharsets.UTF_8); }
+	public static final ConfigType<CharSequence> STRING = new ConfigTypes<>((byte) 1, CharSequence.class) {
+		@Override
+		byte[] toBytesInner(CharSequence value) {
+			return value.toString().getBytes(StandardCharsets.UTF_8);
+		}
+
+		@Override
+		CharSequence toValueInner(byte[] bytes) {
+			return new String(bytes, StandardCharsets.UTF_8);
+		}
 	};
 
-	public static final ConfigType<Boolean> BOOLEAN = new ConfigTypes<Boolean>((byte)2, Boolean.class) {
-		@Override byte[] toBytesInner(Boolean value) {  return  value ? new byte[] {1} : new byte[] {0}; }
-		@Override Boolean toValueInner(byte[] bytes) { return bytes[0] == 1; }
+	public static final ConfigType<Boolean> BOOLEAN = new ConfigTypes<>((byte) 2, Boolean.class) {
+		@Override
+		byte[] toBytesInner(Boolean value) {
+			return value ? new byte[]{1} : new byte[]{0};
+		}
+
+		@Override
+		Boolean toValueInner(byte[] bytes) {
+			return bytes[0] == 1;
+		}
 	};
 
-	public static final ConfigType<Integer> INTEGER = new ConfigTypes<Integer>((byte)3, Integer.class) {
-		@Override byte[] toBytesInner(Integer value) {  return  ByteBuffer.allocate(Integer.BYTES).putInt(value).array(); }
-		@Override Integer toValueInner(byte[] bytes) { return ByteBuffer.wrap(bytes).getInt(); }
+	public static final ConfigType<Integer> INTEGER = new ConfigTypes<>((byte) 3, Integer.class) {
+		@Override
+		byte[] toBytesInner(Integer value) {
+			return ByteBuffer.allocate(Integer.BYTES).putInt(value).array();
+		}
+
+		@Override
+		Integer toValueInner(byte[] bytes) {
+			return ByteBuffer.wrap(bytes).getInt();
+		}
 	};
-	public static final ConfigType<Float> FLOAT = new ConfigTypes<Float>((byte)4, Float.class) {
-		@Override byte[] toBytesInner(Float value) {  return  ByteBuffer.allocate(Float.BYTES).putFloat(value).array(); }
-		@Override Float toValueInner(byte[] bytes) { return ByteBuffer.wrap(bytes).getFloat(); }
+	public static final ConfigType<Float> FLOAT = new ConfigTypes<>((byte) 4, Float.class) {
+		@Override
+		byte[] toBytesInner(Float value) {
+			return ByteBuffer.allocate(Float.BYTES).putFloat(value).array();
+		}
+
+		@Override
+		Float toValueInner(byte[] bytes) {
+			return ByteBuffer.wrap(bytes).getFloat();
+		}
 	};
-	public static final ConfigType<Long> LONG = new ConfigTypes<Long>((byte)5, Long.class) {
-		@Override byte[] toBytesInner(Long value) {  return  ByteBuffer.allocate(Long.BYTES).putLong(value).array(); }
-		@Override Long toValueInner(byte[] bytes) { return ByteBuffer.wrap(bytes).getLong(); }
+	public static final ConfigType<Long> LONG = new ConfigTypes<>((byte) 5, Long.class) {
+		@Override
+		byte[] toBytesInner(Long value) {
+			return ByteBuffer.allocate(Long.BYTES).putLong(value).array();
+		}
+
+		@Override
+		Long toValueInner(byte[] bytes) {
+			return ByteBuffer.wrap(bytes).getLong();
+		}
 	};
-	public static final ConfigType<Double> DOUBLE = new ConfigTypes<Double>((byte)6, Double.class) {
-		@Override byte[] toBytesInner(Double value) {  return  ByteBuffer.allocate(Double.BYTES).putDouble(value).array(); }
-		@Override Double toValueInner(byte[] bytes) { return ByteBuffer.wrap(bytes).getDouble(); }
+	public static final ConfigType<Double> DOUBLE = new ConfigTypes<>((byte) 6, Double.class) {
+		@Override
+		byte[] toBytesInner(Double value) {
+			return ByteBuffer.allocate(Double.BYTES).putDouble(value).array();
+		}
+
+		@Override
+		Double toValueInner(byte[] bytes) {
+			return ByteBuffer.wrap(bytes).getDouble();
+		}
 	};
 
-	public static final ConfigType<Date> DATE = new ConfigTypes<Date>((byte)7, Date.class) {
-		@Override byte[] toBytesInner(Date value) {  return  ((ConfigTypes<Long>)ConfigTypes.LONG).getBytes(value.getTime()); }
-		@Override Date toValueInner(byte[] bytes) { return new Date(ConfigTypes.LONG.getValue(bytes)); }
+	public static final ConfigType<Date> DATE = new ConfigTypes<>((byte) 7, Date.class) {
+		@Override
+		byte[] toBytesInner(Date value) {
+			return ((ConfigTypes<Long>) ConfigTypes.LONG).getBytes(value.getTime());
+		}
+
+		@Override
+		Date toValueInner(byte[] bytes) {
+			return new Date(ConfigTypes.LONG.getValue(bytes));
+		}
 	};
 
-	public static final ConfigType<LocalDate> LOCALDATE = new ConfigTypes<LocalDate>((byte)8, LocalDate.class) {
-		@Override byte[] toBytesInner(LocalDate value) {  return  ((ConfigTypes<CharSequence>)ConfigTypes.STRING).getBytes(value.toString()); }
-		@Override LocalDate toValueInner(byte[] bytes) { return LocalDate.parse(ConfigTypes.STRING.getValue(bytes)); }
+	public static final ConfigType<LocalDate> LOCALDATE = new ConfigTypes<>((byte) 8, LocalDate.class) {
+		@Override
+		byte[] toBytesInner(LocalDate value) {
+			return ((ConfigTypes<CharSequence>) ConfigTypes.STRING).getBytes(value.toString());
+		}
+
+		@Override
+		LocalDate toValueInner(byte[] bytes) {
+			return LocalDate.parse(ConfigTypes.STRING.getValue(bytes));
+		}
 	};
 
-	public static final ConfigType<LocalDateTime> LOCALDATETIME = new ConfigTypes<LocalDateTime>((byte)9, LocalDateTime.class) {
-		@Override protected byte[] toBytesInner(LocalDateTime value) {  return  ((ConfigTypes<CharSequence>)ConfigTypes.STRING).getBytes(value.toString()); }
-		@Override protected LocalDateTime toValueInner(byte[] bytes) { return LocalDateTime.parse(ConfigTypes.STRING.getValue(bytes)); }
+	public static final ConfigType<LocalDateTime> LOCALDATETIME = new ConfigTypes<>((byte) 9, LocalDateTime.class) {
+		@Override
+		protected byte[] toBytesInner(LocalDateTime value) {
+			return ((ConfigTypes<CharSequence>) ConfigTypes.STRING).getBytes(value.toString());
+		}
+
+		@Override
+		protected LocalDateTime toValueInner(byte[] bytes) {
+			return LocalDateTime.parse(ConfigTypes.STRING.getValue(bytes));
+		}
 	};
 
-	public static final ConfigType<ZonedDateTime> ZONEDDATETIME = new ConfigTypes<ZonedDateTime>((byte)10, ZonedDateTime.class) {
-		@Override byte[] toBytesInner(ZonedDateTime value) {  return  ((ConfigTypes<CharSequence>)ConfigTypes.STRING).getBytes(value.toString()); }
-		@Override ZonedDateTime toValueInner(byte[] bytes) { return ZonedDateTime.parse(ConfigTypes.STRING.getValue(bytes)); }
+	public static final ConfigType<ZonedDateTime> ZONEDDATETIME = new ConfigTypes<>((byte) 10, ZonedDateTime.class) {
+		@Override
+		byte[] toBytesInner(ZonedDateTime value) {
+			return ((ConfigTypes<CharSequence>) ConfigTypes.STRING).getBytes(value.toString());
+		}
+
+		@Override
+		ZonedDateTime toValueInner(byte[] bytes) {
+			return ZonedDateTime.parse(ConfigTypes.STRING.getValue(bytes));
+		}
 	};
 
 	private static final ConfigType<?>[] TYPES = new ConfigType<?>[]{

@@ -8,7 +8,6 @@ public class FormattedTranslatableImpl implements Translatable, Consumer<String>
 	private final Consumer<String> callback;
 	private final String[] keys;
 	private final Object[] values;
-	private String previousTranslation = null;
 	private TranslatableField[] fields;
 
 	public FormattedTranslatableImpl(Consumer<String> callback, String defaultValue, String... others) {
@@ -35,8 +34,7 @@ public class FormattedTranslatableImpl implements Translatable, Consumer<String>
 		for (TranslatableField t : fields) {
 			sv.append(t.getValue(keys, values));
 		}
-		this.previousTranslation = sv.toString();
-		callback.accept(previousTranslation);
+		callback.accept(sv.toString());
 	}
 	
 	@Override

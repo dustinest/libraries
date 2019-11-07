@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface FXMLLoader {
-	public boolean controller() default true;
-	public boolean root() default true;
-	public String fileName() default "";
+	boolean controller() default true;
+	boolean root() default true;
+	String fileName() default "";
 }

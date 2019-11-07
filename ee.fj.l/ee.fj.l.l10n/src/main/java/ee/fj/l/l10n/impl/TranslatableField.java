@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class TranslatableField {
-	private String value;
+	private final String value;
 	protected TranslatableField(String value) {
 		this.value = value;
 	}

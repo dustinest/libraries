@@ -2,8 +2,6 @@ package ee.fj.javafx.concurrent;
 
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 import javafx.application.Platform;
 
@@ -14,16 +12,16 @@ public class PlatformExecutor {
 	}
 
 	/**
-	 * @see {@link ScheduledExecutorService#submit(Runnable)}
+	 * @see ScheduledExecutorService#submit(Runnable)
 	 */
 	public Future<?> submit(Runnable task) {
-		return executor.submit(() -> Platform.runLater(() -> task.run()));
+		return executor.submit(() -> Platform.runLater(task));
 	}
 
 	/**
-	 * @see {@link ScheduledExecutorService#execute(Runnable)}
+	 * @see ScheduledExecutorService#execute(Runnable)
 	 */
 	public void execute(Runnable command) {
-		executor.execute(() -> Platform.runLater(() -> command.run()));
+		executor.execute(() -> Platform.runLater(command));
 	}
 }

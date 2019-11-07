@@ -20,7 +20,7 @@ import org.junit.Test;
 
 public class PasswordProtectedStreamTest {
 	@Test
-	public void defaultAlgorithmExists() throws IOException, GeneralSecurityException {
+	public void defaultAlgorithmExists() {
 		Assert.assertNotNull(SupportedAlgorithm.BEST_ALGORITHM);
 	}
 	
@@ -165,9 +165,7 @@ public class PasswordProtectedStreamTest {
 					}
 				});
 				System.out.println(outToEncrpt.size() + " - " + (System.currentTimeMillis() - start + ": " + alg));
-			} catch (InvalidAlgorithmParameterException e) {
-				System.out.println(alg + ": " + e.getMessage());
-			} catch (NoSuchAlgorithmException e) {
+			} catch (InvalidAlgorithmParameterException | NoSuchAlgorithmException e) {
 				System.out.println(alg + ": " + e.getMessage());
 			}
 		}

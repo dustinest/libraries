@@ -6,15 +6,12 @@ import java.util.Locale;
 
 public interface TranslationFileReader {
 	/**
-	 * @param locale
 	 * @return input stream to read for current locale
-	 * @throws IOException
 	 */
-	public abstract InputStream getFile(Locale locale) throws IOException;
+	InputStream getFile(Locale locale) throws IOException;
 
 	/**
 	 * @return input stream for default locale
-	 * @throws IOException
 	 */
-	public abstract InputStream getDefault() throws IOException;
+	InputStream getDefault() throws IOException;
 }

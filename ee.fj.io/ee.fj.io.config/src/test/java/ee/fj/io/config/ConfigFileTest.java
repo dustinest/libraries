@@ -15,8 +15,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class ConfigFileTest {
-	private static final Object[] LINE1 = new Object[] { "Lorem", true, false, 1l, 2.5d, 3.5f, 4, null, Calendar.getInstance().getTime(), LocalDateTime.now(), ZonedDateTime.now(), LocalDate.now()};
-	private static final Object[] LINE2 = new Object[] { "Ipsum", false, true, 2l, 3.5d, 4.5f, 5, Calendar.getInstance().getTime(), null};
+	private static final Object[] LINE1 = new Object[] { "Lorem", true, false, 1L, 2.5d, 3.5f, 4, null, Calendar.getInstance().getTime(), LocalDateTime.now(), ZonedDateTime.now(), LocalDate.now()};
+	private static final Object[] LINE2 = new Object[] { "Ipsum", false, true, 2L, 3.5d, 4.5f, 5, Calendar.getInstance().getTime(), null};
 	private static final byte[] DATA = new byte[] {0,0,0,1,1,0,0,0,5,108,111,114,101,109,1,0,0,0,5,105,112,115,117,109,3,0,0,0,4,0,0,0,1,3,0,0,0,4,0,0,0,2,4,0,0,0,4,65,112,0,0,0};
 
 	@Test
@@ -33,15 +33,15 @@ public class ConfigFileTest {
 		ByteArrayInputStream data = new ByteArrayInputStream(DATA);
 		try (ConfigFileReader reader = new ConfigFileReader(data)) {
 			Assert.assertEquals(1, reader.getVersion());
-			Assert.assertEquals("lorem", reader.read(String.class));
-			Assert.assertEquals("ipsum", reader.read());
-			Assert.assertEquals(1, reader.read(Integer.class).intValue());
-			Assert.assertEquals(2, reader.read());
-			Assert.assertEquals(15f, reader.read(Float.class).floatValue(), 0);
-			Assert.assertNull(reader.read());
+			Assert.assertEquals("lorem", reader.readNext(String.class));
+			Assert.assertEquals("ipsum", reader.readNext());
+			Assert.assertEquals(1, reader.readNext(Integer.class).intValue());
+			Assert.assertEquals(2, reader.readNext());
+			Assert.assertEquals(15f, reader.readNext(Float.class), 0);
+			Assert.assertNull(reader.readNext());
 
 			try {
-				Object val = reader.read();
+				Object val = reader.readNext();
 				throw new AssertionError("End of file expected but " + val + " found!");
 			} catch (IOException e) {
 				Assert.assertEquals(EOFException.class, e.getClass());
@@ -81,7 +81,7 @@ public class ConfigFileTest {
 		
 		try (ConfigFileReader reader = new ConfigFileReader(in)) {
 			Assert.assertEquals(version, reader.getVersion());
-			int result = reader.read((type, data) -> {
+			long result = reader.read((type, data) -> {
 				Assert.assertEquals(ConfigTypes.STRING, type);
 				Assert.assertEquals(LINE1[0], type.getValue(data));
 				return false;
@@ -159,10 +159,10 @@ public class ConfigFileTest {
 			Assert.assertEquals(1, result);
 
 			for (Object o : LINE2) {
-				Assert.assertEquals(o, reader.read());
+				Assert.assertEquals(o, reader.readNext());
 			}
 			try {
-				Object val = reader.read();
+				Object val = reader.readNext();
 				throw new AssertionError("End of file expected but " + val + " found!");
 			} catch (IOException e) {
 				Assert.assertEquals(EOFException.class, e.getClass());
@@ -186,7 +186,7 @@ public class ConfigFileTest {
 		
 		try (ConfigFileReader reader = new ConfigFileReader(in)) {
 			AtomicInteger index = new AtomicInteger(0);
-			int result = reader.read((type, data) -> {
+			long result = reader.read((type, data) -> {
 				Assert.assertEquals(dataToWrite[index.get()], type.getValue(data));
 				index.addAndGet(1);
 				return true;

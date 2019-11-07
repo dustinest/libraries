@@ -13,7 +13,7 @@ import org.junit.Test;
 
 public class TranslationsFactoryTest {
 	@Before
-	public void setUp() throws IOException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+	public void setUp() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		Field f = LocalizationFactory.class.getDeclaredField("callbacks");
 		f.setAccessible(true);
 		List.class.cast(f.get(null)).clear();
@@ -57,8 +57,6 @@ public class TranslationsFactoryTest {
 		Translatable translatable = LocalizationFactory.translate("profile.description", t -> {
 			switch (index.incrementAndGet()) {
 			case 1:
-				Assert.assertEquals("Execution " + index.get(), "profile.description", t);
-				break;
 			case 2:
 				Assert.assertEquals("Execution " + index.get(), "profile.description", t);
 				break;
@@ -147,7 +145,7 @@ public class TranslationsFactoryTest {
 	}
 
 	@Test
-	public void testDefaultTranslationSingleArgs() throws IOException {
+	public void testDefaultTranslationSingleArgs() {
 		AtomicInteger index = new AtomicInteger(0);
 		Translatable translatable = LocalizationFactory.translate("profile.description", "${name} is my name", 
 				t -> {

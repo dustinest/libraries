@@ -26,15 +26,12 @@ public class PropertiesTranslationReader implements TranslationReader {
 
 	/**
 	 * The purpose of this method is to give user ability to extend the reader.
-	 * @param reader
-	 * @return
-	 * @throws IOException
 	 */
 	protected Map<String, String> read(Reader reader) throws IOException {
 		Properties props = new Properties();
 		props.load(reader);
 		Map<String, String> rv = new HashMap<>();
-		props.entrySet().stream().forEach(e -> rv.put(e.getKey().toString(), e.getValue().toString()));
+		props.forEach((key, value) -> rv.put(key.toString(), value.toString()));
 		return rv;
 	}
 }

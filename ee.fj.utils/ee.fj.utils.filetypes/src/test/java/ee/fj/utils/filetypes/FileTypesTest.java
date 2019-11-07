@@ -23,8 +23,22 @@ public class FileTypesTest {
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(FileTypesTest.class.getResourceAsStream("/filetypes.txt"), StandardCharsets.UTF_8))) {
 			for (String line = reader.readLine(); line != null; line = reader.readLine()) {
 				String[] data = line.split("\t");
-				String type = FileTypes.probeContentType(Paths.get("file" + data[0]));
-				Assert.assertEquals(data[1], type);
+				String type = FileTypes.probeContentType(Paths.get("file" + data[0])).orElse(null);
+
+				if (data.length > 2) {
+					boolean result = false;
+					StringBuilder assertString = new StringBuilder();
+					for (int i = 1; i < data.length; i++) {
+						if (!result) {
+							result = data[i].equals(type);
+						}
+						if (assertString.length() > 0) assertString.append(" || ");
+						assertString.append(data[i]).append(" == ").append(type);
+					}
+					Assert.assertTrue(data[0] + ": " + assertString.toString(), result);
+				} else {
+					Assert.assertEquals(data[0] + " should be " + data[1], data[1], type);
+				}
 			}
 		}
 	}
@@ -36,9 +50,9 @@ public class FileTypesTest {
 
 		Map<String, String> typeExtension = new HashMap<>();
 
-		Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
+		Files.walkFileTree(path, new SimpleFileVisitor<>() {
 			@Override
-			public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
+			public FileVisitResult visitFileFailed(Path file, IOException exc) {
 				System.out.println(exc.getMessage() + "\t" + file.toString());
 				return FileVisitResult.SKIP_SUBTREE;
 			}
@@ -50,7 +64,7 @@ public class FileTypesTest {
 					int extIndex = name.lastIndexOf('.');
 					if (extIndex < 0)
 						return FileVisitResult.CONTINUE;
-					String type = FileTypes.probeContentType(p);
+					String type = FileTypes.probeContentType(p).orElse(null);
 					String ext = name.substring(extIndex);
 					if (!type.equals("application/octet-stream")) {
 						if (typeExtension.containsKey(ext) && !typeExtension.get(ext).equals(type)) {

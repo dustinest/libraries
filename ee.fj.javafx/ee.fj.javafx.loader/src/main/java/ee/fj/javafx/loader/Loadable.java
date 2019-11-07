@@ -7,5 +7,5 @@ package ee.fj.javafx.loader;
  *
  */
 public interface Loadable {
-	public void addListener(Runnable isLoaded);
+	void addListener(Runnable isLoaded);
 }

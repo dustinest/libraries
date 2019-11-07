@@ -36,11 +36,7 @@ public class MailConfig implements Cloneable {
 	public static boolean isServerValid(String server) {
 		if (server == null || server.trim().length() == 0)
 			return false;
-		Matcher matcher = SERVER_PATTERN.matcher(server);
-		if (!matcher.matches()) {
-			return false;
-		}
-		return true;
+		return SERVER_PATTERN.matcher(server).matches();
 	}
 
 }

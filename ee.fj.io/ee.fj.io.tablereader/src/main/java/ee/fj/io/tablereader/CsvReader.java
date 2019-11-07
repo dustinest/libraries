@@ -58,6 +58,7 @@ public class CsvReader implements TableReader {
 	@Override
 	public <T extends TableReader> T as(Class<T> reader) {
 		if (is(reader)) {
+			//noinspection unchecked
 			return (T) this;
 		}
 		return null;

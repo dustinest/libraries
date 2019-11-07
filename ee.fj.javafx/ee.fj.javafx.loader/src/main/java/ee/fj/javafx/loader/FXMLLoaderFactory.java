@@ -14,6 +14,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.Node;
 
 public class FXMLLoaderFactory<T> {
+	@SuppressWarnings("FieldCanBeLocal")
 	private final String RESOURCE_PATH = "/fxml/%s.fxml";
 	private static final Logger LOGGER = Logger.getLogger(FXMLLoaderFactory.class.getName());
 
@@ -21,6 +22,7 @@ public class FXMLLoaderFactory<T> {
 		boolean setController = true;
 		boolean setRoot = true;
 		String fileName = null;
+//		System.out.println(controller.toString());
 		if (controller.getClass().isAnnotationPresent(FXMLLoader.class)) {
 			FXMLLoader annotation = (FXMLLoader)controller.getClass().getAnnotation(FXMLLoader.class);
 			setController = annotation.controller();
@@ -28,10 +30,16 @@ public class FXMLLoaderFactory<T> {
 			fileName = annotation.fileName();
 		}
 
-		if (fileName == null || fileName == "")
+		if (fileName == null || fileName.equals("")) {
 			fileName = getFileName(controller);
+			//System.out.println("NEW file name:" + fileName);
+		}
 
 		URL template = controller.getClass().getResource(fileName);
+/*
+		System.out.println(fileName);
+		System.out.println(template);
+*/
 		if (template == null) {
 			throw new IllegalArgumentException(fileName + " not found!");
 		}
@@ -50,16 +58,13 @@ public class FXMLLoaderFactory<T> {
 				if (controller instanceof LoaderInitializable) {
 					Platform.runLater(() -> {
 						((LoaderInitializable)controller).initialize(root);
-						Platform.runLater(() -> {
-							onInitialized.accept(controller);
-						});
+						Platform.runLater(() -> onInitialized.accept(controller));
 					});
 				} else {
-					Platform.runLater(() -> {
-						onInitialized.accept(controller);
-					});
+					Platform.runLater(() -> onInitialized.accept(controller));
 				}
 			} catch (IOException ex) {
+				ex.printStackTrace();
 				LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
 			}
 		});
@@ -69,9 +74,8 @@ public class FXMLLoaderFactory<T> {
 	 * Get File name based on the controller name
 	 * MyPrettyClass then the resource is fxml/my-pretty-class.fxml
 	 * 
-	 * @param container
+	 * @param controller object ot check the class
 	 * @return URL to the resource
-	 * @throws IOException
 	 */
 	private String getFileName(Object controller) {
 		StringBuilder name = new StringBuilder();
@@ -84,8 +88,8 @@ public class FXMLLoaderFactory<T> {
 		return String.format(RESOURCE_PATH, name);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static <T> void load(T val, Consumer<T> onLoad) {
+		//noinspection unchecked
 		new FXMLLoaderFactory(val, onLoad);
 	}
 

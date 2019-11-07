@@ -1,0 +1,6 @@
+dependencies {
+    compile 'com.sun.activation:javax.activation:1.2.0'
+}
+
+group = 'ee.fj.utils'
+description = 'Additional file type prober'

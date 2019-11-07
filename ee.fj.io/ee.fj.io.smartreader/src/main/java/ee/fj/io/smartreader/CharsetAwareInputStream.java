@@ -36,9 +36,6 @@ public class CharsetAwareInputStream extends InputStream {
     /**
      * Similar to Investigate tries to find out encoding but instead of throwing an Exception tries to figure out
      * encoding using statistics. If encoding is unknown UTF8 is used.
-     * @param in
-     * @return
-     * @throws IOException
      */
     public static CharsetAwareInputStream predict(InputStream in) throws IOException {
     	return Encoding.predict(in);
@@ -46,8 +43,6 @@ public class CharsetAwareInputStream extends InputStream {
 
     /**
      * Investigate incoming file. If file encoding is unknown exception is thrown.
-     * @param in
-     * @return
      */
     public static CharsetAwareInputStream investigate(InputStream in) throws IOException {
     	return Encoding.investigate(in);

@@ -7,7 +7,7 @@ public interface MatchingResult {
 	 * @param columnLabel {@link ColumnMatcher#getLabel()} value
 	 * @return true if the label match at column index
 	 */
-	public boolean isColumnAt(int columnIndex, String columnLabel);
+	boolean isColumnAt(int columnIndex, String columnLabel);
 
 	/**
 	 * Return true if column class match at index
@@ -15,7 +15,7 @@ public interface MatchingResult {
 	 * @param columnClass the column type
 	 * @return true if the column type match at column index
 	 */
-	public <T extends ColumnMatcher> boolean isColumnAt(int columnIndex, Class<T> columnClass);
+	<T extends ColumnMatcher> boolean isColumnAt(int columnIndex, Class<T> columnClass);
 
 	/**
 	 * Return percentage probability if {@link ColumnMatcher#getLabel()} matches to the label at column index
@@ -23,7 +23,7 @@ public interface MatchingResult {
 	 * @param columnLabel {@link ColumnMatcher#getLabel()} value
 	 * @return probability this column contains the matcher label
 	 */
-	public float getProbabilityAt(int columnIndex, String columnLabel);
+	float getProbabilityAt(int columnIndex, String columnLabel);
 
 	/**
 	 * Return probability of this maching class
@@ -31,24 +31,22 @@ public interface MatchingResult {
 	 * @param columnClass the column type
 	 * @return return probability percentage this class exists
 	 */
-	public <T extends ColumnMatcher> float getProbabilityAt(int columnIndex, Class<T> columnClass);
+	<T extends ColumnMatcher> float getProbabilityAt(int columnIndex, Class<T> columnClass);
 
 	/**
 	 * @return amount of columns
 	 */
-	public int getColumnsCount();
+	int getColumnsCount();
 
 	/**
 	 * Return the best column matching {@link ColumnMatcher#getLabel()}
-	 * @param columnLabel
 	 * @return the best matching column index, -1 if not found
 	 */
-	public int getBestResultFor(String columnLabel);
+	int getBestResultFor(String columnLabel);
 
 	/**
 	 * Return best matching column for class
-	 * @param columnClass
 	 * @return the best matching column index, -1 if not found
 	 */
-	public <T extends ColumnMatcher> int getBestResultFor(Class<T> columnClass);
+	<T extends ColumnMatcher> int getBestResultFor(Class<T> columnClass);
 }

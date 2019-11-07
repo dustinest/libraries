@@ -30,7 +30,7 @@ public abstract class ColumnPatternMatcher implements ColumnMatcher {
 	
 	@Override
 	public boolean matches(Object column) {
-		if (column == null || !(column instanceof CharSequence))
+		if (!(column instanceof CharSequence))
 			return false;
 		return pattern.matcher(column.toString().trim()).matches();
 	}
