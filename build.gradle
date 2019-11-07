@@ -6,6 +6,7 @@ allprojects {
 
 subprojects {
     apply plugin: 'java'
+    apply plugin: 'maven-publish'
 
     repositories {
         mavenCentral()
@@ -26,5 +27,13 @@ subprojects {
 
         // https://mvnrepository.com/artifact/org.powermock/powermock-api-mockito2
         testCompile group: 'org.powermock', name: 'powermock-api-mockito2', version: '2.0.4'
+    }
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+            }
+        }
     }
 }
