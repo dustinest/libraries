@@ -2,8 +2,8 @@ package ee.fj.javafx.validator.number;
 
 import java.text.ParseException;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class LongRangeValidatorTest {
 	@Test
@@ -12,7 +12,7 @@ public class LongRangeValidatorTest {
 				1, 5, 20);
 		Long expect = 1L;
 		Long result = validator.parse("1.1123");
-		Assert.assertEquals(expect, result);
+		Assertions.assertEquals(expect, result);
 	}
 
 	@Test
@@ -21,7 +21,7 @@ public class LongRangeValidatorTest {
 				1, 5, 20);
 		Long expect = null;
 		Long result = validator.parse(null);
-		Assert.assertEquals(expect, result);
+		Assertions.assertEquals(expect, result);
 	}
 
 	@Test
@@ -30,7 +30,7 @@ public class LongRangeValidatorTest {
 				1, 5, 20);
 		Long expect = null;
 		Long result = validator.parse("");
-		Assert.assertEquals(expect, result);
+		Assertions.assertEquals(expect, result);
 	}
 
 }

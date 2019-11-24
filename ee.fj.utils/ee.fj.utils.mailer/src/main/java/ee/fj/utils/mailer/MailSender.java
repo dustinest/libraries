@@ -33,7 +33,7 @@ public abstract class MailSender {
 	private final List<InternetAddress> recipientsBCC = new ArrayList<>();
 	private final List<MailBody> mailBody = new ArrayList<>();
 	private final List<Attachment> attachments = new ArrayList<>();
-	
+
 	private final String subject;
 
 	protected MailSender(SmtpMailSender config, String subject) {
@@ -106,7 +106,7 @@ public abstract class MailSender {
 	public MailSender addAttachement(File file) {
 		return addAttachement(new FileAttachment(file));
 	}
-	
+
 	private MailSender addAttachement(Attachment attachment) {
 		attachments.add(attachment);
 		return this;
@@ -116,7 +116,7 @@ public abstract class MailSender {
 	 * @throws IllegalStateException if body or recipients are missing
 	 * @throws MessagingException if message set fails
 	 */
-	private Message getMessageContainer() throws IllegalStateException, MessagingException {
+	Message getMessageContainer() throws IllegalStateException, MessagingException {
 		if (mailBody.size() == 0) {
 			throw new IllegalStateException("Mail bodies are not set!");
 		}

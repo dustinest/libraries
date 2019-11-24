@@ -1,10 +1,9 @@
 package ee.fj.classloader;
 
-import java.io.IOException;
-
-import org.junit.Test;
-
 import ee.fj.classloader.annotation.OnLoad;
+import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
 
 public class ClassLoaderImplTest {
 	@OnLoad

@@ -1,8 +1,8 @@
 package ee.fj.classloader;
 
-import java.io.IOException;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import java.io.IOException;
 
 public class ClassLoaderFactoryTest {
 

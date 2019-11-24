@@ -1,5 +1,9 @@
 package ee.fj.l.l10n;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.List;
@@ -7,12 +11,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
 public class TranslationsFactoryTest {
-	@Before
+	@BeforeEach
 	public void setUp() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		Field f = LocalizationFactory.class.getDeclaredField("callbacks");
 		f.setAccessible(true);
@@ -33,7 +33,7 @@ public class TranslationsFactoryTest {
 		f = LocalizationFactory.class.getDeclaredField("defaultsRead");
 		f.setAccessible(true);
 		f.set(null, false);
-		
+
 	}
 
 	@Test
@@ -42,13 +42,13 @@ public class TranslationsFactoryTest {
 		LocalizationFactory.translate("my.name", t -> {
 			which[0] = which[0] + 1;
 			if (which[0] == 1) {
-				Assert.assertEquals("First execution" + which[0], "Fox Junior", t);
+				Assertions.assertEquals("Fox Junior", t, "First execution" + which[0]);
 			} else {
-				Assert.assertEquals("Second execution " + which[0], "Fox Senior", t);
+				Assertions.assertEquals("Fox Senior", t, "Second execution " + which[0]);
 			}
 		});
 		LocalizationFactory.setLocale(Locale.forLanguageTag("en"));
-		Assert.assertEquals("We must call it out twice!", 2, which[0]);
+		Assertions.assertEquals(2, which[0], "We must call it out twice!");
 	}
 
 	@Test
@@ -58,25 +58,25 @@ public class TranslationsFactoryTest {
 			switch (index.incrementAndGet()) {
 			case 1:
 			case 2:
-				Assert.assertEquals("Execution " + index.get(), "profile.description", t);
+				Assertions.assertEquals("profile.description", t, "Execution " + index.get());
 				break;
 			case 3:
-				Assert.assertEquals("Execution " + index.get(), "My name is name and I am a male", t);
+				Assertions.assertEquals("My name is name and I am a male", t, "Execution " + index.get());
 				break;
 			case 4:
-				Assert.assertEquals("Execution " + index.get(), "My name is name and I am a female", t);
+				Assertions.assertEquals("My name is name and I am a female", t, "Execution " + index.get());
 				break;
 			case 5:
-				Assert.assertEquals("Execution " + index.get(), "My name is Lora Muffin and I am a female", t);
+				Assertions.assertEquals("My name is Lora Muffin and I am a female", t, "Execution " + index.get());
 				break;
 			case 6:
-				Assert.assertEquals("Execution " + index.get(), "My name is Lora Muffin and I am a gender", t);
+				Assertions.assertEquals("My name is Lora Muffin and I am a gender", t, "Execution " + index.get());
 				break;
 			case 7:
-				Assert.assertEquals("Execution " + index.get(), "My name is  and I am a ", t);
+				Assertions.assertEquals("My name is  and I am a ", t, "Execution " + index.get());
 				break;
 			case 8:
-				Assert.assertEquals("Execution " + index.get(), "My name is name and I am a gender", t);
+				Assertions.assertEquals("My name is name and I am a gender", t, "Execution " + index.get());
 				break;
 			default:
 				throw new UnsupportedOperationException("This call is over amount!" + index.get());
@@ -89,44 +89,44 @@ public class TranslationsFactoryTest {
 		translatable.translate("Lora Muffin");
 		translatable.translate("", "");
 		translatable.translate(null, null);
-		Assert.assertEquals("The amount of calls!", 8, index.get());
+		Assertions.assertEquals(8, index.get(), "The amount of calls!");
 	}
 
 	@Test
 	public void testDefaultTranslation() throws IOException {
 		AtomicInteger index = new AtomicInteger(0);
-		Translatable translatable = LocalizationFactory.translate("profile.description", "My name is not ${name} and I am not a ${gender}", 
+		Translatable translatable = LocalizationFactory.translate("profile.description", "My name is not ${name} and I am not a ${gender}",
 				t -> {
 			switch (index.incrementAndGet()) {
 			case 1:
-				Assert.assertEquals("Execution " + index.get(), "My name is not name and I am not a gender", t);
+				Assertions.assertEquals("My name is not name and I am not a gender", t, "Execution " + index.get());
 				break;
 			case 2:
-				Assert.assertEquals("Execution " + index.get(), "My name is not name and I am not a male", t);
+				Assertions.assertEquals("My name is not name and I am not a male", t, "Execution " + index.get());
 				break;
 			case 3:
-				Assert.assertEquals("Execution " + index.get(), "My name is name and I am a male", t);
+				Assertions.assertEquals("My name is name and I am a male", t, "Execution " + index.get());
 				break;
 			case 4:
-				Assert.assertEquals("Execution " + index.get(), "My name is name and I am a female", t);
+				Assertions.assertEquals("My name is name and I am a female", t, "Execution " + index.get());
 				break;
 			case 5:
-				Assert.assertEquals("Execution " + index.get(), "My name is Lora Muffin and I am a female", t);
+				Assertions.assertEquals("My name is Lora Muffin and I am a female", t, "Execution " + index.get());
 				break;
 			case 6:
-				Assert.assertEquals("Execution " + index.get(), "My name is Lora Muffin and I am a gender", t);
+				Assertions.assertEquals("My name is Lora Muffin and I am a gender", t, "Execution " + index.get());
 				break;
 			case 7:
 				//Estonian translation. We reverse the tags. Before it was name and gender now the transaltion has reversed keys, first gender and then name
-				Assert.assertEquals("Execution " + index.get(), "Ma olen gender ja mu nimi on Lora Muffin", t);
+				Assertions.assertEquals("Ma olen gender ja mu nimi on Lora Muffin", t, "Execution " + index.get());
 				break;
 			case 8:
 				// In case of empty values no tags or labels are visible
-				Assert.assertEquals("Execution " + index.get(), "Ma olen  ja mu nimi on ", t);
+				Assertions.assertEquals("Ma olen  ja mu nimi on ", t, "Execution " + index.get());
 				break;
 			case 9:
 				// In case the values are null default tags are used
-				Assert.assertEquals("Execution " + index.get(), "Ma olen gender ja mu nimi on name", t);
+				Assertions.assertEquals("Ma olen gender ja mu nimi on name", t, "Execution " + index.get());
 				break;
 			default:
 				throw new UnsupportedOperationException("This call is over amount!" + index.get() + " with result " + t);
@@ -141,27 +141,27 @@ public class TranslationsFactoryTest {
 		LocalizationFactory.setLocale(Locale.forLanguageTag("et"));
 		translatable.translate("", "");
 		translatable.translate(null, null);
-		Assert.assertEquals("The amount of calls!", 9, index.get());
+		Assertions.assertEquals(9, index.get(), "The amount of calls!");
 	}
 
 	@Test
 	public void testDefaultTranslationSingleArgs() {
 		AtomicInteger index = new AtomicInteger(0);
-		Translatable translatable = LocalizationFactory.translate("profile.description", "${name} is my name", 
+		Translatable translatable = LocalizationFactory.translate("profile.description", "${name} is my name",
 				t -> {
 			switch (index.incrementAndGet()) {
 			case 1:
-				Assert.assertEquals("Execution " + index.get(), "name is my name", t);
+				Assertions.assertEquals("name is my name", t, "Execution " + index.get());
 				break;
 			case 2:
-				Assert.assertEquals("Execution " + index.get(), "Susan is my name", t);
+				Assertions.assertEquals("Susan is my name", t, "Execution " + index.get());
 				break;
 			default:
 				throw new UnsupportedOperationException("This call is over amount!" + index.get());
 			}
 		}, "name");
 		translatable.translate("Susan");
-		Assert.assertEquals("The amount of calls!", 2, index.get());
+		Assertions.assertEquals(2, index.get(), "The amount of calls!");
 	}
 
 }

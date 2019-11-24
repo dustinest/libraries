@@ -35,7 +35,7 @@
 .eps	application/postscript
 .png	image/png
 .lnk	application/x-ms-shortcut
-.ts	text/plain
+.ts	video/vnd.dlna.mpeg-tts	text/plain
 .class	application/java-vm
 .flac	audio/x-flac
 .mov	video/quicktime
@@ -93,7 +93,6 @@
 .msi	application/x-msdownload
 .filters	text/plain
 .torrent	application/x-bittorrent
-.iss	text/plain
 .xpm	image/x-xpixmap
 .txt	text/plain
 .tpl	application/vnd.groove-tool-template

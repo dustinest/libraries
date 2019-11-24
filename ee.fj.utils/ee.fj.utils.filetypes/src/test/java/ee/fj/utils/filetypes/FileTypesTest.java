@@ -13,15 +13,16 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 public class FileTypesTest {
 	@Test
 	public void testPaths() throws IOException {
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(FileTypesTest.class.getResourceAsStream("/filetypes.txt"), StandardCharsets.UTF_8))) {
 			for (String line = reader.readLine(); line != null; line = reader.readLine()) {
+				if (line.length() == 0) continue;
 				String[] data = line.split("\t");
 				String type = FileTypes.probeContentType(Paths.get("file" + data[0])).orElse(null);
 
@@ -35,15 +36,15 @@ public class FileTypesTest {
 						if (assertString.length() > 0) assertString.append(" || ");
 						assertString.append(data[i]).append(" == ").append(type);
 					}
-					Assert.assertTrue(data[0] + ": " + assertString.toString(), result);
+					Assertions.assertTrue(result, data[0] + ": " + assertString.toString());
 				} else {
-					Assert.assertEquals(data[0] + " should be " + data[1], data[1], type);
+					Assertions.assertEquals( data[1], type, data[0] + " should be " + data[1]);
 				}
 			}
 		}
 	}
 
-	@Ignore
+	@Disabled
 	@Test
 	public void gatherPaths() throws IOException {
 		Path path = Paths.get("J:/");

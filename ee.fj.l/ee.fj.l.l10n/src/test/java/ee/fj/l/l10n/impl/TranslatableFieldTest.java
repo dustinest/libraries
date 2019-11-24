@@ -1,7 +1,7 @@
 package ee.fj.l.l10n.impl;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class TranslatableFieldTest {
 
@@ -12,7 +12,7 @@ public class TranslatableFieldTest {
 		for (TranslatableField f : fields) {
 			b.append(f.getValue(new String[]{}, new String[]{}));
 		}
-		Assert.assertEquals("Mina name olen \\${test} sugu ${", b.toString());
+		Assertions.assertEquals("Mina name olen \\${test} sugu ${", b.toString());
 	}
 
 	@Test
@@ -22,7 +22,7 @@ public class TranslatableFieldTest {
 		for (TranslatableField f : fields) {
 			b.append(f.getValue(new String[]{}, new String[]{}));
 		}
-		Assert.assertEquals("name olen \\${test} sugu ${", b.toString());
+		Assertions.assertEquals("name olen \\${test} sugu ${", b.toString());
 	}
 
 	@Test
@@ -36,7 +36,7 @@ public class TranslatableFieldTest {
 		for (TranslatableField f : fields) {
 			b.append(f.getValue(keys, vals));
 		}
-		Assert.assertEquals("Mina Peeter Paan olen \\${test} mees ${", b.toString());
+		Assertions.assertEquals("Mina Peeter Paan olen \\${test} mees ${", b.toString());
 	}
 
 	@Test
@@ -50,7 +50,7 @@ public class TranslatableFieldTest {
 		for (TranslatableField f : fields) {
 			b.append(f.getValue(keys, vals));
 		}
-		Assert.assertEquals("Mina mees olen \\${test} Peeter Paan ${", b.toString());
+		Assertions.assertEquals("Mina mees olen \\${test} Peeter Paan ${", b.toString());
 	}
 
 	@Test
@@ -64,7 +64,7 @@ public class TranslatableFieldTest {
 		for (TranslatableField f : fields) {
 			b.append(f.getValue(keys, vals));
 		}
-		Assert.assertEquals("Mina mees olen \\${test} sugu ${", b.toString());
+		Assertions.assertEquals("Mina mees olen \\${test} sugu ${", b.toString());
 	}
 
 	@Test
@@ -78,7 +78,7 @@ public class TranslatableFieldTest {
 		for (TranslatableField f : fields) {
 			b.append(f.getValue(keys, vals));
 		}
-		Assert.assertEquals("Mina name olen \\${test} Peeter Paan ${", b.toString());
+		Assertions.assertEquals("Mina name olen \\${test} Peeter Paan ${", b.toString());
 	}
 
 	@Test
@@ -92,6 +92,6 @@ public class TranslatableFieldTest {
 		for (TranslatableField f : fields) {
 			b.append(f.getValue(keys, vals));
 		}
-		Assert.assertEquals("Mina name olen \\${test} Peeter Paan ${", b.toString());
+		Assertions.assertEquals("Mina name olen \\${test} Peeter Paan ${", b.toString());
 	}
 }
