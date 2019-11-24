@@ -96,7 +96,6 @@ public class PasswordProtectedStreamTest {
 
 		final byte[] wrongSalt = PasswordProtectedFactory.getSalt();
 		ByteArrayInputStream inToEncrypt = new ByteArrayInputStream(outToEncrpt.toByteArray());
-		// TODO: caused by general sequrity exception
 		Exception exception = Assertions.assertThrows(IOException.class, () -> {
 			try (BufferedReader in = new BufferedReader(new InputStreamReader(new PasswordProtectedInputStream(inToEncrypt, password, wrongSalt),
 					StandardCharsets.UTF_8))) {
@@ -122,7 +121,6 @@ public class PasswordProtectedStreamTest {
 
 		final char[] wrongPassword = "".toCharArray();
 		ByteArrayInputStream inToEncrypt = new ByteArrayInputStream(outToEncrpt.toByteArray());
-		// TODO: caused by general sequrity exception
 		Exception exception = Assertions.assertThrows(IOException.class, () -> {
 			try (BufferedReader in = new BufferedReader(new InputStreamReader(new PasswordProtectedInputStream(inToEncrypt, wrongPassword, salt),
 					StandardCharsets.UTF_8))) {
