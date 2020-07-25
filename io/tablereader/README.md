@@ -61,6 +61,6 @@ type.as(value), for instance:
 		LocalDateTime realValue = TableResult.DATE.as(value);
 	}
 
-If you are looking for file Type supported, check ``SupportedFiles`` enumeratuion. Also see ``TableReaderFactory`` for more entry point references.
+If you are looking for file Type supported, check ``SupportedFiles`` enumeration. Also see ``TableReaderFactory`` for more entry point references.
 
 See test cases for more help

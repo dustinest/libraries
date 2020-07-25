@@ -142,12 +142,12 @@ public abstract class MailSender {
 			message.setReplyTo(new InternetAddress[] {config.replyAddress});
 		}
 		message.setSubject(subject);
-		message.setRecipients(RecipientType.TO, recipients.toArray(new InternetAddress[recipients.size()]));
+		message.setRecipients(RecipientType.TO, recipients.toArray(new InternetAddress[0]));
 		if (recipientsCC.size() > 0) {
-			message.setRecipients(RecipientType.CC, recipientsCC.toArray(new InternetAddress[recipientsCC.size()]));
+			message.setRecipients(RecipientType.CC, recipientsCC.toArray(new InternetAddress[0]));
 		}
 		if (recipientsBCC.size() > 0) {
-			message.setRecipients(RecipientType.BCC, recipientsBCC.toArray(new InternetAddress[recipientsBCC.size()]));
+			message.setRecipients(RecipientType.BCC, recipientsBCC.toArray(new InternetAddress[0]));
 		}
 
 		MimeMultipart content = new MimeMultipart("mixed");
@@ -172,7 +172,7 @@ public abstract class MailSender {
 	 * @throws AuthenticationFailedException This exception is thrown when the connect method on a Store or Transport object fails due to an authentication failure (e.g., bad user name or password).
 	 * See more at https://javamail.java.net/nonav/docs/api/index.html?com/sun/mail/util/MailConnectException.html
 	 */
-	public void send() throws MessagingException, SendFailedException, IllegalStateException, IOException {
+	public void send() throws MessagingException, SendFailedException, IllegalStateException {
 		Message message = getMessageContainer();
 		Transport.send(message);
 	}

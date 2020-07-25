@@ -49,7 +49,7 @@ public class LocalizationFactory {
 		} catch (NullPointerException e) {
 			localeTRanslations.clear();
 			LOGGER.log(Level.WARNING, "The file for locale " + locale.toString() + " was not found!", e);
-		} 
+		}
 		return true;
 	}
 
@@ -113,7 +113,7 @@ public class LocalizationFactory {
 	 * Translate whole array in once.
 	 */
 	public static void translate(Collection<String> keyArray, Collection<String> defaultsArray, TranslationListCallback t) {
-		translate(keyArray.toArray(new String[keyArray.size()]), defaultsArray.toArray(new String[defaultsArray.size()]), t);
+		translate(keyArray.toArray(new String[0]), defaultsArray.toArray(new String[0]), t);
 	}
 
 	/**
@@ -124,7 +124,7 @@ public class LocalizationFactory {
 		translate(new String[]{key}, new String[]{defaultValue}, (_key, _index, _value) -> rv.accept(_value) );
 		return rv;
 	}
-	
+
 	/**
 	 * Formatted translation. The value must contain ${key} to get translated
 	 */

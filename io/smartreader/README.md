@@ -38,4 +38,4 @@ To get the charset:
 	
 Recognizes UTF_8, UTF8 Little Endian and Big Endian, fails back to system default or preferred charset.
 
-TODO: add more charsets to regognize
+TODO: add more charsets to recognize

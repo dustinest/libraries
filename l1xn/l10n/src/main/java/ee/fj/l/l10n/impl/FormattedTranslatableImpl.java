@@ -14,13 +14,11 @@ public class FormattedTranslatableImpl implements Translatable, Consumer<String>
 		this.callback = callback;
 		keys = new String[others.length];
 		values = new Object[keys.length];
-		for (int i = 0; i < others.length; i++) {
-			keys[i] = others[i];
-		}
+		System.arraycopy(others, 0, keys, 0, others.length);
 		fields = TranslatableField.getTranslatables(defaultValue);
 	}
 
-	
+
 	@Override
 	public void accept(String value) {
 		synchronized (this.values) {
@@ -36,7 +34,7 @@ public class FormattedTranslatableImpl implements Translatable, Consumer<String>
 		}
 		callback.accept(sv.toString());
 	}
-	
+
 	@Override
 	public Translatable translate(Object... values) {
 		synchronized (this.values) {

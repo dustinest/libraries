@@ -33,7 +33,7 @@ public class ListenedFileReader {
 	public ListenedFileReader(FileReadListener listener) {
 		this(new FileReaderListener() {
 			final List<String> lines = new ArrayList<>();
-			
+
 			@Override
 			public void fileRead(String line) {
 				lines.add(line);
@@ -46,7 +46,7 @@ public class ListenedFileReader {
 
 			@Override
 			public void doneReading(Charset charset) {
-				listener.fileReadingDone(charset, lines.toArray(new String[lines.size()]));
+				listener.fileReadingDone(charset, lines.toArray(new String[0]));
 			}
 		});
 	}

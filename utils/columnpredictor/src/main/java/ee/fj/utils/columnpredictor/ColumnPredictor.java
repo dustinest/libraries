@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 public class ColumnPredictor {
 	private final ColumnMatcher[] matchers;
 	private final List<List<ColumnStatistics>> columnStatistics = new ArrayList<>();
-	
+
 	private static class ColumnStatistics {
 		private long amount = 1;
 		private final int column;
@@ -79,13 +79,12 @@ public class ColumnPredictor {
 						}
 					}
 					if (index < 0) {
-						columnStatistics.get(columnIndex).size();
 						columnStatistics.get(columnIndex).add(new ColumnStatistics(m, columnIndex));
 					} else {
 						columnStatistics.get(columnIndex).get(index).amount = columnStatistics.get(columnIndex).get(index).amount + 1;
 					}
 				}
-				
+
 			}
 		}
 	}
@@ -109,7 +108,7 @@ public class ColumnPredictor {
 			@Override public float getProbability() { return probability; }
 		};
 	}
-	
+
 	private MatchingResult calculateInnter() {
 		List<ColumnStatistics> data = new ArrayList<>();
 		int[] maxSize = new int[columnStatistics.size()];
@@ -149,7 +148,7 @@ public class ColumnPredictor {
 					bestProbabilities[c.column] = toAdd;
 				}
 			}
-			 
+
 			pointer[c.column]++;
 		}
 		this.result = getNewInstance(columnProbabilities, bestProbabilities);
@@ -162,7 +161,7 @@ public class ColumnPredictor {
 			result = null;
 		}
 	}
-	
+
 	public ColumnPredictor newInstance() {
 		return new ColumnPredictor(matchers);
 	}
@@ -229,7 +228,7 @@ public class ColumnPredictor {
 				}
 				return -1;
 			}
-			
+
 			@Override
 			public int getBestResultFor(String columnLabel) {
 				if (columnLabel == null) {
@@ -245,8 +244,8 @@ public class ColumnPredictor {
 				}
 				return getBestColumn(columnClass, CLASS_FILTER);
 			}
-			
+
 		};
 	}
-	
+
 }

@@ -8,7 +8,7 @@ See [Junit tests](src/test/java/ee/fj/l/l10n/TranslationsFactoryTest.java) for b
 
 Default language file is ``translation.properties``
 
-Locale based transaltion files:
+Locale based translation files:
 
 translation.et.properties or translation.et-EE.properties see more at ee.fj.l.l10n.CommonTranslationFileReader
 

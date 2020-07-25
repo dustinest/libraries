@@ -19,7 +19,7 @@ There are three major roots:
 
 # ee.fj.io
 
-Input - output utiles
+Input - output utilities
 
 - [Configuration file helper](io/config)
 - [Password encrypted files](io/passwordfile)
@@ -41,7 +41,7 @@ Javafx helpers
 
 # ee.fj.numbers
 
-- [Numbers utitlity methods](numbers)
+- [Numbers utility methods](numbers)
 
 # ee.fj.security
 
@@ -59,9 +59,9 @@ Javafx helpers
 - [File mime type detector if Files.probeContentType is not enough](utils/filetypes)
 - [Simple algorithm for two way numbers encoding](utils/idencoder)
 - [Loose version to check if one version is after another one](utils/looseversion)
-- [Mava mail wrapper to ease up mail sending](utils/mailer)
+- [Mail wrapper to ease up mail sending](utils/mailer)
 
 
 # Installation
 
-See subprojects for more information
+See sub projects and their tests for more information

@@ -13,7 +13,7 @@ public enum Encoding {
 	UTF16le(StandardCharsets.UTF_16LE, 0x03, 2,2, new byte[]{-1, -2}), // 0xFF, 0xFE
 	UTF16be(StandardCharsets.UTF_16BE, 0x04, 2,2, new byte[]{-2, -1}), // 0xFE, 0xFF
 	UTF16(StandardCharsets.UTF_16, 0x05, 2,2, null); //NB! in Java it fails back to is UTF-16BE with BOM
-    
+
     public final Charset charset;
     final byte type;
     final byte[] BOM;
@@ -48,7 +48,7 @@ public enum Encoding {
      * @param data - data to convert
      */
     public String convert(Charset from, CharSequence data) {
-        return convertToString(from, data.toString().getBytes(from == null ? DEFAULT.charset : from)); 
+        return convertToString(from, data.toString().getBytes(from == null ? DEFAULT.charset : from));
     }
 
     /**
@@ -84,7 +84,7 @@ public enum Encoding {
      * @param data - data to convert
      */
     public byte[] convertToBytes(Charset from, CharSequence data) {
-        return convert(from, data.toString()).getBytes(this.charset); 
+        return convert(from, data.toString()).getBytes(this.charset);
     }
 
 
@@ -143,13 +143,12 @@ public enum Encoding {
             throw new IOException("Inputstream is empty!");
         } else if (len < data.length) {
             byte[] c = new byte[len];
-            for (int i = 0; i < len; i++)
-            	c[i] = data[i];
+			System.arraycopy(data, 0, c, 0, len);
             return c;
         }
         return data;
     }
-    
+
 
     /**
      * Investigate incoming file. If file encoding is unknown exception is thrown.
@@ -164,8 +163,7 @@ public enum Encoding {
 
 		byte[] bom = e.BOM != null && e.BOM.length > 0 ? new byte[e.BOM.length] : null;
 		if (bom != null) {
-			for (int i = 0; i < e.BOM.length; i++)
-				bom[i] = e.BOM[i];
+			System.arraycopy(e.BOM, 0, bom, 0, e.BOM.length);
 		}
 
 		return new CharsetAwareInputStream(bom, inp, e.charset);
@@ -174,7 +172,7 @@ public enum Encoding {
     public static CharsetAwareInputStream predict(Path filePath) throws IOException {
     	return predict(filePath, Charset.defaultCharset());
     }
-    
+
     public static CharsetAwareInputStream predict(Path filePath, Charset preferred) throws IOException {
     	Charset rv;
 		int meaningfulDefaults = 0;
@@ -206,7 +204,7 @@ public enum Encoding {
 		rv = meaningfulPreferrd > meaningfulDefaults ? preferred : rv;
 		return new CharsetAwareInputStream(null, Files.newInputStream(filePath), rv);
     }
-    
+
     /**
      * Similar to Investigate tries to find out encoding but instead of throwing an Exception tries to figure out
      * encoding using statistics. If encoding is unknown UTF8 is used.
@@ -258,7 +256,7 @@ public enum Encoding {
 		}
 		return otherValueCount;
 	}
-    
+
     /**
      * investigate bytes and predict what encoding it may have.
      * @throws IllegalArgumentException if BOM is not found

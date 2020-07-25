@@ -21,7 +21,7 @@ public enum SupportedAlgorithm {
 	PBEWithSHA1AndRC2_40,
 	PBEWithSHA1AndRC4_40,
 	PBEWithSHA1AndRC2_128,
-	PBEWithSHA1AndPC4_128,			
+	PBEWithSHA1AndPC4_128,
 	PBEWithSHA1AndDESede, // SHA1 weak
 	PBEWithMD5AndTripleDES, // insecure
 	PBEWithMD5AndDES; // insecure
@@ -45,7 +45,7 @@ public enum SupportedAlgorithm {
 				PBEWithSHA1AndRC2_40,
 				PBEWithSHA1AndRC4_40,
 				PBEWithSHA1AndRC2_128,
-				PBEWithSHA1AndPC4_128,			
+				PBEWithSHA1AndPC4_128,
 				PBEWithSHA1AndDESede,
 				PBEWithMD5AndTripleDES,
 				PBEWithMD5AndDES
@@ -58,7 +58,7 @@ public enum SupportedAlgorithm {
 			}
 		}
 		BEST_ALGORITHM = best;
-		SUPPORTED_ALGORITHMS = supported.toArray(new SupportedAlgorithm[supported.size()]);
+		SUPPORTED_ALGORITHMS = supported.toArray(new SupportedAlgorithm[0]);
 	}
 	public final boolean supported;
 	SupportedAlgorithm() {

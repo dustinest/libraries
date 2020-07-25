@@ -35,9 +35,8 @@ public class NumberEncoder {
 
 		chars[startIndex] = charMatrix[row].getMappedCharacter(stringLengthLength.charAt(0));
 		int index = startIndex + 1;
-		for (int i = 0; i < stringLength.length; i++) {
-			chars[index] = charMatrix[row].getMappedCharacter(stringLength[i]);
-			index++;
+		for (char c : stringLength) {
+			chars[index++] = charMatrix[row].getMappedCharacter(c);
 		}
 		return index;
 	}

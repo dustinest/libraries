@@ -1,6 +1,6 @@
 # Single threaded scheduler to improve JAVAFX timed functions
 
-Althrough most of processes can be done with the Timeline I wanted to have more control over my flow and make animations or timeouts where necessary. Also, in most cases I have no need of more than
+Although most of processes can be done with the Timeline I wanted to have more control over my flow and make animations or timeouts where necessary. Also, in most cases I have no need of more than
 One thread.
 
 For that I created simple single threaded manager for easy access to execute processes in and out of platform.
@@ -53,7 +53,7 @@ The timeouts available:
 - SingleThreadManager.NANOSECONDS.schedule(() -> updateSomething(), 1);
 - SingleThreadManager.NANOSECONDS.PLATFORM.schedule(() -> updateSomething(), 1);
 
-Also simple executor is availbale:
+Also simple executor is available:
 
 - SingleThreadManager.EXECUTOR.submit(() -> updateSomething(), 1);
 - SingleThreadManager.EXECUTOR.PLATFORM.submit(() -> updateSomething(), 1);

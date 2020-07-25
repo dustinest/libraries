@@ -28,7 +28,7 @@ public abstract class TranslatableField {
 			}
 			return rv;
 		}
-		
+
 	}
 	public Object getValue(String[] keys, Object[] values) {
 		return value;
@@ -66,6 +66,6 @@ public abstract class TranslatableField {
 				rv.add(new TranslatableField("${"){});
 			}
 		}
-		return rv.toArray(new TranslatableField[rv.size()]);
+		return rv.toArray(new TranslatableField[0]);
 	}
 }

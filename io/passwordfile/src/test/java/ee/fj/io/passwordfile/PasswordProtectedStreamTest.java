@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import javax.crypto.BadPaddingException;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -67,7 +66,7 @@ public class PasswordProtectedStreamTest {
 	}
 
 	@Test
-	public void testWrongEncryption() throws IOException, GeneralSecurityException {
+	public void testWrongEncryption() {
 		char[] password = "see on salasona".toCharArray();
 		byte[] salt = "midaigan".getBytes(StandardCharsets.ISO_8859_1);
 		byte[] dataToWrite = "Lorem Ipsum Est ÕÜÖÜ".getBytes(StandardCharsets.UTF_8);

@@ -2,7 +2,7 @@
 
 ## Usage
 
-NB! There is a known problem with reading / writing larger files. You might consider using bytearray on reading and writing
+NB! There is a known problem with reading / writing larger files. You might consider using byte array on reading and writing
 
 Simple usage:
 

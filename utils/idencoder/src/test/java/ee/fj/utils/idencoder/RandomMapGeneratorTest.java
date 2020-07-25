@@ -60,7 +60,7 @@ public class RandomMapGeneratorTest {
 
 	@Test
 	void throwExceptionWhenEmpty() {
-		Assertions.assertThrows(IllegalArgumentException.class, () -> RandomMapGenerator.getChars());
+		Assertions.assertThrows(IllegalArgumentException.class, RandomMapGenerator::getChars);
 	}
 
 	@Test

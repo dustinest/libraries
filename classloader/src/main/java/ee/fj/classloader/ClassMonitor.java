@@ -12,7 +12,7 @@ class ClassMonitor {
 	private final List<InitializationHolder> onLoad = new ArrayList<>();
 
 	private void parseMethods(Class<?> clazz) {
-		List<Method> onLoad = new ArrayList<>();
+		ArrayList<Method> onLoad = new ArrayList<>();
 		Object instance = null;
 		for (Method m : clazz.getDeclaredMethods()) {
 			OnLoad annotation = m.getAnnotation(OnLoad.class);
@@ -29,7 +29,7 @@ class ClassMonitor {
 				}
 			}
 		}
-		InitializationHolder holder = new InitializationHolder(instance, onLoad.toArray(new Method[onLoad.size()]));
+		InitializationHolder holder = new InitializationHolder(instance, onLoad.toArray(new Method[0]));
 		if (onLoad.size() > 0) {
 			this.onLoad.add(holder);
 		}

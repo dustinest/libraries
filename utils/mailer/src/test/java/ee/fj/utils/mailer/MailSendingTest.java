@@ -1,12 +1,11 @@
 package ee.fj.utils.mailer;
 
-import javax.mail.Message;
-import javax.mail.Transport;
-
 import org.junit.Rule;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.rules.ExpectedException;
+
+import javax.mail.Message;
 
 public class MailSendingTest {
 	@Rule
@@ -22,7 +21,7 @@ public class MailSendingTest {
 		smtpSender.setUseTls(false);
 		MailSender sender = smtpSender.getMailSender("My Test subject");
 		sender.addTextMailBody("Lorem ipsum est!");
-		Exception exception = Assertions.assertThrows(IllegalStateException.class, () -> sender.getMessageContainer());
+		Exception exception = Assertions.assertThrows(IllegalStateException.class, sender::getMessageContainer);
 		Assertions.assertEquals("Recipients are not set!", exception.getMessage());
 	}
 
@@ -35,7 +34,7 @@ public class MailSendingTest {
 		smtpSender.setSender("my.sender@mytest.com", "õäöü");
 		smtpSender.setUseTls(false);
 		MailSender sender = smtpSender.getMailSender("My Test subject");
-		Exception exception = Assertions.assertThrows(IllegalStateException.class, () -> sender.getMessageContainer());
+		Exception exception = Assertions.assertThrows(IllegalStateException.class, sender::getMessageContainer);
 		Assertions.assertEquals("Mail bodies are not set!", exception.getMessage());
 	}
 

@@ -34,7 +34,7 @@ First create a smtp configuration
 		smtpSender.setSender("my.sender@mytest.com");
 		smtpSender.setUseTls(false);
 
-You might want to authroize
+You might want to authorise
 
 		smtpSender.authorize(username, String);
 
