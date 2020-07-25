@@ -1,8 +1,10 @@
 allprojects {
     group = 'ee.fj'
-    ext.rootVersion = 1
+    ext.versionMajor = 1
+    ext.versionMinor = 0
+    ext.versionPatch = 0
     ext.lombokVersion = '1.18.10'
-    version = ext.rootVersion + '.0.0'
+    version = ext.versionMajor + '.' + ext.versionMinor + '.' + ext.versionPatch
 
     apply plugin: 'java'
     apply plugin: 'eclipse'

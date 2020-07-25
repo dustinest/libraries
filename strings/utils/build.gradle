@@ -1,5 +1,6 @@
 dependencies {
 }
+ext.versionPatch=1
 group = 'ee.fj.strings'
 description = 'Strings helper'
 
