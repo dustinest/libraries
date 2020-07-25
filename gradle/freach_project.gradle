@@ -1,5 +1,5 @@
 ext.foreachProjectIn = {
-    def SKIP_DIRS = ~/^(build|…*|src|out|\..*|gradle)/
+    def SKIP_DIRS = ~/^(build|…*|src|\..*|gradle)/
     def dirCheck = { dir, closure = null ->
         if (SKIP_DIRS.matcher(dir.name).matches()) return groovy.io.FileVisitResult.SKIP_SUBTREE
         if (!java.nio.file.Files.exists(dir.toPath().resolve('build.gradle'))) return groovy.io.FileVisitResult.CONTINUE
