@@ -1,2 +1,3 @@
+apply from: '../../gradle/read_version.gradle'
 group = 'ee.fj.io'
 description = 'Read and Write password protected files'

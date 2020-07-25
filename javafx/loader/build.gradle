@@ -7,5 +7,6 @@ javafx {
     version = "11.0.2"
     modules = [ 'javafx.controls', 'javafx.graphics', 'javafx.fxml' ]
 }
+apply from: '../../gradle/read_version.gradle'
 group = 'ee.fj.javafx'
 description = 'Fox Junior JavaFx Loader'

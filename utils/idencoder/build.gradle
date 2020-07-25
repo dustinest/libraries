@@ -1,5 +1,5 @@
 dependencies {
 }
-
+apply from: '../../gradle/read_version.gradle'
 group = 'ee.fj.utils'
 description = 'Encode numbers to random chars'

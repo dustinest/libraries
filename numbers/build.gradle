@@ -1,4 +1,5 @@
 dependencies {
 }
+apply from: '../gradle/read_version.gradle'
 group = 'ee.fj.numbers'
 description = 'Numbers helper'

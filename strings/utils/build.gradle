@@ -1,6 +1,5 @@
 dependencies {
 }
-ext.versionPatch=1
+apply from: '../../gradle/read_version.gradle'
 group = 'ee.fj.strings'
 description = 'Strings helper'
-

@@ -1,0 +1,23 @@
+def localMajor = ext.versionMajor + ""
+def localMinor = ext.versionMinor + ""
+def localPatch = ext.versionPatch + ""
+
+def versionFile = project.projectDir.toPath().resolve('version.properties')
+if (java.nio.file.Files.exists(versionFile)) {
+    def newVersion = java.nio.file.Files.readAllLines(versionFile)[0]
+    def versions = newVersion.split("\\.")
+    if (versions.length > 3) {
+        throw new IllegalArgumentException(versionFile.toString() + " has error format! It must have <major.><minor.>.patch")
+    }
+    if (versions.length > 0 && versions[versions.length - 1]) {
+        localPatch = versions[versions.length - 1]
+    }
+    if (versions.length > 1 && versions[versions.length - 2]) {
+        localMinor = versions[versions.length - 2]
+    }
+    if (versions.length > 2 && versions[versions.length - 3]) {
+        localMajor = versions[versions.length - 3]
+    }
+}
+
+version = String.join(".", localMajor, localMinor, localPatch)

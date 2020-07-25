@@ -1,6 +1,6 @@
 dependencies {
     compile 'com.sun.activation:javax.activation:1.2.0'
 }
-
+apply from: '../../gradle/read_version.gradle'
 group = 'ee.fj.utils'
 description = 'Additional file type prober'
