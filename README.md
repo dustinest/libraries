@@ -6,28 +6,40 @@ There are three major roots:
 
 Input - output utiles
 
-- [Configuration file helper](ee.fj.io/ee.fj.io.config)
-- [Password encrypted files](ee.fj.io/ee.fj.io.passwordfile)
-- [Predict file encoding](ee.fj.io/ee.fj.io.smartreader)
-- [Csv / Excel files wrapper](ee.fj.io/ee.fj.io.tablereader)
+- [Configuration file helper](io/config)
+- [Password encrypted files](io/passwordfile)
+- [Predict file encoding](io/smartreader)
+- [Csv / Excel files wrapper](io/tablereader)
 
 # ee.fj.javafx
 
 Javafx helpers
 
-- [JavaFx FXML and controller loader](ee.fj.javafx/ee.fj.javafx.loader)
-- [JavaFx Single threaded scheduler](ee.fj.javafx/ee.fj.javafx.concurrent)
+- [JavaFx FXML and controller loader](javafx/loader)
+- [JavaFx Single threaded scheduler](javafx/concurrent)
+- [Simple wrapper to read FXML files](javafx/control)
+- [Custom input validators](javafx/validator)
 
 # ee.fj.l
 
-- [Lightweight localization helper](ee.fj.l/ee.fj.l.l10n)
+- [Lightweight localization helper](l1xn/l10n)
 
 # ee.fj.utils
 
-- [Predict the column type in array based on the matchers](ee.fj.utils/ee.fj.utils.columnpredictor)
-- [File mime type detector if Files.probeContentType is not enough](ee.fj.utils/ee.fj.utils.filetypes)
-- [Mava mail wrapper to ease up mail sending](ee.fj.utils/ee.fj.utils.mailer)
-- [Loose version to check if one version is after another one](ee.fj.utils/ee.fj.utils.looseversion)
+- [Predict the column type in array based on the matchers](utils/columnpredictor)
+- [File mime type detector if Files.probeContentType is not enough](utils/filetypes)
+- [Simple algorithm for two way numbers encoding](utils/idencoder)
+- [Mava mail wrapper to ease up mail sending](utils/mailer)
+- [Loose version to check if one version is after another one](utils/looseversion)
+
+# ee.fj.awt
+
+- [Scale and resize images](awt)
+
+
+# ee.fj.classloader
+
+- [Simple whole purpose classloader with custom annotation support](classloader)
 
 # Installation
 
