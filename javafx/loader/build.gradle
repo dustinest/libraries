@@ -1,9 +1,11 @@
-dependencies {
-    compile 'org.openjfx:javafx-base:12.0.2'
-    compile 'org.openjfx:javafx-controls:12.0.2'
-    compile 'org.openjfx:javafx-graphics:12.0.2'
-    compile 'org.openjfx:javafx-fxml:12.0.2'
+plugins {
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.8'
 }
 
+javafx {
+    version = "11.0.2"
+    modules = [ 'javafx.controls', 'javafx.graphics', 'javafx.fxml' ]
+}
 group = 'ee.fj.javafx'
 description = 'Fox Junior JavaFx Loader'

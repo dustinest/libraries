@@ -2,6 +2,21 @@ I am really lazy person, so instead of having separate repository for each proje
 
 There are three major roots:
 
+# ee.fj.arrays
+
+- [Array combinator methods](arrays/combine)
+- [Array filter methods](arrays/filters)
+- [Array utility methods](arrays/utils)
+
+# ee.fj.awt
+
+- [Scale and resize images](awt)
+
+
+# ee.fj.classloader
+
+- [Simple whole purpose classloader with custom annotation support](classloader)
+
 # ee.fj.io
 
 Input - output utiles
@@ -15,31 +30,37 @@ Input - output utiles
 
 Javafx helpers
 
-- [JavaFx FXML and controller loader](javafx/loader)
 - [JavaFx Single threaded scheduler](javafx/concurrent)
 - [Simple wrapper to read FXML files](javafx/control)
+- [JavaFx FXML and controller loader](javafx/loader)
 - [Custom input validators](javafx/validator)
 
 # ee.fj.l
 
 - [Lightweight localization helper](l1xn/l10n)
 
+# ee.fj.numbers
+
+- [Numbers utitlity methods](numbers)
+
+# ee.fj.security
+
+- [Wrapper for encryption methods](security/crypto)
+
+# ee.fj.strings
+
+- [String filter methods](strings/filters)
+- [String utility methods](strings/utils)
+
 # ee.fj.utils
 
 - [Predict the column type in array based on the matchers](utils/columnpredictor)
+- [Enum memory cache for quick and more loose value retrieval](utils/enum)
 - [File mime type detector if Files.probeContentType is not enough](utils/filetypes)
 - [Simple algorithm for two way numbers encoding](utils/idencoder)
-- [Mava mail wrapper to ease up mail sending](utils/mailer)
 - [Loose version to check if one version is after another one](utils/looseversion)
+- [Mava mail wrapper to ease up mail sending](utils/mailer)
 
-# ee.fj.awt
-
-- [Scale and resize images](awt)
-
-
-# ee.fj.classloader
-
-- [Simple whole purpose classloader with custom annotation support](classloader)
 
 # Installation
 

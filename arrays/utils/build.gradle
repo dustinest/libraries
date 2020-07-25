@@ -1,0 +1,4 @@
+dependencies {
+}
+group = 'ee.fj.arrays'
+description = 'Array utilities'

@@ -1,0 +1,5 @@
+dependencies {
+}
+group = 'ee.fj.strings'
+description = 'Strings helper'
+

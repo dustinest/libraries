@@ -1,0 +1,4 @@
+dependencies {
+}
+group = 'ee.fj.numbers'
+description = 'Numbers helper'
