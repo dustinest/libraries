@@ -1,2 +1,7 @@
 image/xcf	xcf
 application/x-typescript	tsx
+text/html	shtml
+application/x-virtualbox-ova	ova
+application/x-virtualbox-vbox	vbox
+application/x-virtualbox-vdi	vdi
+

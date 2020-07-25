@@ -8,9 +8,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class EncodingTest {
 
@@ -21,21 +22,23 @@ public class EncodingTest {
 	@Test
 	public void testUtf8() throws IOException, URISyntaxException {
 		try (CharsetAwareInputStream in = Encoding.predict(Files.newInputStream(getFile("utf8.txt")))) {
-			Assert.assertEquals(StandardCharsets.UTF_8, in.getCharset());
+			Assertions.assertEquals(StandardCharsets.UTF_8, in.getCharset());
 		}
 	}
 
 	@Test
 	public void testUtf16BE() throws IOException, URISyntaxException {
 		try (CharsetAwareInputStream in = Encoding.predict(Files.newInputStream(getFile("UTF_16BE.txt")))) {
-			Assert.assertThat(in.getCharset(), Matchers.either(Matchers.is(StandardCharsets.UTF_16BE)).or(Matchers.is(StandardCharsets.UTF_16)));
+			MatcherAssert.assertThat(in.getCharset(),
+					Matchers.either(Matchers.is(StandardCharsets.UTF_16BE))
+							.or(Matchers.is(StandardCharsets.UTF_16)));
 		}
 	}
 
 	@Test
 	public void testUtf16LE() throws IOException, URISyntaxException {
 		try (CharsetAwareInputStream in = Encoding.predict(Files.newInputStream(getFile("UTF_16LE.txt")))) {
-			Assert.assertEquals(in.getCharset() , StandardCharsets.UTF_16LE);
+			Assertions.assertEquals(in.getCharset() , StandardCharsets.UTF_16LE);
 		}
 	}
 
@@ -43,21 +46,21 @@ public class EncodingTest {
 	public void testWindows1257() throws IOException, URISyntaxException {
 		try (CharsetAwareInputStream in = Encoding.predict(getFile("Windows1257.txt"),  Charset.forName("Windows-1257"))) {
 			// this might be both as default is enforced
-			Assert.assertThat(in.getCharset(), Matchers.either(Matchers.is(Charset.forName("Windows-1257"))).or(Matchers.is(Charset.defaultCharset())));
+			MatcherAssert.assertThat(in.getCharset(), Matchers.either(Matchers.is(Charset.forName("Windows-1257"))).or(Matchers.is(Charset.defaultCharset())));
 		}
 	}
 
 	@Test
 	public void testWindows1257_utf() throws IOException, URISyntaxException {
 		try (CharsetAwareInputStream in = Encoding.predict(getFile("Windows1257.txt"),  StandardCharsets.UTF_16LE)) {
-			Assert.assertThat(in.getCharset(), Matchers.either(Matchers.is(Charset.defaultCharset())).or(Matchers.is(StandardCharsets.UTF_8)));
+			MatcherAssert.assertThat(in.getCharset(), Matchers.either(Matchers.is(Charset.defaultCharset())).or(Matchers.is(StandardCharsets.UTF_8)));
 		}
 	}
 
 	@Test
 	public void testWindows1257_default() throws IOException, URISyntaxException {
 		try (CharsetAwareInputStream in = Encoding.predict(getFile("Windows1257.txt"))) {
-			Assert.assertThat(in.getCharset(), Matchers.either(Matchers.is(Charset.forName("Windows-1257"))).or(Matchers.is(Charset.defaultCharset())));
+			MatcherAssert.assertThat(in.getCharset(), Matchers.either(Matchers.is(Charset.forName("Windows-1257"))).or(Matchers.is(Charset.defaultCharset())));
 		}
 	}
 }

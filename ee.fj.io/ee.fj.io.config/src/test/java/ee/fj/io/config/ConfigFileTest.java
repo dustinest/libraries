@@ -11,8 +11,8 @@ import java.util.Calendar;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class ConfigFileTest {
 	private static final Object[] LINE1 = new Object[] { "Lorem", true, false, 1L, 2.5d, 3.5f, 4, null, Calendar.getInstance().getTime(), LocalDateTime.now(), ZonedDateTime.now(), LocalDate.now()};
@@ -25,26 +25,26 @@ public class ConfigFileTest {
 		try (ConfigFileWriter writer = new ConfigFileWriter(1, out)) {
 			writer.write("lorem", "ipsum", 1, 2, 15f, null);
 		}
-		Assert.assertArrayEquals(DATA, out.toByteArray());
+		Assertions.assertArrayEquals(DATA, out.toByteArray());
 	}
-	
+
 	@Test
 	public void simpleTest() throws IOException {
 		ByteArrayInputStream data = new ByteArrayInputStream(DATA);
 		try (ConfigFileReader reader = new ConfigFileReader(data)) {
-			Assert.assertEquals(1, reader.getVersion());
-			Assert.assertEquals("lorem", reader.readNext(String.class));
-			Assert.assertEquals("ipsum", reader.readNext());
-			Assert.assertEquals(1, reader.readNext(Integer.class).intValue());
-			Assert.assertEquals(2, reader.readNext());
-			Assert.assertEquals(15f, reader.readNext(Float.class), 0);
-			Assert.assertNull(reader.readNext());
+			Assertions.assertEquals(1, reader.getVersion());
+			Assertions.assertEquals("lorem", reader.readNext(String.class));
+			Assertions.assertEquals("ipsum", reader.readNext());
+			Assertions.assertEquals(1, reader.readNext(Integer.class).intValue());
+			Assertions.assertEquals(2, reader.readNext());
+			Assertions.assertEquals(15f, reader.readNext(Float.class), 0);
+			Assertions.assertNull(reader.readNext());
 
 			try {
 				Object val = reader.readNext();
 				throw new AssertionError("End of file expected but " + val + " found!");
 			} catch (IOException e) {
-				Assert.assertEquals(EOFException.class, e.getClass());
+				Assertions.assertEquals(EOFException.class, e.getClass());
 			}
 
 		}
@@ -61,12 +61,12 @@ public class ConfigFileTest {
 		try (ConfigFileReader reader = new ConfigFileReader(in)) {
 			AtomicInteger index = new AtomicInteger(0);
 			for (Object o : reader) {
-				Assert.assertEquals(LINE1[index.getAndIncrement()], o);
+				Assertions.assertEquals(LINE1[index.getAndIncrement()], o);
 			}
-			Assert.assertEquals(index.get(), LINE1.length);
+			Assertions.assertEquals(index.get(), LINE1.length);
 		}
 	}
-	
+
 	@Test
 	public void testIo() throws IOException {
 		int version = 25;
@@ -78,94 +78,94 @@ public class ConfigFileTest {
 			writer.writeValues(LINE2);
 		}
 		ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
-		
+
 		try (ConfigFileReader reader = new ConfigFileReader(in)) {
-			Assert.assertEquals(version, reader.getVersion());
+			Assertions.assertEquals(version, reader.getVersion());
 			long result = reader.read((type, data) -> {
-				Assert.assertEquals(ConfigTypes.STRING, type);
-				Assert.assertEquals(LINE1[0], type.getValue(data));
+				Assertions.assertEquals(ConfigTypes.STRING, type);
+				Assertions.assertEquals(LINE1[0], type.getValue(data));
 				return false;
 			});
-			Assert.assertEquals(1, result);
+			Assertions.assertEquals(1, result);
 			result = reader.read((type, data) -> {
-				Assert.assertEquals(ConfigTypes.BOOLEAN, type);
+				Assertions.assertEquals(ConfigTypes.BOOLEAN, type);
 				ConfigType<Boolean> parser = type.as(Boolean.class);
-				Assert.assertTrue(parser.getValue(data));
+				Assertions.assertTrue(parser.getValue(data));
 				return false;
 			});
-			Assert.assertEquals(1, result);
+			Assertions.assertEquals(1, result);
 			result = reader.read((type, data) -> {
-				Assert.assertEquals(ConfigTypes.BOOLEAN, type);
-				Assert.assertEquals(LINE1[2], type.getValue(data));
+				Assertions.assertEquals(ConfigTypes.BOOLEAN, type);
+				Assertions.assertEquals(LINE1[2], type.getValue(data));
 				return false;
 			});
-			Assert.assertEquals(1, result);
+			Assertions.assertEquals(1, result);
 			result = reader.read((type, data) -> {
-				Assert.assertEquals(ConfigTypes.LONG, type);
-				Assert.assertEquals(LINE1[3], type.getValue(data));
+				Assertions.assertEquals(ConfigTypes.LONG, type);
+				Assertions.assertEquals(LINE1[3], type.getValue(data));
 				return false;
 			});
-			Assert.assertEquals(1, result);
+			Assertions.assertEquals(1, result);
 			result = reader.read((type, data) -> {
-				Assert.assertEquals(ConfigTypes.DOUBLE, type);
-				Assert.assertEquals(LINE1[4], type.getValue(data));
+				Assertions.assertEquals(ConfigTypes.DOUBLE, type);
+				Assertions.assertEquals(LINE1[4], type.getValue(data));
 				return false;
 			});
-			Assert.assertEquals(1, result);
+			Assertions.assertEquals(1, result);
 			result = reader.read((type, data) -> {
-				Assert.assertEquals(ConfigTypes.FLOAT, type);
-				Assert.assertEquals(LINE1[5], type.getValue(data));
+				Assertions.assertEquals(ConfigTypes.FLOAT, type);
+				Assertions.assertEquals(LINE1[5], type.getValue(data));
 				return false;
 			});
-			Assert.assertEquals(1, result);
+			Assertions.assertEquals(1, result);
 			result = reader.read((type, data) -> {
-				Assert.assertEquals(ConfigTypes.INTEGER, type);
-				Assert.assertEquals(LINE1[6], type.getValue(data));
+				Assertions.assertEquals(ConfigTypes.INTEGER, type);
+				Assertions.assertEquals(LINE1[6], type.getValue(data));
 				return false;
 			});
-			Assert.assertEquals(1, result);
+			Assertions.assertEquals(1, result);
 			result = reader.read((type, data) -> {
-				Assert.assertEquals(ConfigTypes.NULL, type);
-				Assert.assertNull(type.getValue(data));
+				Assertions.assertEquals(ConfigTypes.NULL, type);
+				Assertions.assertNull(type.getValue(data));
 				return false;
 			});
-			Assert.assertEquals(1, result);
+			Assertions.assertEquals(1, result);
 			result = reader.read((type, data) -> {
-				Assert.assertEquals(ConfigTypes.DATE, type);
-				Assert.assertEquals(LINE1[8], type.getValue(data));
+				Assertions.assertEquals(ConfigTypes.DATE, type);
+				Assertions.assertEquals(LINE1[8], type.getValue(data));
 				return false;
 			});
-			Assert.assertEquals(1, result);
+			Assertions.assertEquals(1, result);
 
 			result = reader.read((type, data) -> {
-				Assert.assertEquals(ConfigTypes.LOCALDATETIME, type);
-				Assert.assertEquals(LINE1[9], type.getValue(data));
+				Assertions.assertEquals(ConfigTypes.LOCALDATETIME, type);
+				Assertions.assertEquals(LINE1[9], type.getValue(data));
 				return false;
 			});
-			Assert.assertEquals(1, result);
+			Assertions.assertEquals(1, result);
 
 			result = reader.read((type, data) -> {
-				Assert.assertEquals(ConfigTypes.ZONEDDATETIME, type);
-				Assert.assertEquals(LINE1[10], type.getValue(data));
+				Assertions.assertEquals(ConfigTypes.ZONEDDATETIME, type);
+				Assertions.assertEquals(LINE1[10], type.getValue(data));
 				return false;
 			});
-			Assert.assertEquals(1, result);
+			Assertions.assertEquals(1, result);
 
 			result = reader.read((type, data) -> {
-				Assert.assertEquals(ConfigTypes.LOCALDATE, type);
-				Assert.assertEquals(LINE1[11], type.getValue(data));
+				Assertions.assertEquals(ConfigTypes.LOCALDATE, type);
+				Assertions.assertEquals(LINE1[11], type.getValue(data));
 				return false;
 			});
-			Assert.assertEquals(1, result);
+			Assertions.assertEquals(1, result);
 
 			for (Object o : LINE2) {
-				Assert.assertEquals(o, reader.readNext());
+				Assertions.assertEquals(o, reader.readNext());
 			}
 			try {
 				Object val = reader.readNext();
 				throw new AssertionError("End of file expected but " + val + " found!");
 			} catch (IOException e) {
-				Assert.assertEquals(EOFException.class, e.getClass());
+				Assertions.assertEquals(EOFException.class, e.getClass());
 			}
 		}
 	}
@@ -183,15 +183,15 @@ public class ConfigFileTest {
 			}
 		}
 		ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
-		
+
 		try (ConfigFileReader reader = new ConfigFileReader(in)) {
 			AtomicInteger index = new AtomicInteger(0);
 			long result = reader.read((type, data) -> {
-				Assert.assertEquals(dataToWrite[index.get()], type.getValue(data));
+				Assertions.assertEquals(dataToWrite[index.get()], type.getValue(data));
 				index.addAndGet(1);
 				return true;
 			});
-			Assert.assertEquals(dataToWrite.length, result);
+			Assertions.assertEquals(dataToWrite.length, result);
 		}
 	}
 

@@ -1,5 +1,10 @@
 package ee.fj.io.passwordfile;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
+import javax.crypto.BadPaddingException;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -14,18 +19,14 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 import java.util.stream.IntStream;
 
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
-
 public class PasswordProtectedStreamTest {
 	@Test
-	public void defaultAlgorithmExists() {
-		Assert.assertNotNull(SupportedAlgorithm.BEST_ALGORITHM);
+	void defaultAlgorithmExists() {
+		Assertions.assertNotNull(SupportedAlgorithm.BEST_ALGORITHM);
 	}
-	
+
 	@Test
-	public void testIO() throws IOException, GeneralSecurityException {
+	void testIO() throws IOException, GeneralSecurityException {
 		char[] password = "see on salasona".toCharArray();
 		byte[] dataToWrite = "Lorem Ipsum Est ÕÜÖÜ".getBytes(StandardCharsets.UTF_8);
 		ByteArrayOutputStream outToEncrpt = new ByteArrayOutputStream();
@@ -38,9 +39,9 @@ public class PasswordProtectedStreamTest {
 		ByteArrayInputStream inToEncrypt = new ByteArrayInputStream(outToEncrpt.toByteArray());
 		try (BufferedReader in = new BufferedReader(new InputStreamReader(new PasswordProtectedInputStream(inToEncrypt, password),
 				StandardCharsets.UTF_8))) {
-			Assert.assertEquals(new String(dataToWrite, StandardCharsets.UTF_8), in.readLine());
-			Assert.assertEquals(new String(dataToWrite, StandardCharsets.UTF_8), in.readLine());
-			Assert.assertNull(in.readLine());
+			Assertions.assertEquals(new String(dataToWrite, StandardCharsets.UTF_8), in.readLine());
+			Assertions.assertEquals(new String(dataToWrite, StandardCharsets.UTF_8), in.readLine());
+			Assertions.assertNull(in.readLine());
 		}
 	}
 
@@ -59,47 +60,54 @@ public class PasswordProtectedStreamTest {
 		ByteArrayInputStream inToEncrypt = new ByteArrayInputStream(outToEncrpt.toByteArray());
 		try (BufferedReader in = new BufferedReader(new InputStreamReader(new PasswordProtectedInputStream(inToEncrypt, password, salt),
 				StandardCharsets.UTF_8))) {
-			Assert.assertEquals(new String(dataToWrite, StandardCharsets.UTF_8), in.readLine());
-			Assert.assertEquals(new String(dataToWrite, StandardCharsets.UTF_8), in.readLine());
-			Assert.assertNull(in.readLine());
+			Assertions.assertEquals(new String(dataToWrite, StandardCharsets.UTF_8), in.readLine());
+			Assertions.assertEquals(new String(dataToWrite, StandardCharsets.UTF_8), in.readLine());
+			Assertions.assertNull(in.readLine());
 		}
 	}
 
-	@Test(expected=NoSuchAlgorithmException.class)
+	@Test
 	public void testWrongEncryption() throws IOException, GeneralSecurityException {
 		char[] password = "see on salasona".toCharArray();
 		byte[] salt = "midaigan".getBytes(StandardCharsets.ISO_8859_1);
 		byte[] dataToWrite = "Lorem Ipsum Est ÕÜÖÜ".getBytes(StandardCharsets.UTF_8);
 		ByteArrayOutputStream outToEncrpt = new ByteArrayOutputStream();
-		try (OutputStream out = new PasswordProtectedOutputStream(outToEncrpt, password, salt, "ahaa")) {
-			out.write(dataToWrite);
-			out.write('\n');
-			out.write(dataToWrite);
-		}
+		Assertions.assertThrows(NoSuchAlgorithmException.class, () -> {
+					try (OutputStream out = new PasswordProtectedOutputStream(outToEncrpt, password, salt, "ahaa")) {
+						out.write(dataToWrite);
+						out.write('\n');
+						out.write(dataToWrite);
+					}
+				}
+		);
 	}
 
-	@Test(expected=IOException.class) // caused by GeneralSecurityException
+	@Test
 	public void testWrongSalt() throws IOException, GeneralSecurityException {
-		char[] password = "see on salasona".toCharArray();
-		byte[] salt = PasswordProtectedFactory.getSalt();
-		byte[] dataToWrite = "Lorem Ipsum Est ÕÜÖÜ".getBytes(StandardCharsets.UTF_8);
+		final char[] password = "see on salasona".toCharArray();
+		final byte[] salt = PasswordProtectedFactory.getSalt();
+		final byte[] dataToWrite = "Lorem Ipsum Est ÕÜÖÜ".getBytes(StandardCharsets.UTF_8);
 		ByteArrayOutputStream outToEncrpt = new ByteArrayOutputStream();
 		try (OutputStream out = new PasswordProtectedOutputStream(outToEncrpt, password, salt)) {
 			out.write(dataToWrite);
 			out.write('\n');
 			out.write(dataToWrite);
 		}
-		salt = PasswordProtectedFactory.getSalt();
+
+		final byte[] wrongSalt = PasswordProtectedFactory.getSalt();
 		ByteArrayInputStream inToEncrypt = new ByteArrayInputStream(outToEncrpt.toByteArray());
-		try (BufferedReader in = new BufferedReader(new InputStreamReader(new PasswordProtectedInputStream(inToEncrypt, password, salt),
-				StandardCharsets.UTF_8))) {
-			Assert.assertNotEquals(new String(dataToWrite, StandardCharsets.UTF_8), in.readLine());
-			Assert.assertNotEquals(new String(dataToWrite, StandardCharsets.UTF_8), in.readLine());
-			Assert.assertNull(in.readLine());
-		}
+		Exception exception = Assertions.assertThrows(IOException.class, () -> {
+			try (BufferedReader in = new BufferedReader(new InputStreamReader(new PasswordProtectedInputStream(inToEncrypt, password, wrongSalt),
+					StandardCharsets.UTF_8))) {
+				Assertions.assertNotEquals(new String(dataToWrite, StandardCharsets.UTF_8), in.readLine());
+				Assertions.assertNotEquals(new String(dataToWrite, StandardCharsets.UTF_8), in.readLine());
+				Assertions.assertNull(in.readLine());
+			}
+		});
+		Assertions.assertTrue(GeneralSecurityException.class.isAssignableFrom(exception.getCause().getClass()));
 	}
 
-	@Test(expected=IOException.class) // caused by GeneralSecurityException
+	@Test
 	public void wrongPassword() throws IOException, GeneralSecurityException {
 		char[] password = "see on salasona".toCharArray();
 		byte[] salt = PasswordProtectedFactory.getSalt();
@@ -110,19 +118,23 @@ public class PasswordProtectedStreamTest {
 			out.write('\n');
 			out.write(dataToWrite);
 		}
-		password = "".toCharArray();
+
+		final char[] wrongPassword = "".toCharArray();
 		ByteArrayInputStream inToEncrypt = new ByteArrayInputStream(outToEncrpt.toByteArray());
-		try (BufferedReader in = new BufferedReader(new InputStreamReader(new PasswordProtectedInputStream(inToEncrypt, password, salt),
-				StandardCharsets.UTF_8))) {
-			Assert.assertNotEquals(new String(dataToWrite, StandardCharsets.UTF_8), in.readLine());
-			Assert.assertNotEquals(new String(dataToWrite, StandardCharsets.UTF_8), in.readLine());
-			Assert.assertNull(in.readLine());
-		}
+		Exception exception = Assertions.assertThrows(IOException.class, () -> {
+			try (BufferedReader in = new BufferedReader(new InputStreamReader(new PasswordProtectedInputStream(inToEncrypt, wrongPassword, salt),
+					StandardCharsets.UTF_8))) {
+				Assertions.assertNotEquals(new String(dataToWrite, StandardCharsets.UTF_8), in.readLine());
+				Assertions.assertNotEquals(new String(dataToWrite, StandardCharsets.UTF_8), in.readLine());
+				Assertions.assertNull(in.readLine());
+			}
+		});
+		Assertions.assertTrue(GeneralSecurityException.class.isAssignableFrom(exception.getCause().getClass()));
 	}
 
-	@Ignore
+	@Disabled
 	@Test
-	public void testLength() throws IOException, GeneralSecurityException {
+	void testLength() throws IOException, GeneralSecurityException {
 		char[] password = "see on salasona".toCharArray();
 		byte[] salt = PasswordProtectedFactory.getSalt();
 		for (byte b : salt) {
@@ -133,7 +145,7 @@ public class PasswordProtectedStreamTest {
 		System.out.println();
 		byte[] dataToWrite = "Lorem Ipsum Est ÕÜÖÜ".getBytes(StandardCharsets.UTF_8);
 		ByteArrayOutputStream outToEncrpt = new ByteArrayOutputStream();
-		for (String alg : new String[] {
+		for (String alg : new String[]{
 				"PBEWithHmacSHA512AndAES_256", // SHA512
 				"PBEWithHmacSHA512AndAES_128", // SHA512
 				"PBEWithHmacSHA384AndAES_256", // SHA384
@@ -151,7 +163,7 @@ public class PasswordProtectedStreamTest {
 				"PBEWithSHA1AndRC2_40",
 				"PBEWithSHA1AndRC2_128",
 				"PBEWithSHA1AndRC4_40",
-				"PBEWithSHA1AndPC4_128"				
+				"PBEWithSHA1AndPC4_128"
 		}) {
 			outToEncrpt.reset();
 			try (OutputStream out = new PasswordProtectedOutputStream(outToEncrpt, password, salt, alg)) {
@@ -173,7 +185,7 @@ public class PasswordProtectedStreamTest {
 	}
 
 	@Test
-	public void testBytes() throws IOException, GeneralSecurityException {
+	void testBytes() throws IOException, GeneralSecurityException {
 		Random rnd = new Random();
 		byte[] data = new byte[100000];
 		rnd.nextBytes(data);
@@ -194,10 +206,10 @@ public class PasswordProtectedStreamTest {
 			}
 		}
 		byte[] result = _data.toByteArray();
-		Assert.assertEquals(data.length, result.length);
+		Assertions.assertEquals(data.length, result.length);
 
 		for (int i = 0; i < data.length; i++) {
-			Assert.assertEquals("At " + i, data[i], result[i]);
+			Assertions.assertEquals(data[i], result[i], "At " + i);
 		}
 	}
 

@@ -40,14 +40,12 @@ public class FileTypes {
 		fileName = fileName.substring(index);
 		if (fileName == null || fileName.length() == 0 ) return Optional.empty();
 		final String fileSuffix = fileName.toLowerCase();
-		System.out.println(fileName + "\t" + fileSuffix);
 		return Optional.ofNullable(MIME_TYPE_FILE.getMIMETypeString(fileSuffix)).or(() -> Optional.ofNullable(ADDITIONAL_MIME_TYPE.getMIMETypeString(fileSuffix)));
 	}
 
 	public static Optional<String> probeContentType(Path path) throws IllegalArgumentException {
 		return getFromLocalDatabase(path).or(() -> {
 			try {
-				System.out.println("FAIUL BACK for " + path);
 				return Optional.ofNullable(Files.probeContentType(path));
 			} catch (IOException e) {
 				return Optional.empty();

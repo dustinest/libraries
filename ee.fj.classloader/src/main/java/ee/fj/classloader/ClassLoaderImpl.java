@@ -3,6 +3,7 @@ package ee.fj.classloader;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -48,13 +49,17 @@ class ClassLoaderImpl {
 	void walk(Consumer<Class<?>> consumer) throws IOException {
 		Enumeration<URL> classloaderUrls = classLoader.getResources("");
 		while(classloaderUrls.hasMoreElements()) {
+			URL url = classloaderUrls.nextElement();
 			try {
-				Path path = Paths.get(classloaderUrls.nextElement().toURI());
+				System.out.println(url);
+				Path path = Paths.get(url.toURI());
 				if (Files.isDirectory(path)) {
 					walkPath(consumer, path);
 				} else if (path.toString().toLowerCase().endsWith(".jar")) {
 					walkJar(consumer, path);
 				}
+			} catch (FileSystemNotFoundException e) {
+				LOGGER.log(Level.WARNING, "File system was not found for " + url, e);
 			} catch (URISyntaxException e1) {
 				throw new IOException(e1);
 			}
