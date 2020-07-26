@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 
 public class FileTypesTest {
 	@Test
+	@Disabled // This can be run locally as environments might have different types
 	public void testPaths() throws IOException {
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(FileTypesTest.class.getResourceAsStream("/filetypes.txt"), StandardCharsets.UTF_8))) {
 			for (String line = reader.readLine(); line != null; line = reader.readLine()) {
