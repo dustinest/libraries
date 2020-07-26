@@ -1,3 +1,5 @@
+![Java CI with Gradle](https://github.com/dustinest/libraries/workflows/Java%20CI%20with%20Gradle/badge.svg?branch=master&event=push)
+
 I am really lazy person, so instead of having separate repository for each project I put together selection of my most used libraries into one single maven tree.
 
 There are three major roots:
