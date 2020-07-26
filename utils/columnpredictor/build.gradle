@@ -1,3 +1,1 @@
-apply from: '../../gradle/read_version.gradle'
-group = 'ee.fj.utils'
 description = 'Predict column types in data table'

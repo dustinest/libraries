@@ -11,6 +11,4 @@ javafx {
 dependencies {
     compile project(':javafx:validator')
 }
-apply from: '../../gradle/read_version.gradle'
-group = 'ee.fj.javafx'
 description = 'Fox Junior JavaFx Custom controls'

@@ -1,3 +1,5 @@
-apply from: '../../gradle/read_version.gradle'
-group = 'ee.fj.io'
+dependencies {
+    // https://mvnrepository.com/artifact/org.hamcrest/hamcrest
+    testCompile group: 'org.hamcrest', name: 'hamcrest', version: '2.2'
+}
 description = 'Predict the encoding of the file'
