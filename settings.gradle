@@ -1,4 +1,4 @@
-rootProject.name = 'ee.fj'
+rootProject.name = 'ee.fj.commons'
 
 apply from: 'gradle/freach_project.gradle'
 foreachProjectIn(rootDir, { include it.project.name })

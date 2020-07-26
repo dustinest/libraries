@@ -8,6 +8,4 @@ javafx {
     modules = [ 'javafx.graphics' ]
 }
 
-apply from: '../../gradle/read_version.gradle'
-group = 'ee.fj.javafx'
 description = 'Fox Junior JavaFx Concurrency helper'

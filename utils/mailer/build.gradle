@@ -3,6 +3,4 @@ dependencies {
     compile 'org.apache.poi:poi-ooxml:3.15'
     compile 'com.sun.mail:javax.mail:1.6.2'
 }
-apply from: '../../gradle/read_version.gradle'
-group = 'ee.fj.utils'
 description = 'ee.fj.utils.mailer'

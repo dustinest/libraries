@@ -2,5 +2,4 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15on
 	implementation group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.64'
 }
-apply from: '../../gradle/read_version.gradle'
-group = 'ee.fj.security'
+

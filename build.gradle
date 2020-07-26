@@ -1,5 +1,17 @@
 allprojects {
-    group = 'ee.fj'
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+    apply plugin: 'idea'
+    apply plugin: 'groovy'
+
+    repositories {
+        mavenCentral()
+        mavenLocal()
+        jcenter()
+    }
+}
+
+subprojects {
     ext.versionMajor = 1
     ext.versionMinor = 0
     ext.versionPatch = 0
@@ -12,14 +24,10 @@ allprojects {
     apply plugin: 'maven-publish'
     apply plugin: 'groovy'
 
-    repositories {
-        mavenCentral()
-        mavenLocal()
-        jcenter()
-    }
-
     sourceCompatibility = 11
     targetCompatibility = 11
+
+    apply from: rootProject.rootDir.toPath().resolve('gradle/read_version.gradle')
 
     dependencies {
         testImplementation "org.codehaus.groovy:groovy-all:2.5.8"
