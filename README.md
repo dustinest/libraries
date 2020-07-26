@@ -2,22 +2,25 @@ I am really lazy person, so instead of having separate repository for each proje
 
 There are three major roots:
 
-# ee.fj.arrays
+# arrays
 
 - [Array combinator methods](arrays/combine)
-- [Array filter methods](arrays/filters)
 - [Array utility methods](arrays/utils)
 
-# ee.fj.awt
+# filters
+
+- [Array filter methods](filters)
+
+# awt
 
 - [Scale and resize images](awt)
 
 
-# ee.fj.classloader
+# classloader
 
 - [Simple whole purpose classloader with custom annotation support](classloader)
 
-# ee.fj.io
+# io
 
 Input - output utilities
 
@@ -26,7 +29,7 @@ Input - output utilities
 - [Predict file encoding](io/smartreader)
 - [Csv / Excel files wrapper](io/tablereader)
 
-# ee.fj.javafx
+# javafx
 
 Javafx helpers
 
@@ -35,24 +38,23 @@ Javafx helpers
 - [JavaFx FXML and controller loader](javafx/loader)
 - [Custom input validators](javafx/validator)
 
-# ee.fj.l
+# l10n
 
 - [Lightweight localization helper](l1xn/l10n)
 
-# ee.fj.numbers
+# numbers
 
 - [Numbers utility methods](numbers)
 
-# ee.fj.security
+# security
 
 - [Wrapper for encryption methods](security/crypto)
 
-# ee.fj.strings
+# strings
 
-- [String filter methods](strings/filters)
-- [String utility methods](strings/utils)
+- [String utility methods](strings)
 
-# ee.fj.utils
+# utils
 
 - [Predict the column type in array based on the matchers](utils/columnpredictor)
 - [Enum memory cache for quick and more loose value retrieval](utils/enum)
