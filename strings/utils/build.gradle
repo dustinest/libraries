@@ -1,0 +1,5 @@
+dependencies {
+}
+apply from: '../../gradle/read_version.gradle'
+group = 'ee.fj.strings'
+description = 'Strings helper'
