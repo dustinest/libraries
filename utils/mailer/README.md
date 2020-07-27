@@ -1,29 +1,5 @@
 # Javamail wrapper to send mails
 
-## Installation
-
-Add repository to your ``pom.xml``:
-
-	<repositories>
-		<repository>
-			<id>ee.fj-mvn-repo</id>
-			<url>https://raw.githubusercontent.com/dustinest/libraries/mvn-repo</url>
-			<snapshots>
-				<enabled>true</enabled>
-				<updatePolicy>always</updatePolicy>
-			</snapshots>
-		</repository>
-	</repositories>
-
-And dependency:
-
-	<dependency>
-		<groupId>ee.fj.utils</groupId>
-		<artifactId>ee.fj.utils.mailer</artifactId>
-		<version>0.0.1</version>
-	</dependency>
-
-
 ## Simple usage:
 
 First create a smtp configuration

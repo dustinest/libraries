@@ -9,6 +9,6 @@ javafx {
 }
 
 dependencies {
-    compile project(':javafx:validator')
+    implementation project(':javafx:validator')
 }
 description = 'Fox Junior JavaFx Custom controls'

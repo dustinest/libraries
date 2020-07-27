@@ -2,29 +2,6 @@
 
 I found myself reading JavaFx .FXML files all over and over again. So, I created a simple wrapper to help me with that.
 
-# Installation
-
-Add repository to your ``pom.xml``:
-
-	<repositories>
-		<repository>
-			<id>ee.fj-mvn-repo</id>
-			<url>https://raw.githubusercontent.com/dustinest/libraries/mvn-repo</url>
-			<snapshots>
-				<enabled>true</enabled>
-				<updatePolicy>always</updatePolicy>
-			</snapshots>
-		</repository>
-	</repositories>
-
-And dependency:
-
-	<dependency>
-		<groupId>ee.fj.javafx</groupId>
-		<artifactId>ee.fj.javafx.loader</artifactId>
-		<version>0.0.1</version>
-	</dependency>
-
 # Usage:
 
 My controller class, which extends Vbox:

@@ -5,29 +5,6 @@ One thread.
 
 For that I created simple single threaded manager for easy access to execute processes in and out of platform.
 
-## Installation
-
-Add repository to your ``pom.xml``:
-
-	<repositories>
-		<repository>
-			<id>ee.fj-mvn-repo</id>
-			<url>https://raw.githubusercontent.com/dustinest/libraries/mvn-repo</url>
-			<snapshots>
-				<enabled>true</enabled>
-				<updatePolicy>always</updatePolicy>
-			</snapshots>
-		</repository>
-	</repositories>
-
-And dependency:
-
-	<dependency>
-		<groupId>ee.fj.javafx</groupId>
-		<artifactId>ee.fj.javafx.concurrent</artifactId>
-		<version>0.0.1</version>
-	</dependency>
-
 ## Usage:
 
 	SingleThreadManager.SECONDS.PLATFORM.schedule(() -> updateSomething(), 1);

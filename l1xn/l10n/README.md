@@ -4,13 +4,13 @@ The purpose of this library is to ease up translation management and to change t
 
 ## Usage
 
-See [Junit tests](src/test/java/ee/fj/l/l10n/TranslationsFactoryTest.java) for basic use cases
+See [Junit tests](src/test/java/com/foxjunior/l1xn/l10n/TranslationsFactoryTest.java) for basic use cases
 
 Default language file is ``translation.properties``
 
 Locale based translation files:
 
-translation.et.properties or translation.et-EE.properties see more at ee.fj.l.l10n.CommonTranslationFileReader
+translation.et.properties or translation.et-EE.properties see more at CommonTranslationFileReader
 
 Simple usage:
 
@@ -39,25 +39,3 @@ If you want to change how translations are being read (default is properties fil
 
 	public static void set(TranslationReader reader);
 
-## Installation
-
-Add repository to your ``pom.xml``:
-
-	<repositories>
-		<repository>
-			<id>ee.fj-mvn-repo</id>
-			<url>https://raw.githubusercontent.com/dustinest/libraries/mvn-repo</url>
-			<snapshots>
-				<enabled>true</enabled>
-				<updatePolicy>always</updatePolicy>
-			</snapshots>
-		</repository>
-	</repositories>
-
-And dependency:
-
-	<dependency>
-		<groupId>ee.fj.l</groupId>
-		<artifactId>ee.fj.l.l10n</artifactId>
-		<version>0.0.2</version>
-	</dependency>

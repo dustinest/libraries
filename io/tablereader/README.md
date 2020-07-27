@@ -1,29 +1,5 @@
 # Helper libraries to read excel and CSV files
 
-## Installation
-
-Add repository to your ``pom.xml``:
-
-	<repositories>
-		<repository>
-			<id>ee.fj-mvn-repo</id>
-			<url>https://raw.githubusercontent.com/dustinest/libraries/mvn-repo</url>
-			<snapshots>
-				<enabled>true</enabled>
-				<updatePolicy>always</updatePolicy>
-			</snapshots>
-		</repository>
-	</repositories>
-
-And dependency:
-
-	<dependency>
-		<groupId>ee.fj.io</groupId>
-		<artifactId>ee.fj.io.tablereader</artifactId>
-		<version>0.0.1</version>
-	</dependency>
-
-
 ## Code snippet:
 
 			TableReaderFactory.getReader(SupportedFiles.CSV).as(CsvReader.class).read(

@@ -34,8 +34,6 @@ subprojects {
         testImplementation platform("org.spockframework:spock-bom:2.0-M1-groovy-2.5")
         testImplementation "org.spockframework:spock-core"
         testImplementation "org.spockframework:spock-junit4" // you can remove this if your code does not rely on old JUnit 4 rules
-        // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter
-        testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.5.2'
     }
 
     test {
