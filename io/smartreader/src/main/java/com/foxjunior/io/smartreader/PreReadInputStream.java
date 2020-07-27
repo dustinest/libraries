@@ -3,12 +3,12 @@ package com.foxjunior.io.smartreader;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class PreReadInputStream extends InputStream {
+class PreReadInputStream extends InputStream {
     private final InputStream in;
     private byte[] buffer;
     private int pointer = 0;
 
-    public PreReadInputStream(InputStream in, byte[] buffer) {
+    PreReadInputStream(InputStream in, byte[] buffer) {
         this.in = in;
         this.buffer = buffer;
     }
@@ -25,6 +25,7 @@ public class PreReadInputStream extends InputStream {
     /**
      * Extend buiffer which were pre read.
      */
+    /*
     public void extend(byte[] extension) {
         byte[] sv = new byte[extension.length + buffer.length - pointer];
         for (int i = pointer; i < buffer.length; i++) {
@@ -36,6 +37,7 @@ public class PreReadInputStream extends InputStream {
         this.buffer = sv;
         pointer = 0;
     }
+     */
 
     @Override
     public void close() throws IOException {

@@ -5,7 +5,7 @@ import java.util.function.BiFunction;
 
 public class ScaleCalculator {
 	private static final double ZERO = 0d;
-	private static final double ONE= 1d;
+	private static final double ONE = 1d;
 
 	private static <T> T calculateScaleDimension(Number width, Number height, double scale, BiFunction<Number, Number, T> callback) {
 		if (scale == 0) callback.apply(ZERO, ZERO);
