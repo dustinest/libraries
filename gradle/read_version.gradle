@@ -23,7 +23,9 @@ if (java.nio.file.Files.exists(versionFile)) {
 
 version = String.join(".", localMajor, localMinor, localPatch)
 
-if (rootProject.name == project.parent.name) {
+if (project.parent == null) {
+    group = rootProject.name
+} else if (rootProject.name == project.parent.name) {
     group = project.parent.name
 } else {
     group = String.join(".", rootProject.name, project.parent.name)
