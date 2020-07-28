@@ -213,4 +213,34 @@ public class ArrayCombine {
 		}
 		return result;
 	}
+
+	public static double[] combine(final double[] first, final double[] second, final double[]... others) {
+		int length = 0;
+		if (first != null) {
+			length += first.length;
+		}
+		if (second != null) {
+			length += second.length;
+		}
+		for (double[] o : others) {
+			if (o != null) length += o.length;
+		}
+		if (length == 0) return null;
+		double[] result = new double[length];
+		int pos = 0;
+		if (first != null) {
+			System.arraycopy(first, 0, result, pos, first.length);
+			pos += first.length;
+		}
+		if (second != null) {
+			System.arraycopy(second, 0, result, pos, second.length);
+			pos += second.length;
+		}
+		for (double[] o : others) {
+			if (o == null) continue;
+			System.arraycopy(o, 0, result, pos, o.length);
+			pos += o.length;
+		}
+		return result;
+	}
 }
