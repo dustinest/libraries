@@ -9,9 +9,7 @@ allprojects {
         mavenLocal()
         jcenter()
     }
-}
 
-subprojects {
     ext.versionMajor = 1
     ext.versionMinor = 0
     ext.versionPatch = 0
@@ -21,7 +19,6 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'eclipse'
     apply plugin: 'idea'
-    apply plugin: 'maven-publish'
     apply plugin: 'groovy'
 
     sourceCompatibility = 11
@@ -57,13 +54,5 @@ subprojects {
         // necessary for spock to avoid error with org.codehaus.groovy.vmplugin.v7.Java7$1
         sourceCompatibility = 11
         targetCompatibility = 11
-    }
-
-    publishing {
-        publications {
-            mavenJava(MavenPublication) {
-                from components.java
-            }
-        }
     }
 }
