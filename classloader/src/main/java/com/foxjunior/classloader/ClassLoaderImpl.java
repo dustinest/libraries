@@ -51,7 +51,6 @@ class ClassLoaderImpl {
 		while(classloaderUrls.hasMoreElements()) {
 			URL url = classloaderUrls.nextElement();
 			try {
-				System.out.println(url);
 				Path path = Paths.get(url.toURI());
 				if (Files.isDirectory(path)) {
 					walkPath(consumer, path);

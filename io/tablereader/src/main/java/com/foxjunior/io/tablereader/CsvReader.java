@@ -1,9 +1,12 @@
 package com.foxjunior.io.tablereader;
 
+import com.opencsv.CSVParserBuilder;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
+import com.opencsv.exceptions.CsvValidationException;
+
 import java.io.IOException;
 import java.io.Reader;
-
-import au.com.bytecode.opencsv.CSVReader;
 
 public class CsvReader implements TableReader {
 
@@ -11,12 +14,17 @@ public class CsvReader implements TableReader {
 		read(new CSVReader(reader), callback);
 	}
 
+
 	public void read(Reader reader, char separator, char quatationChar, TableResult callback) throws IOException {
-		read(new CSVReader(reader, separator, quatationChar, false), callback);
+		read(new CSVReaderBuilder(reader)
+				.withCSVParser(new CSVParserBuilder().withSeparator(separator).withQuoteChar(quatationChar).build())
+				.build(), callback);
 	}
 
 	public void read(Reader reader, char separator, TableResult callback) throws IOException {
-		read(new CSVReader(reader, separator), callback);
+		read(new CSVReaderBuilder(reader)
+				.withCSVParser(new CSVParserBuilder().withSeparator(separator).build())
+				.build(), callback);
 	}
 
 	public void read(CSVReader reader, TableResult callback) throws IOException {
@@ -33,8 +41,10 @@ public class CsvReader implements TableReader {
 					}
 				}
 				callback.read(TableResult.ROW_END, row, -1, row);
-				row ++;
+				row++;
 			}
+		} catch (CsvValidationException e) {
+			throw new IOException(e);
 		} finally {
 			callback.read(TableResult.END, -1, -1, null);
 		}

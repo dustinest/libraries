@@ -1,7 +1,7 @@
 package com.foxjunior.utils.mailer.attachment;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeBodyPart;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeBodyPart;
 
 public class HTMLMailBody extends MailBody {
 

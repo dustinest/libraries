@@ -10,7 +10,7 @@ class ObjectLookupBuilderSpec extends Specification {
         given:
         ObjectLookupBuilderTestVal VALUE1 = new ObjectLookupBuilderTestVal(value: "A")
         ObjectLookupBuilderTestVal VALUE2 = new ObjectLookupBuilderTestVal(value: "B")
-        def LOOKUP = ObjectLookupBuilder.build(ObjectLookupBuilderTestVal.class, { e ->
+        def LOOKUP = ObjectLookupBuilder.build( { e ->
             return [e.getValue().toUpperCase(), e.getValue().toLowerCase()]
         }, VALUE1, VALUE2)
         when:

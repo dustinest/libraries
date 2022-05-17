@@ -19,38 +19,50 @@ public class ObjectLookupBuilder {
 		result.put(key.toString(), value);
 	}
 
+	private static <T> void addObject(final Map<String, T> result, Object key, T value) {
+		if (value == null) return;
+		if (key instanceof Enum) {
+			addObject(result, ((Enum<?>) key).name(), value);
+			return;
+		}
+		if (key instanceof String) {
+			checkAndAdd(result, key, value);
+			return;
+		}
+		if (key instanceof String[]) {
+			for (String k : (String[])key) {
+				addObject(result, k, value);
+			}
+			return;
+		}
+		if (key instanceof Iterable) {
+			//noinspection rawtypes
+			for (Object k : (Iterable)key) {
+				addObject(result, k, value);
+			}
+			return;
+		}
+		throw new IllegalArgumentException("The key type " + value.getClass().getName() + " is not supported!");
+	}
 	@SafeVarargs
-	private static <T> Map<String, T> buildMap(Class<T> classType, Function<T, Object> lookup, T... values) {
-		Objects.requireNonNull(classType, "Class type must be set!");
+	private static <T> Map<String, T> getArray(Function<T, Object> lookup, T... values) {
 		Objects.requireNonNull(lookup, "Lookup must not be null!");
 		final Map<String, T> result = new HashMap<>();
 		for (T v : values) {
 			Object keys = lookup.apply(v);
-			if (keys == null) continue;
-			if (keys instanceof String) {
-				checkAndAdd(result, keys, v);
-				continue;
-			} else if (keys instanceof String[]) {
-				for (String k : (String[])keys) {
-					checkAndAdd(result, k, v);
-				}
-				continue;
-			} else if (keys instanceof Iterable) {
-				//noinspection rawtypes
-				for (Object k : (Iterable)keys) {
-					checkAndAdd(result, k, v);
-				}
-				continue;
-			}
-			throw new IllegalArgumentException("The key type " + keys.getClass().getName() + " is not supported!");
+			addObject(result, keys, v);
 		}
 		return Collections.unmodifiableMap(result);
 	}
 
-	@SafeVarargs
-	public static <T> Function<String, Optional<T>> build(Class<T> classType, Function<T, Object> lookup, T... values) {
+	public static <T> Function<String, Optional<T>> buildFromArray(Function<T, Object> lookup, T[] values) {
 		Objects.requireNonNull(lookup, "Lookup must not be null!");
-		final Map<String, T> result = buildMap(classType, lookup, values);
+		final Map<String, T> result = getArray(lookup, values);
 		return s -> s == null ? Optional.empty() : Optional.ofNullable(result.get(s));
+	}
+
+	@SafeVarargs
+	public static <T> Function<String, Optional<T>> build(Function<T, Object> lookup, T... values) {
+		return buildFromArray(lookup, values);
 	}
 }

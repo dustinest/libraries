@@ -26,24 +26,24 @@ class NumbersSpec extends Specification {
 	}
 
 	@Unroll
-	def "getFirstNumber(#text) == #value && Strings.getFirstNumberIfHasValue(#text).get() == #value"() {
+	def "getFirstNumber(#text) == #result && Strings.getFirstNumberIfHasValue(#text).get() == #result"() {
 		expect:
 			Numbers.getFirstNumberOrNull(text) == result
 			Numbers.getFirstNumber(text).get() == result
 			Numbers.getLastNumberOrNull(text) == result
 			Numbers.getLastNumber(text).get() == result
 		where:
-			text					| result
-			"0"						| 0
-			"10"					| 10
-			"abc.def 1.2"			| 1.2
-			"abc.1.2"				| 1.2
-			"1.2"					| 1.2
-			"5123123123"			| 5123123123
-			"51231.23123"			| 51231.23123
-			"test 51231.23123.abc"	| 51231.23123
-			"test 1.2"				| 1.2
-			"1.2test"				| 1.2
+			text                   | result
+			"0"                    | 0
+			"10"                   | 10
+			"abc.def 1.2"          | 1.2
+			"abc.1.2"              | 1.2
+			"1.2"                  | 1.2
+			"5123123123"           | 5123123123
+			"51231.23123"          | 51231.23123
+			"test 51231.23123.abc" | 51231.23123
+			"test 1.2"             | 1.2
+			"1.2test"              | 1.2
 	}
 
 	@Unroll
@@ -54,15 +54,15 @@ class NumbersSpec extends Specification {
 			Numbers.getLastNumberOrNull(text) == last
 			Numbers.getLastNumber(text).get() == last
 		where:
-			text									| first			| last
-			"0 1"									| 0				| 1
-			"10 01"									| 10			| 1
-			"abc.def 1.2 2.1 abc.def"				| 1.2			| 2.1
-			"abc.1.2 cda.2.1"						| 1.2			| 2.1
-			"1.2 2.1"								| 1.2			| 2.1
-			"5123123123 123"						| 5123123123	| 123
-			"51231.23123 1.23123"					| 51231.23123	| 1.23123
-			"test 51231.23123.abc test.51231.1.abc"	| 51231.23123	| 51231.1
-			"1.2test2.1"							| 1.2			| 2.1
+			text                                    | first       | last
+			"0 1"                                   | 0           | 1
+			"10 01"                                 | 10          | 1
+			"abc.def 1.2 2.1 abc.def"               | 1.2         | 2.1
+			"abc.1.2 cda.2.1"                       | 1.2         | 2.1
+			"1.2 2.1"                               | 1.2         | 2.1
+			"5123123123 123"                        | 5123123123  | 123
+			"51231.23123 1.23123"                   | 51231.23123 | 1.23123
+			"test 51231.23123.abc test.51231.1.abc" | 51231.23123 | 51231.1
+			"1.2test2.1"                            | 1.2         | 2.1
 	}
 }

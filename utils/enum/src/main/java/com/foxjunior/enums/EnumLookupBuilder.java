@@ -16,7 +16,7 @@ public class EnumLookupBuilder {
     }
 
     public static <T extends Enum<?>> Function<String, Optional<T>> build(Class<T> enumType, Function<T, Object> lookup) {
-        return ObjectLookupBuilder.build(enumType, lookup, enumType.getEnumConstants());
+        return ObjectLookupBuilder.build(lookup, enumType.getEnumConstants());
     }
 
     public static <T extends Enum<?>> Function<String, Optional<T>> build(Class<T> enumType, SearchType buildType) {

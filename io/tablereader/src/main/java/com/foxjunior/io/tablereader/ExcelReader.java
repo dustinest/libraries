@@ -6,10 +6,10 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 import org.apache.poi.EncryptedDocumentException;
-import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -25,7 +25,7 @@ public class ExcelReader implements TableReader {
 			for (Row row : _sheet) {
 				reader.read(TableResult.ROW_START, row.getRowNum(), -1, row.getRowNum());
 				for (Cell c : row) {
-					CellType cellType = c.getCellTypeEnum();
+					CellType cellType = c.getCellType();
 					if (cellType == CellType.BLANK) {
 						reader.read(TableResult.NULL, row.getRowNum(), c.getColumnIndex(), null);
 					} else if (cellType == CellType.BOOLEAN) {
@@ -35,7 +35,7 @@ public class ExcelReader implements TableReader {
 					} else if (cellType == CellType.FORMULA) {
 						reader.read(TableResult.STRING, row.getRowNum(), c.getColumnIndex(), c.getCellFormula());
 					} else if (cellType == CellType.NUMERIC) {
-						if (HSSFDateUtil.isCellDateFormatted(c)) {
+						if (DateUtil.isCellDateFormatted(c)) {
 							reader.read(TableResult.DATE, row.getRowNum(), c.getColumnIndex(), LocalDateTime.ofInstant(c.getDateCellValue().toInstant(), ZoneId.systemDefault()));
 						} else {
 							reader.read(TableResult.DOUBLE, row.getRowNum(), c.getColumnIndex(), c.getNumericCellValue());
@@ -48,7 +48,7 @@ public class ExcelReader implements TableReader {
 				}
 				reader.read(TableResult.ROW_END, row.getRowNum(), -1, row.getRowNum());
 			}
-		} catch (EncryptedDocumentException | InvalidFormatException e) {
+		} catch (EncryptedDocumentException e) {
 			throw new IOException(e);
 		} finally {
 			reader.read(TableResult.END, -1, -1, null);

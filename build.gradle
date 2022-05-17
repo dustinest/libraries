@@ -7,13 +7,11 @@ allprojects {
     repositories {
         mavenCentral()
         mavenLocal()
-        jcenter()
     }
 
     ext.versionMajor = 1
     ext.versionMinor = 0
     ext.versionPatch = 0
-    ext.lombokVersion = '1.18.10'
     version = ext.versionMajor + '.' + ext.versionMinor + '.' + ext.versionPatch
 
     apply plugin: 'java'
@@ -27,10 +25,9 @@ allprojects {
     apply from: rootProject.rootDir.toPath().resolve('gradle/read_version.gradle')
 
     dependencies {
-        testImplementation "org.codehaus.groovy:groovy-all:2.5.8"
-        testImplementation platform("org.spockframework:spock-bom:2.0-M1-groovy-2.5")
+        testImplementation 'org.codehaus.groovy:groovy:3.0.10'
+        testImplementation platform("org.spockframework:spock-bom:2.1-groovy-3.0")
         testImplementation "org.spockframework:spock-core"
-        testImplementation "org.spockframework:spock-junit4" // you can remove this if your code does not rely on old JUnit 4 rules
     }
 
     test {

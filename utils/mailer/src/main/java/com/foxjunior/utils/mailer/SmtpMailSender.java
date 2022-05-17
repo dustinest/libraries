@@ -3,8 +3,8 @@ package com.foxjunior.utils.mailer;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
+import jakarta.mail.internet.AddressException;
+import jakarta.mail.internet.InternetAddress;
 
 import com.foxjunior.utils.mailer.attachment.PasswordAuthenticator;
 

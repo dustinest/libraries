@@ -1,7 +1,7 @@
 dependencies {
-    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter
-    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.5.2'
-    implementation 'net.sf.opencsv:opencsv:2.3'
-    implementation 'org.apache.poi:poi-ooxml:3.15'
+    // https://mvnrepository.com/artifact/com.opencsv/opencsv
+    implementation group: 'com.opencsv', name: 'opencsv', version: '5.6'
+    // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
+    implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.2'
 }
 description = 'Excel and CSV reader'

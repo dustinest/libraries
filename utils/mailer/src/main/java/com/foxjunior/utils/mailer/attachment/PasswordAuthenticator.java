@@ -1,15 +1,15 @@
 package com.foxjunior.utils.mailer.attachment;
 
-import javax.mail.Authenticator;
-import javax.mail.PasswordAuthentication;
+import jakarta.mail.Authenticator;
+import jakarta.mail.PasswordAuthentication;
 
 public class PasswordAuthenticator extends Authenticator {
-	private final javax.mail.PasswordAuthentication auth;
-	public PasswordAuthenticator(javax.mail.PasswordAuthentication auth) {
+	private final PasswordAuthentication auth;
+	public PasswordAuthenticator(PasswordAuthentication auth) {
 		this.auth = auth;
 	}
 	public PasswordAuthenticator(String username, String password) {
-		this(new javax.mail.PasswordAuthentication(username, password));
+		this(new PasswordAuthentication(username, password));
 	}
 
 	@Override

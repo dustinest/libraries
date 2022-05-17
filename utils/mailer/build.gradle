@@ -1,6 +1,4 @@
 dependencies {
-     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter
-    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.5.2'
-    implementation 'com.sun.mail:javax.mail:1.6.2'
+    implementation 'com.sun.mail:jakarta.mail:2.0.1'
 }
 description = 'Mailing helper'

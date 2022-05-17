@@ -6,17 +6,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import javax.mail.AuthenticationFailedException;
-import javax.mail.Message;
-import javax.mail.Message.RecipientType;
-import javax.mail.MessagingException;
-import javax.mail.SendFailedException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
+import jakarta.mail.AuthenticationFailedException;
+import jakarta.mail.Message;
+import jakarta.mail.Message.RecipientType;
+import jakarta.mail.MessagingException;
+import jakarta.mail.SendFailedException;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
+import jakarta.mail.internet.AddressException;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMultipart;
 
 import com.foxjunior.utils.mailer.attachment.Attachment;
 import com.foxjunior.utils.mailer.attachment.FileAttachment;
@@ -169,8 +169,9 @@ public abstract class MailSender {
 	 * @throws IOException if body parts cannot be set
 	 * @throws MailConnectException if connection fails
 	 * @throws AuthenticationFailedException This exception is thrown when the connect method on a Store or Transport object fails due to an authentication failure (e.g., bad user name or password).
-	 * See more at https://javamail.java.net/nonav/docs/api/index.html?com/sun/mail/util/MailConnectException.html
+	 * See more at <a href="https://javamail.java.net/nonav/docs/api/index.html?com/sun/mail/util/MailConnectException.html">MailConnectException.html</a>
 	 */
+	@SuppressWarnings("RedundantThrows") // SendFailedException is thrown deep in the code
 	public void send() throws MessagingException, SendFailedException, IllegalStateException {
 		Message message = getMessageContainer();
 		Transport.send(message);
