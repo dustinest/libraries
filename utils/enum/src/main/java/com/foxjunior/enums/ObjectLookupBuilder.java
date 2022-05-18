@@ -14,6 +14,9 @@ public class ObjectLookupBuilder {
 			throw new IllegalArgumentException("The key must be a String " + key.getClass() + " found instead!");
 		}
 		if (result.containsKey(key.toString())) {
+			if (result.get(key.toString()).equals(value)) {
+				return;
+			}
 			throw new IllegalArgumentException("The class key " + key + " is already defined for " + result.get(key) + " found new value " + value + "!");
 		}
 		result.put(key.toString(), value);
