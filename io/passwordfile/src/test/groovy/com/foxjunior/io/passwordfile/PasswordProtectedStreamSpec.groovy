@@ -92,6 +92,7 @@ class PasswordProtectedStreamSpec extends Specification {
 			final ByteArrayInputStream inToEncrypt = new ByteArrayInputStream(outToEncrypt.toByteArray())
 		when:
 			def reader = new BufferedReader(new InputStreamReader(new PasswordProtectedInputStream(inToEncrypt, PASSWORD, wrongSalt), StandardCharsets.UTF_8))
+			reader.readLine() // first read might be flaky as it might return scrambled result
 			reader.readLine()
 		then:
 			Exception error = thrown(IOException)

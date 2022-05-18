@@ -55,14 +55,10 @@ public class ObjectLookupBuilder {
 		return Collections.unmodifiableMap(result);
 	}
 
-	public static <T> Function<String, Optional<T>> buildFromArray(Function<T, Object> lookup, T[] values) {
+	@SafeVarargs
+	public static <T> Function<String, Optional<T>> build(Function<T, Object> lookup, T... values) {
 		Objects.requireNonNull(lookup, "Lookup must not be null!");
 		final Map<String, T> result = getArray(lookup, values);
 		return s -> s == null ? Optional.empty() : Optional.ofNullable(result.get(s));
-	}
-
-	@SafeVarargs
-	public static <T> Function<String, Optional<T>> build(Function<T, Object> lookup, T... values) {
-		return buildFromArray(lookup, values);
 	}
 }
