@@ -8,28 +8,21 @@ import java.util.Optional;
 import java.util.function.Function;
 
 public class ObjectLookupBuilder {
-	private static <T> void checkAndAdd(Map<String, T> result, Object key, T value) {
+	private static <T> void checkAndAdd(final Map<String, T> result, final String key, final T value) {
 		Objects.requireNonNull(key, "The key must not be null for " + value + "!");
-		if (!(key instanceof String)) {
-			throw new IllegalArgumentException("The key must be a String " + key.getClass() + " found instead!");
-		}
-		if (result.containsKey(key.toString())) {
-			if (result.get(key.toString()).equals(value)) {
+		if (result.containsKey(key)) {
+			if (result.get(key).equals(value)) {
 				return;
 			}
 			throw new IllegalArgumentException("The class key " + key + " is already defined for " + result.get(key) + " found new value " + value + "!");
 		}
-		result.put(key.toString(), value);
+		result.put(key, value);
 	}
 
-	private static <T> void addObject(final Map<String, T> result, Object key, T value) {
+	private static <T> void addObject(final Map<String, T> result, final Object key, final T value) {
 		if (value == null) return;
-		if (key instanceof Enum) {
-			addObject(result, ((Enum<?>) key).name(), value);
-			return;
-		}
 		if (key instanceof String) {
-			checkAndAdd(result, key, value);
+			checkAndAdd(result, key.toString(), value);
 			return;
 		}
 		if (key instanceof String[]) {
